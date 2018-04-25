@@ -1,38 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lemin.h                                            :+:      :+:    :+:   */
+/*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/23 18:01:25 by ollevche          #+#    #+#             */
-/*   Updated: 2018/04/23 18:01:25 by ollevche         ###   ########.fr       */
+/*   Created: 2018/04/25 18:32:15 by ollevche          #+#    #+#             */
+/*   Updated: 2018/04/25 18:32:15 by ollevche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEMIN_H
-# define LEMIN_H
+#include "lemin.h"
 
-# define ERROR_ID -1;
-
-# include "libftprintf.h"
-
-typedef struct	s_room
+int	error(char is_fatal)
 {
-	int		id;
-	char	*name;
-	int		x;
-	int		y;
-	char	is_empty;
-	t_room	*next;
-}				t_room;
-
-typedef struct	s_link
-{
-	int		from;
-	int		to;
-	char	is_burned;
-	t_link	*next;
-}				t_link;
-
-#endif
+	if (is_fatal)
+		ft_printf("FATAL ERROR\n");
+	else
+		ft_printf("ERROR\n");
+	return (ERROR_ID);
+}
