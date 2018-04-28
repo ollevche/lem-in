@@ -12,11 +12,36 @@
 
 #include "lemin.h"
 
-int	error(char is_fatal)
+void	free_room(t_room *room)
 {
-	if (is_fatal)
-		ft_printf("FATAL ERROR\n");
-	else
-		ft_printf("ERROR\n");
-	return (ERROR_ID);
+	t_room tmp;
+
+	while (room)
+	{
+		tmp = room;
+		room = room->next;
+		free(tmp->name);
+		free(tmp);
+	}
 }
+
+void	free_link(t_link *link)
+{
+	t_link *tmp;
+
+	while (link)
+	{
+		tmp = link;
+		link = link->next;
+		free(tmp);
+	}
+}
+
+void	terminate(t_room *room, t_link *link)
+{
+	free_room(room);
+	free_link(link);
+	perror("Error");
+	exit(EXIT_FAILURE);
+}
+
