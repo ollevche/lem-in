@@ -12,20 +12,24 @@
 
 #include "lemin.h"
 
-void	free_room(t_room *room)
+//TODO: test free_*name* functions
+
+void	free_rooms(t_room *room)
 {
-	t_room tmp;
+	t_room *tmp;
 
 	while (room)
 	{
 		tmp = room;
 		room = room->next;
 		free(tmp->name);
+		free(tmp->comment);
+		free(tmp->command);
 		free(tmp);
 	}
 }
 
-void	free_link(t_link *link)
+void	free_links(t_link *link)
 {
 	t_link *tmp;
 
@@ -33,6 +37,7 @@ void	free_link(t_link *link)
 	{
 		tmp = link;
 		link = link->next;
+		free(tmp->comment);
 		free(tmp);
 	}
 }

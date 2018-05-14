@@ -21,7 +21,7 @@ OBJDIR	=	./objects/
 
 LIBDIR	=	./libft/
 
-SRC		=	main.c util.c
+SRC		=	main.c lemin.c reading.c util.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

@@ -13,10 +13,12 @@
 #ifndef LEMIN_H
 # define LEMIN_H
 
-# define ERROR_ID -1;
+# define ERROR_ID -1
+# define FILEDES STDIN_FILENO
 
 # include "libftprintf.h"
-# include "fcntl.h"
+# include <fcntl.h>
+# include <stdio.h>
 
 typedef struct	s_room
 {
@@ -24,7 +26,8 @@ typedef struct	s_room
 	char			*name;
 	int				x;
 	int				y;
-	char			is_empty;
+	char			*comment; // it can be at most one comment here, what about others?
+	char			*command; // and here
 	struct s_room	*next;
 }				t_room;
 
@@ -32,22 +35,30 @@ typedef struct	s_link
 {
 	int				from;
 	int				to;
-	char			is_burned;
+	char			*comment; // and here too
 	struct s_link	*next;
 }				t_link;
 
 /*
-**	main.c
+**	lemin.c
 */
 
-void			lemin(int fd);
+void			lemin();
+
+/*
+**	reading.c
+*/
+
+t_room			*read_rooms();
+t_link			*read_links();
+void			print_input(int ants, t_room *room, t_link *link);
 
 /*
 **	util.c
 */
 
-void			free_room(t_room *room);
-void			free_link(t_link *link);
+void			free_rooms(t_room *room);
+void			free_links(t_link *link);
 void			terminate(t_room *rooms, t_link *links);
 
 #endif
