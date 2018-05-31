@@ -18,7 +18,7 @@
 # define FILEDES STDIN_FILENO
 
 # include "libftprintf.h"
-# include <bool.h>
+# include <stdbool.h>
 
 typedef struct	s_strlist
 {
@@ -32,7 +32,7 @@ typedef struct	s_room
 	char			*name;
 	int				x;
 	int				y;
-	t_strlist		*comment;
+	t_strlist		*comments;
 	char			*command;
 	struct s_room	*next;
 }				t_room;
@@ -41,7 +41,7 @@ typedef struct	s_link
 {
 	int				from;
 	int				to;
-	t_strlist		*comment;
+	t_strlist		*comments;
 	struct s_link	*next;
 }				t_link;
 
@@ -50,6 +50,16 @@ typedef struct	s_link
 */
 
 int					read_ants(void);
-void				*read_graph(t_room *rooms, t_link *links);
+int					read_graph(t_room **rooms, t_link **links);
+
+/*
+**	struct_operations.c
+*/
+
+int					add_strlist(t_strlist **head, char *str);
+int					add_room(t_room **rooms, char *line, 
+					t_strlist **comments, char **command);
+int					add_link(t_link **links, t_room *rooms, char *line, 
+					t_strlist **comments);
 
 #endif

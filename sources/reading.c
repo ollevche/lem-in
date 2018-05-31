@@ -73,7 +73,7 @@ static int	is_room(char *str)
 	return (1);
 }
 
-static int	is_link(t_room *rooms, char *str)
+static int	is_link(char *str, t_room *rooms)
 {
 	int		i;
 	t_room	*iterator;
@@ -85,16 +85,24 @@ static int	is_link(t_room *rooms, char *str)
 	while (iterator && ft_strncmp(str, iterator->name, i))
 		iterator = iterator->next;
 	if (!iterator)
+	{
+		ft_printf("not a link| case 1\n");
 		return (0);
-	i++;
-	while (iterator && ft_strcmp(str + i, iterator->name))
+	}
+	while (iterator && ft_strcmp(str + i + 1, iterator->name))
+	{
+		ft_printf("current:|%s|\ncomparing:|%s|\n", str + i + 1, iterator->name);
 		iterator = iterator->next;
+	}
 	if (!iterator)
+	{
+		ft_printf("not a link| case 2\n");
 		return (0);
+	}
 	return (1);
 }
 
-int			read_graph(t_room *rooms, t_link *links)
+int			read_graph(t_room **rooms, t_link **links)
 {
 	char		*line;
 	t_strlist	*comments;
@@ -104,18 +112,20 @@ int			read_graph(t_room *rooms, t_link *links)
 	comments = NULL;
 	command = NULL;
 	ret_code = 0;
-	while (ret_code != ERROR_CODE && (line = safe_gnl(FILEDES)))
+	while (ret_code != ERROR_CODE && (line = safe_gnl(FILEDES))) // when to stop?
 	{
 		if (line[0] == '#' && line[1] == '#')
 			command = ft_strdup(line);
 		else if (line[0] == '#')
 			ret_code = add_strlist(&comments, ft_strdup(line));
 		else if (is_room(line))
-			ret_code = add_room(&rooms, line, &comments, &command); // nulls
+			ret_code = add_room(rooms, line, &comments, &command); // nulls
 		else if (command)
 			ret_code = ERROR_CODE;
-		else if (is_link(line))
-			ret_code = add_link(&link, line, &comments); // nulls
+		else if (is_link(line, *rooms))
+			ret_code = add_link(links, *rooms, line, &comments); // nulls
+		else
+			ret_code = ERROR_CODE;//remove it
 		free(line);
 	}
 	return (ret_code);

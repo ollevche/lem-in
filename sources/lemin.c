@@ -12,31 +12,44 @@
 
 #include "lemin.h"
 
-void	terminate(t_room *rooms, t_link *links)
+static void	terminate(t_room *rooms, t_link *links)
 {
 	(void)rooms;
 	(void)links;
 }
 
-void	display_input(int ants, t_room *rooms, t_link *links)
+static void	display_input(int ants, t_room *rooms, t_link *links)
 {
-	(void)ants;
-	(void)rooms;
-	(void)links;
+	ft_printf("ANTS\n%d\nROOMS\n", ants);
+	while (rooms)
+	{
+		ft_printf("%d: %s, %d, %d\n",
+			rooms->id, rooms->name, rooms->x, rooms->y);
+		rooms = rooms->next;
+	}
+	ft_printf("LINKS\n");
+	while (links)
+	{
+		ft_printf("%d-%d\n", links->from, links->to);
+		links = links->next;
+	}
 }
 
-int		main(void)
+int			main(void)
 {
 	int		ants;
 	t_room	*rooms;
 	t_link	*links;
 
+	rooms = NULL;
+	links = NULL;
 	ants = read_ants();
-	read_graph(rooms, links);
+	read_graph(&rooms, &links);
 	if (ants < 1 || !rooms || !links)
 		terminate(rooms, links);
 	display_input(ants, rooms, links);
 	//TODO: an algorithm
 	// system("leaks lem-in");
+	// global free
 	return (0);
 }
