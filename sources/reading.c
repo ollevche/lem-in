@@ -1,32 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reading.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/31 13:03:10 by ollevche          #+#    #+#             */
+/*   Updated: 2018/05/31 13:03:11 by ollevche         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lemin.h"
 
-int		read_ants()
+int		read_ants(void)
 {
+	int		ants;
+	char	*line;
+	int		i;
+	int		zeros;
+
+	line = safe_gnl(FILEDES);
+	if (!line)
+		return (ERROR_CODE);
+	ants = 0;
+	i = ft_strlen(line) - 1;
+	zeros = 1;
+	if (line[0] == '0')
+		ants = ERROR_CODE;
+	while (line[i] && ants != ERROR_CODE)
+	{		
+		ants += (line[i] - '0') * zeros;
+		zeros *= 10;
+		if (!ft_isdigit(line[i]))
+			ants = ERROR_CODE;
+		i--;
+	}
+	free(line);
+	return (ants);
 }
 
-void	read_rooms_and_links()
+t_room	*read_rooms(void)
 {
+	return (NULL);
 }
 
-void	print_input(int ants, t_room *room, t_link *link) // TODO: test it
+t_link	*read_links(void)
 {
-	ft_printf("%d\n", ants);
-	while (room)
-	{
-		if (room->comment)
-			ft_printf("#%s", room->comment);
-		if (room->command)
-			ft_printf("##%s", room->command);
-		ft_printf("%s %d %d\n", room->name, room->x, room->y);
-		room = room->next;
-	}
-	while (link)
-	{
-		if (link->comment)
-			ft_printf("#%s", link->comment);
-		ft_printf("%s-%s", link->from, link->to);
-		link = link->next;
-	}
-	ft_printf("\n");
+	return (NULL);
 }
