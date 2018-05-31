@@ -20,20 +20,19 @@ void	terminate(t_room *rooms, t_link *links)
 
 void	display_input(int ants, t_room *rooms, t_link *links)
 {
-	ft_printf("%d\n", ants);
+	(void)ants;
 	(void)rooms;
 	(void)links;
 }
 
-int	main(void)
+int		main(void)
 {
 	int		ants;
 	t_room	*rooms;
 	t_link	*links;
 
 	ants = read_ants();
-	rooms = read_rooms();
-	links = read_links();
+	read_graph(rooms, links);
 	if (ants < 1 || !rooms || !links)
 		terminate(rooms, links);
 	display_input(ants, rooms, links);

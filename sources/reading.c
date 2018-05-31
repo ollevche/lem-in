@@ -12,39 +12,111 @@
 
 #include "lemin.h"
 
-int		read_ants(void)
+static int	to_pos_int(char *str)
+{
+	int	i;
+	int	zeros;
+	int	res;
+
+	if (!str || str[0] == '0')
+		return (ERROR_CODE);
+	i = ft_strlen(str) - 1;
+	zeros = 1;
+	res = 0;
+	while (i > -1)
+	{
+		if (!ft_isdigit(str[i]))
+			return (ERROR_CODE);
+		res += (str[i] - '0') * zeros;
+		zeros *= 10;
+		i--;
+	}
+	return (res);
+}
+
+int			read_ants(void)
 {
 	int		ants;
 	char	*line;
-	int		i;
-	int		zeros;
 
 	line = safe_gnl(FILEDES);
-	if (!line)
-		return (ERROR_CODE);
-	ants = 0;
-	i = ft_strlen(line) - 1;
-	zeros = 1;
-	if (line[0] == '0')
-		ants = ERROR_CODE;
-	while (line[i] && ants != ERROR_CODE)
-	{		
-		ants += (line[i] - '0') * zeros;
-		zeros *= 10;
-		if (!ft_isdigit(line[i]))
-			ants = ERROR_CODE;
-		i--;
-	}
+	ants = to_pos_int(line);
 	free(line);
 	return (ants);
 }
 
-t_room	*read_rooms(void)
+/*
+**	'-', '#', 'L' in room name are forbidden
+*/
+
+static int	is_room(char *str)
 {
-	return (NULL);
+	int		i;
+
+	i = 0;
+	if (ft_strchr("#L", str[i]))
+		return (0);
+	while (str[i] && str[i] != ' ')
+		if (str[i++] == '-')
+			return (0);
+	if (str[++i] == '0' && str[i + 1] != ' ')
+		return (0);
+	while (str[i] && str[i] != ' ')
+		if (!ft_isdigit(str[i++]))
+			return (0);
+	if (str[++i] == '0' && str[i + 1] != 0)
+		return (0);
+	while (str[i] && ft_isdigit(str[i]))
+		i++;
+	if (str[i])
+		return (0);
+	return (1);
 }
 
-t_link	*read_links(void)
+static int	is_link(t_room *rooms, char *str)
 {
-	return (NULL);
+	int		i;
+	t_room	*iterator;
+
+	i = 0;
+	while (str[i] && str[i] != '-')
+		i++;
+	iterator = rooms;
+	while (iterator && ft_strncmp(str, iterator->name, i))
+		iterator = iterator->next;
+	if (!iterator)
+		return (0);
+	i++;
+	while (iterator && ft_strcmp(str + i, iterator->name))
+		iterator = iterator->next;
+	if (!iterator)
+		return (0);
+	return (1);
+}
+
+int			read_graph(t_room *rooms, t_link *links)
+{
+	char		*line;
+	t_strlist	*comments;
+	char		*command;
+	int			ret_code;
+
+	comments = NULL;
+	command = NULL;
+	ret_code = 0;
+	while (ret_code != ERROR_CODE && (line = safe_gnl(FILEDES)))
+	{
+		if (line[0] == '#' && line[1] == '#')
+			command = ft_strdup(line);
+		else if (line[0] == '#')
+			ret_code = add_strlist(&comments, ft_strdup(line));
+		else if (is_room(line))
+			ret_code = add_room(&rooms, line, &comments, &command); // nulls
+		else if (command)
+			ret_code = ERROR_CODE;
+		else if (is_link(line))
+			ret_code = add_link(&link, line, &comments); // nulls
+		free(line);
+	}
+	return (ret_code);
 }

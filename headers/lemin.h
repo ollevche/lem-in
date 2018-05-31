@@ -14,13 +14,15 @@
 # define LEMIN_H
 
 # define ERROR_CODE -1
+# define SUCCESS_CODE 1
 # define FILEDES STDIN_FILENO
 
 # include "libftprintf.h"
+# include <bool.h>
 
 typedef struct	s_strlist
 {
-	char				*string;
+	char				*str;
 	struct s_strlist	*next;
 }				t_strlist;
 
@@ -31,7 +33,7 @@ typedef struct	s_room
 	int				x;
 	int				y;
 	t_strlist		*comment;
-	t_strlist		*command;
+	char			*command;
 	struct s_room	*next;
 }				t_room;
 
@@ -48,7 +50,6 @@ typedef struct	s_link
 */
 
 int					read_ants(void);
-t_room				*read_rooms(void);
-t_link				*read_links(void);
+void				*read_graph(t_room *rooms, t_link *links);
 
 #endif
