@@ -28,6 +28,7 @@ int			add_strlist(t_strlist **head, char *str)
 		return (ERROR_CODE);
 	new_elem->str = str;
 	new_elem->next = *head;
+	new_elem->prev = NULL;
 	if (*head)
 		(*head)->prev = new_elem;
 	*head = new_elem;
@@ -64,6 +65,7 @@ int			add_room(t_room **rooms, char *line,
 	*comments = NULL;
 	*command = NULL;
 	new_elem->next = *rooms;
+	new_elem->prev = NULL;
 	(*rooms) ? (*rooms)->prev = new_elem : 0;
 	*rooms = new_elem;
 	if (!new_elem->name)
@@ -95,6 +97,7 @@ int			add_link(t_link **links, t_room *rooms, char *line,
 		room_iter = room_iter->next;
 	new_elem->to = room_iter->id;
 	new_elem->next = *links;
+	new_elem->prev = NULL;
 	if (*links)
 		(*links)->prev = new_elem;
 	*links = new_elem;
