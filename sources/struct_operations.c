@@ -80,7 +80,7 @@ int			add_link(t_link **links, t_room *rooms, char *line,
 
 	new_elem = (t_link*)malloc(sizeof(t_link));
 	if (!new_elem)
-		return (add_crashes(*comments, *command));
+		return (add_crashes(*comments, NULL));
 	new_elem->comments = *comments;
 	*comments = NULL;
 	i = 0;

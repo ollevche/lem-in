@@ -67,4 +67,12 @@ int					add_room(t_room **rooms, char *line,
 int					add_link(t_link **links, t_room *rooms, char *line, 
 					t_strlist **comments);
 
+/*
+**	free_structs.c
+*/
+
+void				free_strlist(t_strlist *list);
+void				free_rooms(t_room *rooms);
+void				free_links(t_link *links);
+
 #endif
