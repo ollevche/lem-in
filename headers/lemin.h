@@ -19,10 +19,12 @@
 
 # include "libftprintf.h"
 # include <stdbool.h>
+# include <errno.h>
 
 typedef struct	s_strlist
 {
 	char				*str;
+	struct s_strlist	*prev;
 	struct s_strlist	*next;
 }				t_strlist;
 
@@ -34,6 +36,7 @@ typedef struct	s_room
 	int				y;
 	t_strlist		*comments;
 	char			*command;
+	struct s_room	*prev;
 	struct s_room	*next;
 }				t_room;
 
@@ -42,6 +45,7 @@ typedef struct	s_link
 	int				from;
 	int				to;
 	t_strlist		*comments;
+	struct s_link	*prev;
 	struct s_link	*next;
 }				t_link;
 
@@ -56,6 +60,7 @@ int					read_graph(t_room **rooms, t_link **links);
 **	struct_operations.c
 */
 
+t_room				*get_room(t_room *rooms, int id);
 int					add_strlist(t_strlist **head, char *str);
 int					add_room(t_room **rooms, char *line, 
 					t_strlist **comments, char **command);

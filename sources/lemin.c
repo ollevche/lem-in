@@ -14,24 +14,53 @@
 
 static void	terminate(t_room *rooms, t_link *links)
 {
-	(void)rooms;
-	(void)links;
+	(void)rooms; // free it
+	(void)links; // free it
+	if (errno)
+		perror("Error");
+	else
+		ft_printf("ERROR\n");
+	exit(EXIT_FAILURE);
+}
+
+static void	print_comments(t_strlist *comments)
+{
+	if (!comments)
+		return ;
+	while (comments->next)
+		comments = comments->next;
+	while (comments)
+	{
+		ft_printf("%s\n", comments->str);
+		comments = comments->prev;
+	}
 }
 
 static void	display_input(int ants, t_room *rooms, t_link *links)
 {
-	ft_printf("ANTS\n%d\nROOMS\n", ants);
-	while (rooms)
+	t_room	*iterator;
+
+	iterator = rooms;
+	ft_printf("%d\n", ants);
+	while (iterator->next)
+		iterator = iterator->next;
+	while (iterator)
 	{
-		ft_printf("%d: %s, %d, %d\n",
-			rooms->id, rooms->name, rooms->x, rooms->y);
-		rooms = rooms->next;
+		print_comments(iterator->comments);
+		if (iterator->command)
+			ft_printf("%s\n", iterator->command);
+		ft_printf("%s %d %d\n",
+			iterator->name, iterator->x, iterator->y);
+		iterator = iterator->prev;
 	}
-	ft_printf("LINKS\n");
+	while (links->next)
+		links = links->next;
 	while (links)
 	{
-		ft_printf("%d-%d\n", links->from, links->to);
-		links = links->next;
+		print_comments(links->comments);
+		ft_printf("%s-%s\n", get_room(rooms, links->from)->name,
+			get_room(rooms, links->to)->name);
+		links = links->prev;
 	}
 }
 
@@ -48,7 +77,7 @@ int			main(void)
 	if (ants < 1 || !rooms || !links)
 		terminate(rooms, links);
 	display_input(ants, rooms, links);
-	//TODO: an algorithm
+	// TODO: an algorithm
 	// system("leaks lem-in");
 	// global free
 	return (0);

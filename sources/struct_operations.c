@@ -12,38 +12,44 @@
 
 #include "lemin.h"
 
-int		add_strlist(t_strlist **head, char *str)
+t_room		*get_room(t_room *rooms, int id)
 {
-	// t_strlist	*iterator;
+	while (rooms && rooms->id != id)
+		rooms = rooms->next;
+	return (rooms);
+}
+
+int			add_strlist(t_strlist **head, char *str)
+{
 	t_strlist	*new_elem;
 
 	new_elem = (t_strlist*)malloc(sizeof(t_strlist));
 	if (!new_elem)
 		return (ERROR_CODE);
 	new_elem->str = str;
-	new_elem->next = *head; // add_first
-	*head = new_elem; // add_first
-	// if (!*head)
-	// 	*head = new_elem;
-	// else
-	// {
-	// 	iterator = *head;
-	// 	while (iterator->next)
-	// 		iterator = iterator->next;
-	// 	iterator->next = new_elem;
-	// }
+	new_elem->next = *head;
+	if (*head)
+		(*head)->prev = new_elem;
+	*head = new_elem;
 	return (SUCCESS_CODE);
 }
 
-int		add_room(t_room **rooms, char *line,
+static int	add_crashes(t_strlist *comments, char *command)
+{
+	free_strlist(comments);
+	free(command);
+	return (ERROR_CODE);
+}
+
+int			add_room(t_room **rooms, char *line,
 					t_strlist **comments, char **command)
 {
 	t_room	*new_elem;
 	int		i;
 
 	new_elem = (t_room*)malloc(sizeof(t_room));
-	if (!new_elem) // have to free comments and command
-		return (ERROR_CODE);
+	if (!new_elem)
+		return (add_crashes(*comments, *command));
 	new_elem->id = *rooms ? (*rooms)->id + 1 : 0;
 	i = 0;
 	while (line[i] && line[i] != ' ')
@@ -58,13 +64,14 @@ int		add_room(t_room **rooms, char *line,
 	*comments = NULL;
 	*command = NULL;
 	new_elem->next = *rooms;
+	(*rooms) ? (*rooms)->prev = new_elem : 0;
 	*rooms = new_elem;
 	if (!new_elem->name)
 		return (ERROR_CODE);
 	return (SUCCESS_CODE);
 }
 
-int		add_link(t_link **links, t_room *rooms, char *line, 
+int			add_link(t_link **links, t_room *rooms, char *line,
 					t_strlist **comments)
 {
 	t_link	*new_elem;
@@ -73,7 +80,7 @@ int		add_link(t_link **links, t_room *rooms, char *line,
 
 	new_elem = (t_link*)malloc(sizeof(t_link));
 	if (!new_elem)
-		return (ERROR_CODE); // have to free comments and command
+		return (add_crashes(*comments, *command));
 	new_elem->comments = *comments;
 	*comments = NULL;
 	i = 0;
@@ -88,6 +95,8 @@ int		add_link(t_link **links, t_room *rooms, char *line,
 		room_iter = room_iter->next;
 	new_elem->to = room_iter->id;
 	new_elem->next = *links;
+	if (*links)
+		(*links)->prev = new_elem;
 	*links = new_elem;
 	return (SUCCESS_CODE);
 }

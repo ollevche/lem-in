@@ -55,22 +55,22 @@ static int	is_room(char *str)
 
 	i = 0;
 	if (ft_strchr("#L", str[i]))
-		return (0);
+		return (false);
 	while (str[i] && str[i] != ' ')
-		if (str[i++] == '-')
-			return (0);
-	if (str[++i] == '0' && str[i + 1] != ' ')
-		return (0);
+		if (ft_strchr("- ", str[i++]))
+			return (false);
+	if (!str[i] || (str[++i] == '0' && str[i + 1] != ' '))
+		return (false);
 	while (str[i] && str[i] != ' ')
 		if (!ft_isdigit(str[i++]))
-			return (0);
-	if (str[++i] == '0' && str[i + 1] != 0)
-		return (0);
+			return (false);
+	if (!str[i] || (str[++i] == '0' && str[i + 1] != 0))
+		return (false);
 	while (str[i] && ft_isdigit(str[i]))
 		i++;
 	if (str[i])
-		return (0);
-	return (1);
+		return (false);
+	return (true);
 }
 
 static int	is_link(char *str, t_room *rooms)
@@ -85,21 +85,13 @@ static int	is_link(char *str, t_room *rooms)
 	while (iterator && ft_strncmp(str, iterator->name, i))
 		iterator = iterator->next;
 	if (!iterator)
-	{
-		ft_printf("not a link| case 1\n");
-		return (0);
-	}
+		return (false);
+	iterator = rooms;
 	while (iterator && ft_strcmp(str + i + 1, iterator->name))
-	{
-		ft_printf("current:|%s|\ncomparing:|%s|\n", str + i + 1, iterator->name);
 		iterator = iterator->next;
-	}
 	if (!iterator)
-	{
-		ft_printf("not a link| case 2\n");
-		return (0);
-	}
-	return (1);
+		return (false);
+	return (true);
 }
 
 int			read_graph(t_room **rooms, t_link **links)
@@ -119,13 +111,13 @@ int			read_graph(t_room **rooms, t_link **links)
 		else if (line[0] == '#')
 			ret_code = add_strlist(&comments, ft_strdup(line));
 		else if (is_room(line))
-			ret_code = add_room(rooms, line, &comments, &command); // nulls
+			ret_code = add_room(rooms, line, &comments, &command);
 		else if (command)
 			ret_code = ERROR_CODE;
 		else if (is_link(line, *rooms))
-			ret_code = add_link(links, *rooms, line, &comments); // nulls
+			ret_code = add_link(links, *rooms, line, &comments);
 		else
-			ret_code = ERROR_CODE;//remove it
+			ret_code = ERROR_CODE; //remove it
 		free(line);
 	}
 	return (ret_code);
