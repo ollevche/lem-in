@@ -35,6 +35,8 @@ int			add_strlist(t_strlist **head, char *str)
 	return (SUCCESS_CODE);
 }
 
+//TODO: rewrite add_room() and add_link() functions
+
 static int	add_crashes(t_strlist *comments, char *command)
 {
 	free_strlist(comments);

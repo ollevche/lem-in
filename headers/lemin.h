@@ -53,26 +53,26 @@ typedef struct	s_link
 **	reading.c
 */
 
-int					read_ants(void);
-int					read_graph(t_room **rooms, t_link **links);
+int				read_ants(void);
+int				read_graph(t_room **rooms, t_link **links);
 
 /*
 **	struct_operations.c
 */
 
-t_room				*get_room(t_room *rooms, int id);
-int					add_strlist(t_strlist **head, char *str);
-int					add_room(t_room **rooms, char *line, 
-					t_strlist **comments, char **command);
-int					add_link(t_link **links, t_room *rooms, char *line, 
-					t_strlist **comments);
+t_room			*get_room(t_room *rooms, int id);
+int				add_strlist(t_strlist **head, char *str);
+int				add_room(t_room **rooms, char *line,
+							t_strlist **comments, char **command);
+int				add_link(t_link **links, t_room *rooms, char *line,
+							t_strlist **comments);
 
 /*
 **	free_structs.c
 */
 
-void				free_strlist(t_strlist *list);
-void				free_rooms(t_room *rooms);
-void				free_links(t_link *links);
+void			free_strlist(t_strlist *list);
+void			free_rooms(t_room *rooms);
+void			free_links(t_link *links);
 
 #endif
