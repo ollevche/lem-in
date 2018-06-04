@@ -69,15 +69,19 @@ int			main(void)
 	int		ants;
 	t_room	*rooms;
 	t_link	*links;
+	int		**matrix;
 
 	rooms = NULL;
 	links = NULL;
 	ants = read_ants();
 	read_graph(&rooms, &links);
-	if (ants < 1 || !rooms || !links)
+	matrix = compose_matrix(rooms, links);
+	if (ants < 1 || !rooms || !links || !matrix)
 		terminate(rooms, links);
 	display_input(ants, rooms, links);
+
 	// TODO: an algorithm
+	
 	free_rooms(rooms);
 	free_links(links);
 	// system("leaks lem-in");
