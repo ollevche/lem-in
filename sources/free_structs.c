@@ -75,3 +75,19 @@ void	free_matrix(int ***matrix)
 	free(*matrix);
 	*matrix = NULL;
 }
+
+void	free_paths(t_path **paths)
+{
+	t_path	*trash;
+	t_path	*iter;
+
+	iter = *paths;
+	while (iter)
+	{
+		trash = iter;
+		iter = iter->next;
+		free(trash->nodes);
+		free(trash);
+	}
+	*paths = NULL;
+}

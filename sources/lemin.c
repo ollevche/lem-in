@@ -12,56 +12,24 @@
 
 #include "lemin.h"
 
-static void	terminate(t_room *rooms, t_link *links)
+static void	totally_free(t_room **rooms, t_link **links,
+						t_paths **paths, t_paths **best_set)
 {
-	free_rooms(&rooms);
-	free_links(&links);
+	free_rooms(rooms);
+	free_links(links);
+	free_paths(paths);
+	free_paths(best_set);
+}
+
+static void	terminate(t_room *rooms, t_link *links,
+						t_paths *paths, t_paths *best_set)
+{
 	if (errno)
 		perror("Error");
 	else
 		ft_printf("ERROR\n");
+	totally_free(&rooms, &links, &paths, &best_set);
 	exit(EXIT_FAILURE);
-}
-
-static void	print_comments(t_strlist *comments)
-{
-	if (!comments)
-		return ;
-	while (comments->next)
-		comments = comments->next;
-	while (comments)
-	{
-		ft_printf("%s\n", comments->str);
-		comments = comments->prev;
-	}
-}
-
-static void	display_input(int ants, t_room *rooms, t_link *links)
-{
-	t_room	*iterator;
-
-	iterator = rooms;
-	ft_printf("%d\n", ants);
-	while (iterator->next)
-		iterator = iterator->next;
-	while (iterator)
-	{
-		print_comments(iterator->comments);
-		if (iterator->command)
-			ft_printf("%s\n", iterator->command);
-		ft_printf("%s %d %d\n",
-			iterator->name, iterator->x, iterator->y);
-		iterator = iterator->prev;
-	}
-	while (links->next)
-		links = links->next;
-	while (links)
-	{
-		print_comments(links->comments);
-		ft_printf("%s-%s\n", get_room(rooms, links->from)->name,
-			get_room(rooms, links->to)->name);
-		links = links->prev;
-	}
 }
 
 int			main(void)
@@ -69,21 +37,22 @@ int			main(void)
 	int		ants;
 	t_room	*rooms;
 	t_link	*links;
-	int		**matrix;
+	t_path	*paths;
+	t_path	*best_set;
 
 	rooms = NULL;
 	links = NULL;
 	ants = read_ants();
 	read_graph(&rooms, &links);
-	matrix = compose_matrix(rooms, links);
-	if (ants < 1 || !rooms || !links || !matrix)
-		terminate(rooms, links);
+	if (ants < 1 || !rooms || !links)
+		terminate(rooms, links, NULL, NULL);
 	display_input(ants, rooms, links);
-
-	// TODO: an algorithm
-	
-	free_rooms(&rooms);
-	free_links(&links);
+	paths = find_paths(rooms, links); // finds all paths using matrix
+	best_set = compose_set(paths, ants); // composes best possible set of paths
+	if (!paths || !best_set)
+		terminate(rooms, links, paths, best_set);
+	display_output(best_set, paths); // prints output data
+	totally_free(&rooms, &links, &paths, &best_set);
 	// system("leaks lem-in");
 	return (0);
 }

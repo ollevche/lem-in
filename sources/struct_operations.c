@@ -12,10 +12,21 @@
 
 #include "lemin.h"
 
-t_room	*get_room(t_room *rooms, int id)
+t_room	*get_room_by_id(t_room *rooms, int id)
 {
 	while (rooms && rooms->id != id)
 		rooms = rooms->next;
+	return (rooms);
+}
+
+t_room	*get_room_by_command(t_room *rooms, char *command)
+{
+	while (rooms)
+	{
+		if (rooms->command && ft_strcmp(rooms->command, command))
+			break ;
+		rooms = rooms->next;
+	}
 	return (rooms);
 }
 

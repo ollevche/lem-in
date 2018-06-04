@@ -49,6 +49,14 @@ typedef struct	s_link
 	struct s_link	*next;
 }				t_link;
 
+typedef struct	s_path
+{
+	int				id;
+	int				*nodes;
+	int				length;
+	struct s_path	*next;
+}				t_path;
+
 /*
 **	reading.c
 */
@@ -64,7 +72,7 @@ t_room			*get_room(t_room *rooms, int id);
 int				add_strlist(t_strlist **head, char *str);
 
 /*
-**	add_to_room_or_link.c
+**	add_room_link.c
 */
 
 int				add_room(t_room **rooms, char *line,
@@ -73,10 +81,16 @@ int				add_link(t_link **links, t_room *rooms, char *line,
 							t_strlist **comments);
 
 /*
-**	matrix.c
+**	find_paths.c
 */
 
-int				**compose_matrix(t_room *rooms, t_link *links);
+t_path			*find_paths(t_room *rooms, t_link *links);
+
+/*
+**	display.c
+*/
+
+void			display_input(int ants, t_room *rooms, t_link *links);
 
 /*
 **	free_structs.c
