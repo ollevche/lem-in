@@ -14,8 +14,8 @@
 
 static void	terminate(t_room *rooms, t_link *links)
 {
-	free_rooms(rooms);
-	free_links(links);
+	free_rooms(&rooms);
+	free_links(&links);
 	if (errno)
 		perror("Error");
 	else
@@ -82,8 +82,8 @@ int			main(void)
 
 	// TODO: an algorithm
 	
-	free_rooms(rooms);
-	free_links(links);
+	free_rooms(&rooms);
+	free_links(&links);
 	// system("leaks lem-in");
 	return (0);
 }

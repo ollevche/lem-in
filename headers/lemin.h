@@ -73,11 +73,25 @@ int				add_link(t_link **links, t_room *rooms, char *line,
 							t_strlist **comments);
 
 /*
+**	matrix.c
+*/
+
+int				**compose_matrix(t_room *rooms, t_link *links);
+
+/*
 **	free_structs.c
 */
 
-void			free_strlist(t_strlist *list);
-void			free_rooms(t_room *rooms);
-void			free_links(t_link *links);
+void			free_strlist(t_strlist **list);
+void			free_rooms(t_room **rooms);
+void			free_links(t_link **links);
+void			free_matrix(int ***matrix);
+
+/*
+**	testing.c
+*/
+
+void			display_matrix(int **matrix, int size);
+
 
 #endif

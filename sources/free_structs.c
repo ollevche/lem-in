@@ -12,43 +12,66 @@
 
 #include "lemin.h"
 
-void	free_strlist(t_strlist *list)
+void	free_strlist(t_strlist **list)
 {
 	t_strlist	*trash;
+	t_strlist	*iter;
 
-	while (list)
+	iter = *list;
+	while (iter)
 	{
-		trash = list;
-		list = list->next;
+		trash = iter;
+		iter = iter->next;
 		free(trash->str);
 		free(trash);
 	}
+	*list = NULL;
 }
 
-void	free_rooms(t_room *rooms)
+void	free_rooms(t_room **rooms)
 {
 	t_room	*trash;
+	t_room	*iter;
 
-	while (rooms)
+	iter = *rooms;
+	while (iter)
 	{
-		trash = rooms;
-		rooms = rooms->next;
+		trash = iter;
+		iter = iter->next;
 		free(trash->name);
-		free_strlist(trash->comments);
+		free_strlist(&(trash->comments));
 		free(trash->command);
 		free(trash);
 	}
+	*rooms = NULL;
 }
 
-void	free_links(t_link *links)
+void	free_links(t_link **links)
 {
 	t_link	*trash;
+	t_link	*iter;
 
-	while (links)
+	iter = *links;
+	while (iter)
 	{
-		trash = links;
-		links = links->next;
-		free_strlist(trash->comments);
+		trash = iter;
+		iter = iter->next;
+		free_strlist(&(trash->comments));
 		free(trash);
 	}
+	*links = NULL;
+}
+
+void	free_matrix(int ***matrix)
+{
+	int	i;
+
+	i = 0;
+	while ((*matrix)[i])
+	{
+		free((*matrix)[i]);
+		i++;
+	}
+	free(*matrix);
+	*matrix = NULL;
 }

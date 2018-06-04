@@ -12,9 +12,9 @@
 
 #include "lemin.h"
 
-static int		add_failure(t_strlist *comments, char *command)
+static int		operation_failure(t_strlist *comments, char *command)
 {
-	free_strlist(comments);
+	free_strlist(&comments);
 	free(command);
 	return (ERROR_CODE);
 }
@@ -43,7 +43,7 @@ int				add_room(t_room **rooms, char *line,
 
 	new_elem = new_room(rooms);
 	if (!new_elem)
-		return (add_failure(*comments, *command));
+		return (operation_failure(*comments, *command));
 	i = 0;
 	while (line[i] && line[i] != ' ')
 		i++;
@@ -85,7 +85,7 @@ int				add_link(t_link **links, t_room *rooms, char *line,
 
 	new_elem = new_link(links);
 	if (!new_elem)
-		return (add_failure(*comments, NULL));
+		return (operation_failure(*comments, NULL));
 	new_elem->comments = *comments;
 	*comments = NULL;
 	i = 0;
