@@ -13,7 +13,7 @@
 #include "lemin.h"
 
 static void	totally_free(t_room **rooms, t_link **links,
-						t_paths **paths, t_paths **best_set)
+						t_path **paths, t_path **best_set)
 {
 	free_rooms(rooms);
 	free_links(links);
@@ -22,7 +22,7 @@ static void	totally_free(t_room **rooms, t_link **links,
 }
 
 static void	terminate(t_room *rooms, t_link *links,
-						t_paths *paths, t_paths *best_set)
+						t_path *paths, t_path *best_set)
 {
 	if (errno)
 		perror("Error");
@@ -48,10 +48,10 @@ int			main(void)
 		terminate(rooms, links, NULL, NULL);
 	display_input(ants, rooms, links);
 	paths = find_paths(rooms, links); // finds all paths using matrix
-	best_set = compose_set(paths, ants); // composes best possible set of paths
-	if (!paths || !best_set)
-		terminate(rooms, links, paths, best_set);
-	display_output(best_set, paths); // prints output data
+	// best_set = compose_set(paths, ants); // composes best possible set of paths
+	// if (!paths || !best_set)
+		// terminate(rooms, links, paths, best_set);
+	// display_output(best_set, paths); // prints output data
 	totally_free(&rooms, &links, &paths, &best_set);
 	// system("leaks lem-in");
 	return (0);

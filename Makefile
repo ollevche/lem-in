@@ -21,8 +21,8 @@ OBJDIR	=	./objects/
 
 LIBDIR	=	./libft/
 
-SRC		=	lemin.c reading.c add_room_link.c struct_operations.c matrix.c \
-			free_structs.c display.c testing.c
+SRC		=	lemin.c reading.c struct_operations_0.c struct_operations_1.c \
+			find_paths.c free_structs.c display.c arrays.c testing.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))
 

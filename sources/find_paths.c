@@ -24,9 +24,10 @@ static int	**empty_matrix(int size)
 	i = 0;
 	while (i < size)
 	{
-		matrix[i] = (int*)malloc(sizeof(int) * (size));
+		matrix[i] = (int*)malloc(sizeof(int) * (size + 1));
 		if (!matrix[i])
 			break ;
+		matrix[i][size] = -1;
 		j = 0;
 		while (j < size)
 			matrix[i][j++] = 0;
@@ -51,35 +52,35 @@ static int	**compose_matrix(t_room *rooms, t_link *links)
 		matrix[links->to][links->from] = 1;
 		links = links->next;
 	}
-	// display_matrix(matrix, rooms->id + 1);
+	display_matrix(matrix, rooms->id + 1);
 	return (matrix);
 }
 
-//bfs(int **matrix, int *cur_path, int end, t_paths **paths)
+static int	search(int **matrix, int *nodes, int end, t_path **paths)
+{
+	//TODO: this
+}
 
 t_path		*find_paths(t_room *rooms, t_link *links)
 {
 	t_path	*paths;
 	int		**matrix;
-	int		*cur_path;
+	int		*nodes;
 	int		end_room;
-	int		i;
 
 	matrix = compose_matrix(rooms, links);
 	if (!matrix)
 		return (NULL);
-	cur_path = (int*)malloc(sizeof(int) * (rooms->id + 2));
-	if (!cur_path)
+	nodes = new_arr(rooms->id + 1);
+	if (!nodes)
 	{
-		free_matrix(matrix);
+		free_matrix(&matrix);
 		return(NULL);
 	}
-	i = 0;
-	while (i < rooms->id + 2)
-		cur_path[i++] = -1;
-	cur_path[0] = get_room_by_command(rooms, "##start")->id;
+	nodes[0] = get_room_by_command(rooms, "##start")->id;
 	end_room = get_room_by_command(rooms, "##end")->id;
-	paths = bfsearch(matrix, cur_path, end_room, NULL);
+	if (search(matrix, nodes, end_room, &paths) == ERROR_CODE)
+		free_paths(&paths);
 	free_matrix(&matrix);
 	return(paths);
 }

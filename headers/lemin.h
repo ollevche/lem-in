@@ -65,20 +65,23 @@ int				read_ants(void);
 int				read_graph(t_room **rooms, t_link **links);
 
 /*
-**	struct_operations.c
+**	struct_operations_N.c
 */
 
-t_room			*get_room(t_room *rooms, int id);
+t_room			*get_room_by_id(t_room *rooms, int id);
+t_room			*get_room_by_command(t_room *rooms, char *command);
 int				add_strlist(t_strlist **head, char *str);
-
-/*
-**	add_room_link.c
-*/
-
 int				add_room(t_room **rooms, char *line,
 							t_strlist **comments, char **command);
 int				add_link(t_link **links, t_room *rooms, char *line,
 							t_strlist **comments);
+int				add_path(t_path **paths, int *nodes);
+
+/*
+**	display.c
+*/
+
+void			display_input(int ants, t_room *rooms, t_link *links);
 
 /*
 **	find_paths.c
@@ -87,10 +90,11 @@ int				add_link(t_link **links, t_room *rooms, char *line,
 t_path			*find_paths(t_room *rooms, t_link *links);
 
 /*
-**	display.c
+**	arrays.c
 */
 
-void			display_input(int ants, t_room *rooms, t_link *links);
+int				arr_get_last(int *arr);
+int				*new_arr(int size);
 
 /*
 **	free_structs.c
@@ -100,6 +104,7 @@ void			free_strlist(t_strlist **list);
 void			free_rooms(t_room **rooms);
 void			free_links(t_link **links);
 void			free_matrix(int ***matrix);
+void			free_paths(t_path **paths);
 
 /*
 **	testing.c
