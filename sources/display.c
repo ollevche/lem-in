@@ -47,8 +47,8 @@ void		display_input(int ants, t_room *rooms, t_link *links)
 	while (links)
 	{
 		print_comments(links->comments);
-		ft_printf("%s-%s\n", get_room(rooms, links->from)->name,
-			get_room(rooms, links->to)->name);
+		ft_printf("%s-%s\n", get_room_by_id(rooms, links->from)->name,
+			get_room_by_id(rooms, links->to)->name);
 		links = links->prev;
 	}
 }

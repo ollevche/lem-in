@@ -23,7 +23,7 @@ t_room	*get_room_by_command(t_room *rooms, char *command)
 {
 	while (rooms)
 	{
-		if (rooms->command && ft_strcmp(rooms->command, command))
+		if (rooms->command && !ft_strcmp(rooms->command, command))
 			break ;
 		rooms = rooms->next;
 	}
@@ -34,6 +34,8 @@ int		add_strlist(t_strlist **head, char *str)
 {
 	t_strlist	*new;
 
+	if (!str)
+		return (ERROR_CODE);
 	new = (t_strlist*)malloc(sizeof(t_strlist));
 	if (!new)
 		return (ERROR_CODE);

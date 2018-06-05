@@ -48,10 +48,13 @@ int			main(void)
 		terminate(rooms, links, NULL, NULL);
 	display_input(ants, rooms, links);
 	paths = find_paths(rooms, links); // finds all paths using matrix
-	// best_set = compose_set(paths, ants); // composes best possible set of paths
-	// if (!paths || !best_set)
+	if (!paths)
+		terminate(rooms, links, paths, NULL);		
+	// best_set = pick_set(paths, ants); // composes best possible set of paths
+	// if (!best_set)
 		// terminate(rooms, links, paths, best_set);
 	// display_output(best_set, paths); // prints output data
+	best_set = NULL;//DEL
 	totally_free(&rooms, &links, &paths, &best_set);
 	// system("leaks lem-in");
 	return (0);

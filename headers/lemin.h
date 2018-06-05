@@ -93,8 +93,10 @@ t_path			*find_paths(t_room *rooms, t_link *links);
 **	arrays.c
 */
 
-int				arr_get_last(int *arr);
-int				*new_arr(int size);
+int				*to_arr(int elem);
+int				*arr_extend(int *arr, int elem);
+int				arr_get_last_elem(int *arr);
+int				arr_contains(int *nodes, int target);
 
 /*
 **	free_structs.c
@@ -110,7 +112,7 @@ void			free_paths(t_path **paths);
 **	testing.c
 */
 
-void			display_matrix(int **matrix, int size);
-
-
+void			display_matrix(int **matrix);
+void			display_paths(t_path *paths);
+void			print_arr(int *arr);
 #endif

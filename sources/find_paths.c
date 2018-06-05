@@ -52,13 +52,40 @@ static int	**compose_matrix(t_room *rooms, t_link *links)
 		matrix[links->to][links->from] = 1;
 		links = links->next;
 	}
-	display_matrix(matrix, rooms->id + 1);
+	display_matrix(matrix);//DEL
 	return (matrix);
 }
 
 static int	search(int **matrix, int *nodes, int end, t_path **paths)
 {
-	//TODO: this
+	int	cur_node;
+	int	ret_code;
+	int	*nodes_copy;
+	int	i;
+
+	cur_node = arr_get_last_elem(nodes);
+	ret_code = SUCCESS_CODE;
+	if (cur_node == end)
+		ret_code = add_path(paths, nodes);
+	else
+	{
+		i = 0;
+		while (matrix[cur_node][i] != -1)
+		{
+			if (matrix[cur_node][i] == 1 && !arr_contains(nodes, i))
+			{
+				nodes_copy = arr_extend(nodes, i);
+				if (!nodes_copy)
+					ret_code = ERROR_CODE;
+				ret_code = search(matrix, nodes_copy, end, paths);
+				if (ret_code == ERROR_CODE)
+					break ;
+			}
+			i++;
+		}
+		free(nodes);		
+	}
+	return (ret_code);
 }
 
 t_path		*find_paths(t_room *rooms, t_link *links)
@@ -67,20 +94,24 @@ t_path		*find_paths(t_room *rooms, t_link *links)
 	int		**matrix;
 	int		*nodes;
 	int		end_room;
+	t_room	*tmp_room;
 
 	matrix = compose_matrix(rooms, links);
 	if (!matrix)
 		return (NULL);
-	nodes = new_arr(rooms->id + 1);
-	if (!nodes)
-	{
-		free_matrix(&matrix);
-		return(NULL);
-	}
-	nodes[0] = get_room_by_command(rooms, "##start")->id;
-	end_room = get_room_by_command(rooms, "##end")->id;
-	if (search(matrix, nodes, end_room, &paths) == ERROR_CODE)
+	if ((tmp_room = get_room_by_command(rooms, "##start")))
+		if (!(nodes = to_arr(tmp_room->id)))
+		{
+			free_matrix(&matrix);
+			return(NULL);
+		}
+	end_room = -1;
+	if ((tmp_room = get_room_by_command(rooms, "##end")))
+		end_room = tmp_room->id;
+	if (end_room == -1 || nodes[0] == -1 ||
+		search(matrix, nodes, end_room, &paths) == ERROR_CODE)
 		free_paths(&paths);
 	free_matrix(&matrix);
+	display_paths(paths);//DEL
 	return(paths);
 }

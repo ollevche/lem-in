@@ -18,9 +18,9 @@ static int	to_pos_int(char *str)
 	int	zeros;
 	int	res;
 
-	if (!str || str[0] == '0')
-		return (ERROR_CODE);
 	i = ft_strlen(str) - 1;
+	if (!str || i == -1 || str[0] == '0')
+		return (ERROR_CODE);
 	zeros = 1;
 	res = 0;
 	while (i > -1)
@@ -54,7 +54,7 @@ static int	is_room(char *str)
 	int		i;
 
 	i = 0;
-	if (ft_strchr("#L", str[i]))
+	if (ft_strchr("#L", str[0]))
 		return (false);
 	while (str[i] && str[i] != ' ')
 		if (ft_strchr("- ", str[i++]))
@@ -107,7 +107,7 @@ int			read_graph(t_room **rooms, t_link **links)
 	while (ret_code != ERROR_CODE && (line = safe_gnl(FILEDES))) // when to stop?
 	{
 		if (line[0] == '#' && line[1] == '#')
-			command = ft_strdup(line);
+			ret_code = (command = ft_strdup(line)) ? SUCCESS_CODE : ERROR_CODE;
 		else if (line[0] == '#')
 			ret_code = add_strlist(&comments, ft_strdup(line));
 		else if (is_room(line))

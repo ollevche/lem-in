@@ -13,7 +13,8 @@
 NAME	=	lem-in
 
 FLAGS	=	-Wall -Werror -Wextra -I./headers -I./libft/headers \
-			-I./libft/library/headers/
+			-I./libft/library/headers/ -g
+			#DEL -g
 
 SRCDIR	=	./sources/
 
@@ -58,4 +59,3 @@ fclean:
 	@rm -rf $(NAME) $(LIB)
 
 re: fclean $(NAME)
-	
