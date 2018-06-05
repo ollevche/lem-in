@@ -13,8 +13,7 @@
 NAME	=	lem-in
 
 FLAGS	=	-Wall -Werror -Wextra -I./headers -I./libft/headers \
-			-I./libft/library/headers/ -g
-			#DEL -g
+			-I./libft/library/headers/
 
 SRCDIR	=	./sources/
 
