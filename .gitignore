@@ -1,4 +1,5 @@
 /objects/*
+/.vscode/*
 libftprintf.a
 lem-in
 testfile
