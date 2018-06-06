@@ -99,6 +99,12 @@ int				arr_get_last_elem(int *arr);
 int				arr_contains(int *nodes, int target);
 
 /*
+**	pick_set.c
+*/
+
+t_path			*pick_set(t_paths *paths, int ants);
+
+/*
 **	free_structs.c
 */
 
@@ -113,6 +119,6 @@ void			free_paths(t_path **paths);
 */
 
 void			display_matrix(int **matrix);
-void			display_paths(t_path *paths);
-void			print_arr(int *arr);
+void			display_paths(t_path *paths, t_room *rooms);
+
 #endif

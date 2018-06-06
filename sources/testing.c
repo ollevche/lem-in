@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-void	display_matrix(int **matrix)
+void		display_matrix(int **matrix)
 {
 	int i;
 	int j;
@@ -31,23 +31,23 @@ void	display_matrix(int **matrix)
 	}
 }
 
-void	print_arr(int *arr)
+static void	print_names(int *arr, t_room *rooms)
 {
 	while (*arr != -1)
 	{
-		ft_printf("%d", *arr);
+		ft_printf("%s", get_room_by_id(rooms, *arr)->name);
 		arr++;
 		if (*arr != -1)
 			ft_printf("-");
 	}
 }
 
-void	display_paths(t_path *paths)
+void		display_paths(t_path *paths, t_room *rooms)
 {
 	while (paths)
 	{
-		ft_printf("path_%d (%d):\t", paths->id, paths->length);
-		print_arr(paths->nodes);
+		ft_printf("path_%d\t(%d):\t", paths->id, paths->length);
+		print_names(paths->nodes, rooms);
 		ft_printf("\n");
 		paths = paths->next;
 	}

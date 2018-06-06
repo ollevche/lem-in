@@ -49,10 +49,10 @@ int			main(void)
 	display_input(ants, rooms, links);
 	paths = find_paths(rooms, links); // finds all paths using matrix
 	if (!paths)
-		terminate(rooms, links, paths, NULL);		
-	// best_set = pick_set(paths, ants); // composes best possible set of paths
-	// if (!best_set)
-		// terminate(rooms, links, paths, best_set);
+		terminate(rooms, links, paths, NULL);
+	best_set = pick_set(paths, ants); // composes best possible set of paths
+	if (!best_set)
+		terminate(rooms, links, paths, best_set);
 	// display_output(best_set, paths); // prints output data
 	best_set = NULL;//DEL
 	totally_free(&rooms, &links, &paths, &best_set);

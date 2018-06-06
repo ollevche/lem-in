@@ -12,6 +12,8 @@
 
 #include "lemin.h"
 
+//TODO: refactor whole file
+
 static int	**empty_matrix(int size)
 {
 	int	**matrix;
@@ -112,6 +114,6 @@ t_path		*find_paths(t_room *rooms, t_link *links)
 		search(matrix, nodes, end_room, &paths) == ERROR_CODE)
 		free_paths(&paths);
 	free_matrix(&matrix);
-	display_paths(paths);//DEL
+	display_paths(paths, rooms);//DEL
 	return(paths);
 }
