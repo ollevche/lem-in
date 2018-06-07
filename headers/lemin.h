@@ -61,7 +61,7 @@ typedef struct	s_path
 **	reading.c
 */
 
-int				read_ants(void);
+int				read_ants(t_strlist **ants_cmnts);
 int				read_graph(t_room **rooms, t_link **links);
 
 /*
@@ -81,13 +81,13 @@ int				add_path(t_path **paths, int *nodes);
 **	display.c
 */
 
-void			display_input(int ants, t_room *rooms, t_link *links);
+void			display_input(t_strlist *ants_cmnts, int ants, t_room *rooms, t_link *links);
 
 /*
-**	find_paths.c
+**	get_paths.c
 */
 
-t_path			*find_paths(t_room *rooms, t_link *links);
+t_path			*get_paths(t_room *rooms, t_link *links);
 
 /*
 **	arrays.c
@@ -97,12 +97,6 @@ int				*to_arr(int elem);
 int				*arr_extend(int *arr, int elem);
 int				arr_get_last_elem(int *arr);
 int				arr_contains(int *nodes, int target);
-
-/*
-**	pick_set.c
-*/
-
-t_path			*pick_set(t_paths *paths, int ants);
 
 /*
 **	free_structs.c

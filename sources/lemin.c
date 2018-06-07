@@ -12,50 +12,66 @@
 
 #include "lemin.h"
 
-static void	totally_free(t_room **rooms, t_link **links,
-						t_path **paths, t_path **best_set)
+static void		total_free(t_room **rooms, t_link **links,
+						t_strlist **ants_cmnts, t_path **best_set)
 {
 	free_rooms(rooms);
 	free_links(links);
-	free_paths(paths);
+	free_strlist(ants_cmnts);
 	free_paths(best_set);
 }
 
-static void	terminate(t_room *rooms, t_link *links,
-						t_path *paths, t_path *best_set)
+static void		terminate(t_room **rooms, t_link **links,
+						t_strlist **ants_cmnts, t_path **best_set)
 {
 	if (errno)
 		perror("Error");
 	else
 		ft_printf("ERROR\n");
-	totally_free(&rooms, &links, &paths, &best_set);
+	total_free(rooms, links, ants_cmnts, best_set);
 	exit(EXIT_FAILURE);
 }
 
-int			main(void)
+static void		read_input(t_room **rooms, t_link **links,
+						t_strlist **ants_comments, int *ants)
 {
-	int		ants;
-	t_room	*rooms;
-	t_link	*links;
-	t_path	*paths;
-	t_path	*best_set;
+	*rooms = NULL;
+	*links = NULL;
+	*ants_comments = NULL;
+	*ants = read_ants(ants_comments);
+	read_graph(rooms, links);
+}
 
-	rooms = NULL;
-	links = NULL;
-	ants = read_ants();
-	read_graph(&rooms, &links);
-	if (ants < 1 || !rooms || !links)
-		terminate(rooms, links, NULL, NULL);
-	display_input(ants, rooms, links);
-	paths = find_paths(rooms, links); // finds all paths using matrix
+static t_path	*compose_output(t_room *rooms, t_link *links, int ants) //TODO: this
+{
+	t_path	*paths;
+
+	paths = get_paths(rooms, links);
 	if (!paths)
-		terminate(rooms, links, paths, NULL);
-	best_set = pick_set(paths, ants); // composes best possible set of paths
+		return (NULL);
+	(void)rooms;
+	(void)links;
+	(void)ants;
+	return (NULL);
+}
+
+int				main(void)
+{
+	int			ants;
+	t_strlist	*ants_cmnts;
+	t_room		*rooms;
+	t_link		*links;
+	t_path		*best_set;
+
+	read_input(&rooms, &links, &ants_cmnts, &ants);
+	if (ants < 1 || !rooms || !links)
+		terminate(&rooms, &links, &ants_cmnts, NULL);
+	display_input(ants_cmnts, ants, rooms, links);
+	best_set = compose_output(rooms, links, ants);
 	if (!best_set)
-		terminate(rooms, links, paths, best_set);
-	// display_output(best_set, paths); // prints output data
-	best_set = NULL;//DEL
-	totally_free(&rooms, &links, &paths, &best_set);
-	// system("leaks lem-in");
+		terminate(&rooms, &links, &ants_cmnts, &best_set);
+	// display_output();
+	total_free(&rooms, &links, &ants_cmnts, &best_set);
+	system("leaks lem-in"); // DEL
 	return (0);
 }

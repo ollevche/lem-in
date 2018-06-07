@@ -25,12 +25,14 @@ static void	print_comments(t_strlist *comments)
 	}
 }
 
-void		display_input(int ants, t_room *rooms, t_link *links)
+void		display_input(t_strlist *ants_cmnts, int ants,
+							t_room *rooms, t_link *links)
 {
 	t_room	*iterator;
 
-	iterator = rooms;
+	print_comments(ants_cmnts);
 	ft_printf("%d\n", ants);
+	iterator = rooms;
 	while (iterator->next)
 		iterator = iterator->next;
 	while (iterator)

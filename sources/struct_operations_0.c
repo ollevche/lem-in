@@ -48,10 +48,6 @@ int		add_strlist(t_strlist **head, char *str)
 	return (SUCCESS_CODE);
 }
 
-/*
-**	TODO: truncate a nodes array
-*/
-
 int		add_path(t_path **paths, int *nodes)
 {
 	t_path	*new;

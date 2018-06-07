@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find_paths.c                                       :+:      :+:    :+:   */
+/*   get_paths.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/04 16:54:29 by ollevche          #+#    #+#             */
-/*   Updated: 2018/06/04 16:54:31 by ollevche         ###   ########.fr       */
+/*   Created: 2018/06/07 14:40:53 by ollevche          #+#    #+#             */
+/*   Updated: 2018/06/07 14:40:54 by ollevche         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lemin.h"
-
-//TODO: refactor whole file
 
 static int	**empty_matrix(int size)
 {
@@ -54,7 +52,7 @@ static int	**compose_matrix(t_room *rooms, t_link *links)
 		matrix[links->to][links->from] = 1;
 		links = links->next;
 	}
-	display_matrix(matrix);//DEL
+	display_matrix(matrix); // DEL
 	return (matrix);
 }
 
@@ -68,29 +66,26 @@ static int	search(int **matrix, int *nodes, int end, t_path **paths)
 	cur_node = arr_get_last_elem(nodes);
 	ret_code = SUCCESS_CODE;
 	if (cur_node == end)
-		ret_code = add_path(paths, nodes);
-	else
+		return (add_path(paths, nodes));
+	i = 0;
+	while (matrix[cur_node][i] != -1)
 	{
-		i = 0;
-		while (matrix[cur_node][i] != -1)
+		if (matrix[cur_node][i] == 1 && !arr_contains(nodes, i))
 		{
-			if (matrix[cur_node][i] == 1 && !arr_contains(nodes, i))
-			{
-				nodes_copy = arr_extend(nodes, i);
-				if (!nodes_copy)
-					ret_code = ERROR_CODE;
-				ret_code = search(matrix, nodes_copy, end, paths);
-				if (ret_code == ERROR_CODE)
-					break ;
-			}
-			i++;
+			nodes_copy = arr_extend(nodes, i);
+			if (!nodes_copy)
+				ret_code = ERROR_CODE;
+			ret_code = search(matrix, nodes_copy, end, paths);
+			if (ret_code == ERROR_CODE)
+				break ;
 		}
-		free(nodes);		
+		i++;
 	}
+	free(nodes);
 	return (ret_code);
 }
 
-t_path		*find_paths(t_room *rooms, t_link *links)
+t_path		*get_paths(t_room *rooms, t_link *links)
 {
 	t_path	*paths;
 	int		**matrix;
@@ -110,10 +105,11 @@ t_path		*find_paths(t_room *rooms, t_link *links)
 	end_room = -1;
 	if ((tmp_room = get_room_by_command(rooms, "##end")))
 		end_room = tmp_room->id;
+	paths = NULL;
 	if (end_room == -1 || nodes[0] == -1 ||
 		search(matrix, nodes, end_room, &paths) == ERROR_CODE)
 		free_paths(&paths);
 	free_matrix(&matrix);
-	display_paths(paths, rooms);//DEL
+	display_paths(paths, rooms); // DEL
 	return(paths);
 }

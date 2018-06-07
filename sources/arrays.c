@@ -15,11 +15,16 @@
 int	arr_get_last_elem(int *arr)
 {
 	int i;
+	int	el;
 
 	i = 0;
 	while (arr[i] != -1)
 		i++;
-	return (arr[i > 0 ? i - 1 : -1]);
+	if (i > 0)
+		el = arr[i - 1];
+	else
+		el = -1;
+	return (el);
 }
 
 int	*to_arr(int elem)

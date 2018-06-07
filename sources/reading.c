@@ -34,13 +34,17 @@ static int	to_pos_int(char *str)
 	return (res);
 }
 
-int			read_ants(void)
+int			read_ants(t_strlist **ants_cmnts)
 {
 	int		ants;
 	char	*line;
 
-	line = safe_gnl(FILEDES);
-	ants = to_pos_int(line);
+	ants = 0;
+	while ((line = safe_gnl(FILEDES)) && line[0] == '#')
+		if (add_strlist(ants_cmnts, line) == ERROR_CODE)
+			ants = -1;
+	if (!ants)
+		ants = to_pos_int(line);
 	free(line);
 	return (ants);
 }
@@ -104,7 +108,7 @@ int			read_graph(t_room **rooms, t_link **links)
 	comments = NULL;
 	command = NULL;
 	ret_code = 0;
-	while (ret_code != ERROR_CODE && (line = safe_gnl(FILEDES))) // when to stop?
+	while (ret_code != ERROR_CODE && (line = safe_gnl(FILEDES)))
 	{
 		if (line[0] == '#' && line[1] == '#')
 			ret_code = (command = ft_strdup(line)) ? SUCCESS_CODE : ERROR_CODE;
@@ -117,7 +121,7 @@ int			read_graph(t_room **rooms, t_link **links)
 		else if (is_link(line, *rooms))
 			ret_code = add_link(links, *rooms, line, &comments);
 		else
-			ret_code = ERROR_CODE; //remove it
+			ret_code = ERROR_CODE;
 		free(line);
 	}
 	return (ret_code);
