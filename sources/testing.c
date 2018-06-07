@@ -31,7 +31,7 @@ void		display_matrix(int **matrix)
 	}
 }
 
-static void	print_names(int *arr, t_room *rooms)
+static void	print_path(int *arr, t_room *rooms)
 {
 	while (*arr != -1)
 	{
@@ -47,7 +47,7 @@ void		display_paths(t_path *paths, t_room *rooms)
 	while (paths)
 	{
 		ft_printf("path_%d\t(%d):\t", paths->id, paths->length);
-		print_names(paths->nodes, rooms);
+		print_path(paths->nodes, rooms);
 		ft_printf("\n");
 		paths = paths->next;
 	}

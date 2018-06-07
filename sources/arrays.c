@@ -12,6 +12,23 @@
 
 #include "lemin.h"
 
+int	*arr_n_copy(int *arr, int size) // TODO: test it
+{
+	int	*copy;
+	int	i;
+
+	copy = (int*)malloc(sizeof(int) * size);
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (i < size)
+	{
+		copy[i] = arr[i];
+		i++;
+	}
+	return (copy);
+}
+
 int	arr_get_last_elem(int *arr)
 {
 	int i;

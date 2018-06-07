@@ -19,6 +19,7 @@
 
 # include "libftprintf.h"
 # include <stdbool.h>
+# include <limits.h>
 # include <errno.h>
 
 typedef struct	s_strlist
@@ -76,6 +77,7 @@ int				add_room(t_room **rooms, char *line,
 int				add_link(t_link **links, t_room *rooms, char *line,
 							t_strlist **comments);
 int				add_path(t_path **paths, int *nodes);
+t_path  		*get_path_by_id(t_path *paths, int id);
 
 /*
 **	display.c
@@ -93,10 +95,17 @@ t_path			*get_paths(t_room *rooms, t_link *links);
 **	arrays.c
 */
 
+int				*arr_n_copy(int *arr, int size);
 int				*to_arr(int elem);
 int				*arr_extend(int *arr, int elem);
 int				arr_get_last_elem(int *arr);
 int				arr_contains(int *nodes, int target);
+
+/*
+**	get_set.c
+*/
+
+t_path			*get_set(t_path *all_paths, int ants);
 
 /*
 **	free_structs.c
