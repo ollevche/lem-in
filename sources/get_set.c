@@ -111,6 +111,15 @@ static int	*pick_some(t_path *paths, int amount) // TODO: intersection!
 				shortest = arr_n_copy(cur, amount); // error
 				shortest_len = cur_len;
 			}
+
+			int j = 0; // DEL
+			while (j < amount - 1)
+			{
+				ft_printf("%d ", cur[j]);
+				j++;
+			}
+			ft_printf("\n");
+
 			cur[i]++;
 		}
 	}
@@ -142,8 +151,8 @@ static int	*prepare_paths(t_path *all_paths, int ants)
 	}
 	free(next);
 	
-	int j = 0;
-	while (j < amount - 1)
+	int j = 0; // DEL
+	while (j < amount - 2)
 	{
 		ft_printf("%d\t", cur[j]);
 		j++;
