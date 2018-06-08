@@ -30,18 +30,6 @@ static int	max_len(int *paths_ids, int size, t_path *paths)
 	return (max_len);
 }
 
-static int	ceil_div(int a, int b)
-{
-	int	res;
-	int	subres;
-
-	res = a / b;
-	subres = res * b;
-	if (subres < a)
-		res++;
-	return (res);
-}
-
 static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 {
 	int	merge_value;
@@ -65,10 +53,7 @@ static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 		(get_path_by_id(all_paths, set_paths[i])->length - 1) + 1;
 		i++;
 	}
-	in_total = merge_value + ceil_div(ants - merge_sum, size);
-
-	// ft_printf("steps in total: %d\n", in_total); // DEL
-
+	in_total = merge_value + ft_ceildiv(ants - merge_sum, size);
 	return (in_total);
 }
 
@@ -135,15 +120,6 @@ static int	*pick_some(t_path *paths, int amount) // TODO: intersection!
 				shortest = arr_n_copy(cur, amount); // error
 				shortest_len = cur_len;
 			}
-
-			int j = 0; // DEL
-			while (j < amount)
-			{
-				ft_printf("%d ", cur[j]);
-				j++;
-			}
-			ft_printf("\n");
-
 			cur[i]++;
 		}
 	}
@@ -164,24 +140,37 @@ static int	*prepare_paths(t_path *all_paths, int ants)
 	next = NULL;
 	cur_ef = INT_MAX;
 	next_ef = cur_ef - 1;
-	while (cur_ef > next_ef) // && amount < all_paths->id
+	while (cur_ef >= next_ef)// && amount <= all_paths->id + 1)
 	{
 		free(cur);
 		cur = next;
 		cur_ef = next_ef;
 		next = pick_some(all_paths, amount); // error
 		next_ef = efficiency_of(next, amount, ants, all_paths);
+
+		int j = 0; // DEL
+		ft_printf("some set (paths ids):\t");
+		while (j < amount)
+		{
+			ft_printf("%d\t", next[j]);
+			j++;
+		} ft_printf("\n");
+		ft_printf("size = %d\n", j);
+		ft_printf("efficiency = %d\n", next_ef);
+
 		amount++;
 	}
 	free(next);
 
-	int j = 0; // DEL
-	ft_printf("best set (paths ids):\t");
-	while (j < amount - 2)
-	{
-		ft_printf("%d\t", cur[j]);
-		j++;
-	} ft_printf("\n");
+	// int j = 0; // DEL
+	// ft_printf("best set (paths ids):\t");
+	// while (j < amount - 2)
+	// {
+	// 	ft_printf("%d\t", cur[j]);
+	// 	j++;
+	// } ft_printf("\n");
+	// ft_printf("size = %d\n", j);
+	// ft_printf("efficiency = %d\n", cur_ef);
 
 	return (cur);
 }
