@@ -13,7 +13,7 @@
 #include "lemin.h"
 
 /*
-**	TODO: norme error (reading.c), arrays extending, start-end paths
+**	TODO: norme error (reading.c), arrays extending, start-end paths, array types (non-terminated)
 */
 
 static void		total_free(t_room **rooms, t_link **links,

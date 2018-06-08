@@ -30,6 +30,18 @@ static int	max_len(int *paths_ids, int size, t_path *paths)
 	return (max_len);
 }
 
+static int	ceil_div(int a, int b)
+{
+	int	res;
+	int	subres;
+
+	res = a / b;
+	subres = res * b;
+	if (subres < a)
+		res++;
+	return (res);
+}
+
 static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 {
 	int	merge_value;
@@ -37,15 +49,26 @@ static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 	int	in_total;
 	int i;
 
-	merge_value = max_len(set_paths, size, all_paths);
+	// ft_printf("PATHS IDS:\t"); // DEL
+	// while (j < size)
+	// {
+	// 	ft_printf("%d\t", set_paths[j]);
+	// 	j++;
+	// } ft_printf("\n");
+
+	merge_value = max_len(set_paths, size, all_paths) - 1;
 	merge_sum = 0;
 	i = 0;
 	while (i < size)
 	{
-		merge_sum += merge_value - get_path_by_id(all_paths, set_paths[i])->length + 1;
+		merge_sum += merge_value - 
+		(get_path_by_id(all_paths, set_paths[i])->length - 1) + 1;
 		i++;
 	}
-	in_total = merge_value + (ants - merge_sum) / size; // TODO: 11 / 2 = 5 not 6!
+	in_total = merge_value + ceil_div(ants - merge_sum, size);
+
+	// ft_printf("steps in total: %d\n", in_total); // DEL
+
 	return (in_total);
 }
 
@@ -59,7 +82,8 @@ static int	set_order(int *arr, int size, int max_p)
 	i = 1;
 	while (i < size && arr[i] < max_p - i)
 		i++;
-	mid = ++arr[i - 1];
+	if (i < size)
+		mid = ++arr[i - 1];
 	while (i < size)
 		arr[i++] = ++mid;
 	return (true);
@@ -113,7 +137,7 @@ static int	*pick_some(t_path *paths, int amount) // TODO: intersection!
 			}
 
 			int j = 0; // DEL
-			while (j < amount - 1)
+			while (j < amount)
 			{
 				ft_printf("%d ", cur[j]);
 				j++;
@@ -140,7 +164,7 @@ static int	*prepare_paths(t_path *all_paths, int ants)
 	next = NULL;
 	cur_ef = INT_MAX;
 	next_ef = cur_ef - 1;
-	while (cur_ef > next_ef)
+	while (cur_ef > next_ef) // && amount < all_paths->id
 	{
 		free(cur);
 		cur = next;
@@ -150,14 +174,14 @@ static int	*prepare_paths(t_path *all_paths, int ants)
 		amount++;
 	}
 	free(next);
-	
+
 	int j = 0; // DEL
+	ft_printf("best set (paths ids):\t");
 	while (j < amount - 2)
 	{
 		ft_printf("%d\t", cur[j]);
 		j++;
-	}
-	ft_printf("\n");
+	} ft_printf("\n");
 
 	return (cur);
 }
@@ -169,6 +193,5 @@ t_path		*get_set(t_path *all_paths, int ants)
 	paths_ids = prepare_paths(all_paths, ants);
 	if (!paths_ids)
 		return (NULL);
-	// display_paths_of_set(paths_ids, all_paths);
 	return (NULL); // redo
 }
