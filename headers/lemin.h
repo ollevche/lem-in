@@ -105,7 +105,14 @@ int				arr_contains(int *nodes, int target);
 **	get_set.c
 */
 
-t_path			*get_set(t_path *all_paths, int ants);
+int				*get_set(t_path *all_paths, int ants);
+
+/*
+**	advanced_arrays.c
+*/
+
+int				max_len(int *paths_ids, t_path *paths);
+int				len_of_paths(int *paths_ids, t_path *paths);
 
 /*
 **	free_structs.c

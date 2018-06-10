@@ -10,25 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lemin.h" // TODO: 2d array with ids and lengths 
-
-static int	max_len(int *paths_ids, t_path *paths)
-{
-	int max_len;
-	int	cur_len;
-	int	i;
-
-	max_len = 0;
-	i = 0;
-	while (paths_ids[i] != -1)
-	{
-		cur_len = get_path_by_id(paths, paths_ids[i])->length;
-		if (cur_len > max_len)
-			max_len = cur_len;
-		i++;
-	}
-	return (max_len);
-}
+#include "lemin.h" // TODO: 2d array with ids, lengths and ants number (is it new struct?); intersection
 
 static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 {
@@ -36,13 +18,6 @@ static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 	int	merge_sum;
 	int	in_total;
 	int i;
-
-	// ft_printf("PATHS IDS:\t"); // DEL
-	// while (j < size)
-	// {
-	// 	ft_printf("%d\t", set_paths[j]);
-	// 	j++;
-	// } ft_printf("\n");
 
 	merge_value = max_len(set_paths, all_paths) - 1;
 	merge_sum = 0;
@@ -74,22 +49,25 @@ static int	set_order(int *arr, int size, int max_p)
 	return (true);
 }
 
-static int	len_of_paths(int *paths_ids, t_path *paths)
+static int	*new_filled_arr(int size)
 {
-	int	i;
-	int	total_len;
+	int	*arr;
+	int i;
 
+	arr = (int*)malloc(sizeof(int) * (size + 1));
+	if (!arr)
+		return (NULL);
 	i = 0;
-	total_len = 0;
-	while (paths_ids[i] != -1)
+	while (i < size)
 	{
-		total_len += get_path_by_id(paths, paths_ids[i])->length;
+		arr[i] = i;
 		i++;
 	}
-	return (total_len);
+	arr[size] = -1;
+	return (arr);
 }
 
-static int	*pick_some(t_path *paths, int amount) // TODO: intersection!
+static int	*pick_some(t_path *paths, int amount)
 {
 	int	*cur;
 	int	*shortest;
@@ -98,15 +76,8 @@ static int	*pick_some(t_path *paths, int amount) // TODO: intersection!
 	int	max_p;
 	int	i;
 
-	cur = (int*)malloc(sizeof(int) * (amount + 1)); // error
+	cur = new_filled_arr(amount);
 	max_p = paths->id;
-	i = 0;
-	while (i < amount)
-	{
-		cur[i] = i;
-		i++;
-	}
-	cur[amount] = -1;
 	shortest = NULL;
 	shortest_len = INT_MAX;
 	while (set_order(cur, amount, max_p))
@@ -118,7 +89,9 @@ static int	*pick_some(t_path *paths, int amount) // TODO: intersection!
 			if (cur_len < shortest_len)
 			{
 				free(shortest);
-				shortest = arr_n_copy(cur, amount); // error
+				shortest = arr_n_copy(cur, amount);
+				if (!shortest)
+					break ;
 				shortest_len = cur_len;
 			}
 			cur[i]++;
@@ -128,7 +101,7 @@ static int	*pick_some(t_path *paths, int amount) // TODO: intersection!
 	return (shortest);
 }
 
-static int	*prepare_paths(t_path *all_paths, int ants)
+int			*get_set(t_path *all_paths, int ants)
 {
 	int	amount;
 	int	*cur;
@@ -146,42 +119,15 @@ static int	*prepare_paths(t_path *all_paths, int ants)
 		free(cur);
 		cur = next;
 		cur_ef = next_ef;
-		next = pick_some(all_paths, amount); // error
-		next_ef = efficiency_of(next, amount, ants, all_paths);
-
-		int j = 0; // DEL
-		ft_printf("some set (paths ids):\t");
-		while (j < amount)
+		next = pick_some(all_paths, amount);
+		if (!next)
 		{
-			ft_printf("%d\t", next[j]);
-			j++;
-		} ft_printf("\n");
-		ft_printf("size = %d\n", j);
-		ft_printf("efficiency = %d\n", next_ef);
-
+			ft_memdel((void**)&cur);
+			break ;
+		}
+		next_ef = efficiency_of(next, amount, ants, all_paths);
 		amount++;
 	}
 	free(next);
-
-	// int j = 0; // DEL
-	// ft_printf("best set (paths ids):\t");
-	// while (j < amount - 2)
-	// {
-	// 	ft_printf("%d\t", cur[j]);
-	// 	j++;
-	// } ft_printf("\n");
-	// ft_printf("size = %d\n", j);
-	// ft_printf("efficiency = %d\n", cur_ef);
-
 	return (cur);
-}
-
-t_path		*get_set(t_path *all_paths, int ants)
-{
-	int	*paths_ids;
-
-	paths_ids = prepare_paths(all_paths, ants);
-	if (!paths_ids)
-		return (NULL);
-	return (NULL); // redo
 }

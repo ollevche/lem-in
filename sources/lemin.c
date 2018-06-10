@@ -13,20 +13,21 @@
 #include "lemin.h"
 
 /*
-**	TODO: norme error (reading.c), arrays extending, start-end paths, array types (non-terminated)
+**	TODO: norme errors, start-end paths
 */
 
 static void		total_free(t_room **rooms, t_link **links,
-						t_strlist **ants_cmnts, t_path **best_set)
+						t_strlist **ants_cmnts, int **best_set)
 {
 	free_rooms(rooms);
 	free_links(links);
 	free_strlist(ants_cmnts);
-	free_paths(best_set);
+	free(*best_set);
+	*best_set = NULL;
 }
 
 static void		terminate(t_room **rooms, t_link **links,
-						t_strlist **ants_cmnts, t_path **best_set)
+						t_strlist **ants_cmnts, int **best_set)
 {
 	if (errno)
 		perror("Error");
@@ -46,10 +47,10 @@ static void		read_input(t_room **rooms, t_link **links,
 	read_graph(rooms, links);
 }
 
-static t_path	*compose_output(t_room *rooms, t_link *links, int ants)
+static int		*compose_output(t_room *rooms, t_link *links, int ants)
 {
 	t_path	*paths;
-	t_path	*best_set;
+	int		*best_set;
 
 	paths = get_paths(rooms, links);
 	if (!paths)
@@ -59,13 +60,13 @@ static t_path	*compose_output(t_room *rooms, t_link *links, int ants)
 	return (best_set);
 }
 
-int				main(void)
+int				lemin(void)
 {
 	int			ants;
 	t_strlist	*ants_cmnts;
 	t_room		*rooms;
 	t_link		*links;
-	t_path		*best_set;
+	int			*best_set;
 
 	read_input(&rooms, &links, &ants_cmnts, &ants);
 	if (ants < 1 || !rooms || !links)
@@ -76,6 +77,11 @@ int				main(void)
 		terminate(&rooms, &links, &ants_cmnts, &best_set);
 	// display_output();
 	total_free(&rooms, &links, &ants_cmnts, &best_set);
-	system("leaks lem-in"); // DEL
 	return (0);
+}
+
+int main(void) // DEL
+{
+	lemin();
+	system("leaks lem-in");
 }
