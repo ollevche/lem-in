@@ -53,24 +53,6 @@ static int	set_order(int *arr, int size, int max_p)
 	return (true);
 }
 
-static int	*new_filled_arr(int size)
-{
-	int	*arr;
-	int i;
-
-	arr = (int*)malloc(sizeof(int) * (size + 1));
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (i < size)
-	{
-		arr[i] = i;
-		i++;
-	}
-	arr[size] = -1;
-	return (arr);
-}
-
 static int	intersect(int *set, t_path *paths, int rooms_num)
 {
 	int	rooms[rooms_num];
@@ -158,7 +140,7 @@ int			*get_set(t_path *all_paths, int ants, int rooms_num)
 			free(cur);
 		amount++;
 	}
-	ft_printf("BEST SET:\n"); // DEL
+	ft_printf("----------\nBEST SET:\n----------\n"); // DEL
 	display_set(best, best_ef); // DEL
 	return (best);
 }

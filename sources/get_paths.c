@@ -100,7 +100,7 @@ t_path		*get_paths(t_room *rooms, t_link *links)
 		if (!(nodes = to_arr(tmp_room->id)))
 		{
 			free_matrix(&matrix);
-			return(NULL);
+			return (NULL);
 		}
 	end_room = -1;
 	if ((tmp_room = get_room_by_command(rooms, "##end")))
@@ -111,5 +111,5 @@ t_path		*get_paths(t_room *rooms, t_link *links)
 		free_paths(&paths);
 	free_matrix(&matrix);
 	display_paths(paths, rooms); // DEL
-	return(paths);
+	return (paths);
 }

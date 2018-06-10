@@ -64,5 +64,6 @@ int		add_path(t_path **paths, int *nodes)
 	new->length = i;
 	new->next = *paths;
 	*paths = new;
+	ft_printf("new path has been found: id = %d\n", new->id); // DEL
 	return (SUCCESS_CODE);
 }

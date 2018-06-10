@@ -77,13 +77,17 @@ int				add_room(t_room **rooms, char *line,
 int				add_link(t_link **links, t_room *rooms, char *line,
 							t_strlist **comments);
 int				add_path(t_path **paths, int *nodes);
-t_path  		*get_path_by_id(t_path *paths, int id);
+t_path			*get_path_by_id(t_path *paths, int id);
+int				*new_filled_arr(int size);
+int				max_len(int *paths_ids, t_path *paths);
+int				len_of_paths(int *paths_ids, t_path *paths);
 
 /*
 **	display.c
 */
 
-void			display_input(t_strlist *ants_cmnts, int ants, t_room *rooms, t_link *links);
+void			display_input(t_strlist *ants_cmnts, int ants,
+								t_room *rooms, t_link *links);
 
 /*
 **	get_paths.c
@@ -106,13 +110,6 @@ int				arr_contains(int *nodes, int target);
 */
 
 int				*get_set(t_path *all_paths, int ants, int rooms_num);
-
-/*
-**	advanced_arrays.c
-*/
-
-int				max_len(int *paths_ids, t_path *paths);
-int				len_of_paths(int *paths_ids, t_path *paths);
 
 /*
 **	free_structs.c

@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-int	*arr_n_copy(int *arr, int size) // TODO: test it
+int	*arr_n_copy(int *arr, int size)
 {
 	int	*copy;
 	int	i;

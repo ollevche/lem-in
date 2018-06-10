@@ -56,7 +56,7 @@ void		display_paths(t_path *paths, t_room *rooms)
 void		display_set(int *set, int efficiency)
 {
 	int i;
-	
+
 	i = 0;
 	ft_printf("some set (paths ids):\t");
 	while (set[i] != -1)

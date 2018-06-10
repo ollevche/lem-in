@@ -111,7 +111,7 @@ int			read_graph(t_room **rooms, t_link **links)
 	while (ret_code != ERROR_CODE && (line = safe_gnl(FILEDES)))
 	{
 		if (line[0] == '#' && line[1] == '#')
-			ret_code = (command = ft_strdup(line)) ? SUCCESS_CODE : ERROR_CODE;
+			ret_code = (command = ft_strdup(line)) ? SUCCESS_CODE : ERROR_CODE; // DEL
 		else if (line[0] == '#')
 			ret_code = add_strlist(&comments, ft_strdup(line));
 		else if (is_room(line))
