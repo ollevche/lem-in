@@ -17,7 +17,7 @@ int	*arr_n_copy(int *arr, int size) // TODO: test it
 	int	*copy;
 	int	i;
 
-	copy = (int*)malloc(sizeof(int) * size);
+	copy = (int*)malloc(sizeof(int) * (size + 1));
 	if (!copy)
 		return (NULL);
 	i = 0;
@@ -26,6 +26,7 @@ int	*arr_n_copy(int *arr, int size) // TODO: test it
 		copy[i] = arr[i];
 		i++;
 	}
+	copy[i] = -1;
 	return (copy);
 }
 
