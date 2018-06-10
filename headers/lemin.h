@@ -105,7 +105,7 @@ int				arr_contains(int *nodes, int target);
 **	get_set.c
 */
 
-int				*get_set(t_path *all_paths, int ants);
+int				*get_set(t_path *all_paths, int ants, int rooms_num);
 
 /*
 **	advanced_arrays.c

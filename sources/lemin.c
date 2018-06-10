@@ -55,7 +55,7 @@ static int		*compose_output(t_room *rooms, t_link *links, int ants)
 	paths = get_paths(rooms, links);
 	if (!paths)
 		return (NULL);
-	best_set = get_set(paths, ants);
+	best_set = get_set(paths, ants, rooms->id + 1);
 	free_paths(&paths);
 	return (best_set);
 }

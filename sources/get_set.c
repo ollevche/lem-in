@@ -10,22 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lemin.h" // intersection; array of pointers
+#include "lemin.h" // intersection
 
-static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
+static int	efficiency_of(int *set, int size, int ants, t_path *paths)
 {
 	int	merge_value;
 	int	merge_sum;
 	int	in_total;
 	int i;
 
-	merge_value = max_len(set_paths, all_paths) - 1;
+	merge_value = max_len(set, paths) - 1;
 	merge_sum = 0;
 	i = 0;
 	while (i < size)
 	{
 		merge_sum += merge_value - 
-		(get_path_by_id(all_paths, set_paths[i])->length - 1) + 1;
+		(get_path_by_id(paths, set[i])->length - 1) + 1;
 		i++;
 	}
 	in_total = merge_value + ft_ceildiv(ants - merge_sum, size);
@@ -69,7 +69,32 @@ static int	*new_filled_arr(int size)
 	return (arr);
 }
 
-static int	*pick_some(t_path *paths, int amount)
+static int	intersect(int *set, t_path *paths, int rooms_num)
+{
+	int	rooms[rooms_num];
+	int	r;
+	int	*path_rooms;
+
+	r = 0;
+	while (r < rooms_num)
+		rooms[r++] = 0;
+	while (*set != -1)
+	{
+		path_rooms = get_path_by_id(paths, *set)->nodes;
+		while (*(path_rooms + 2) != -1)
+		{
+			path_rooms++;
+			if (rooms[*path_rooms])
+				return (true); // false
+			else
+				rooms[*path_rooms] = 1;
+		}
+		set++;
+	}
+	return (false);
+}
+
+static int	*pick_some(t_path *paths, int amount, int rooms_num)
 {
 	int	*cur;
 	int	*shortest;
@@ -88,7 +113,7 @@ static int	*pick_some(t_path *paths, int amount)
 		while (cur[i] <= max_p)
 		{
 			cur_len = len_of_paths(cur, paths);
-			if (cur_len < shortest_len)
+			if (cur_len < shortest_len && !intersect(cur, paths, rooms_num))
 			{
 				free(shortest);
 				shortest = arr_n_copy(cur, amount);
@@ -103,7 +128,7 @@ static int	*pick_some(t_path *paths, int amount)
 	return (shortest);
 }
 
-int			*get_set(t_path *all_paths, int ants)
+int			*get_set(t_path *all_paths, int ants, int rooms_num)
 {
 	int amount;
 	int *best;
@@ -117,11 +142,8 @@ int			*get_set(t_path *all_paths, int ants)
 	best = NULL;
 	while (amount <= ants && amount <= all_paths->id + 1 && cur_ef <= best_ef)
 	{
-		if (!(cur = pick_some(all_paths, amount)))
-		{
-			free(best);
-			return (NULL);	
-		}
+		if (!(cur = pick_some(all_paths, amount, rooms_num)))
+			break ;
 		cur_ef = efficiency_of(cur, amount, ants, all_paths);
 		display_set(cur, cur_ef); // DEL
 		if (cur_ef < best_ef)
