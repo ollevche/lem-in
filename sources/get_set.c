@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lemin.h" // intersection
+#include "lemin.h"
 
 static int	efficiency_of(int *set, int size, int ants, t_path *paths)
 {
@@ -20,6 +20,8 @@ static int	efficiency_of(int *set, int size, int ants, t_path *paths)
 	int i;
 
 	merge_value = max_len(set, paths) - 1;
+	if (merge_value == 1)
+		return (1);
 	merge_sum = 0;
 	i = 0;
 	while (i < size)
@@ -85,7 +87,7 @@ static int	intersect(int *set, t_path *paths, int rooms_num)
 		{
 			path_rooms++;
 			if (rooms[*path_rooms])
-				return (true); // false
+				return (true);
 			else
 				rooms[*path_rooms] = 1;
 		}
