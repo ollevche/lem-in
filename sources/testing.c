@@ -52,3 +52,19 @@ void		display_paths(t_path *paths, t_room *rooms)
 		paths = paths->next;
 	}
 }
+
+void		display_set(int *set, int efficiency)
+{
+	int i;
+	
+	i = 0;
+	ft_printf("some set (paths ids):\t");
+	while (set[i] != -1)
+	{
+		ft_printf("%d\t", set[i]);
+		i++;
+	}
+	ft_printf("\n");
+	ft_printf("size = %d\n", i);
+	ft_printf("efficiency = %d\n", efficiency);
+}

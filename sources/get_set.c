@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lemin.h" // TODO: 2d array with ids, lengths and ants number (is it new struct?); intersection
+#include "lemin.h" // TODO: 2d array with ids, lengths and ants number (is it new struct?); intersection; array of pointers
 
 static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 {
@@ -32,20 +32,22 @@ static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 	return (in_total);
 }
 
-static int	set_order(int *arr, int size, int max_p)
+static int	set_order(int *cur, int size, int max_p) // TODO: rename cur (arr)
 {
 	int i;
 	int	mid;
 
-	if (arr[0] > max_p - size)
+	if (cur[0] > max_p - (size - 1))
 		return (false);
 	i = 1;
-	while (i < size && arr[i] < max_p - i)
+	while (i < size && cur[i] <= i)
 		i++;
 	if (i < size)
-		mid = ++arr[i - 1];
-	while (i < size)
-		arr[i++] = ++mid;
+		mid = ++cur[i - 1];
+	while (i < size && mid < max_p)
+		cur[i++] = ++mid;
+	if (i != size)
+		return (false);
 	return (true);
 }
 
@@ -103,6 +105,37 @@ static int	*pick_some(t_path *paths, int amount)
 
 int			*get_set(t_path *all_paths, int ants)
 {
+	int amount;
+	int *best;
+	int *cur;
+	int	best_ef;
+	int	cur_ef;
+
+	best_ef = INT_MAX;
+	amount = 1;
+	cur = NULL;
+	best = NULL;
+	while (amount <= ants && amount <= all_paths->id + 1 && cur_ef <= best_ef)
+	{
+		cur = pick_some(all_paths, amount); // error
+		cur_ef = efficiency_of(cur, amount, ants, all_paths);
+		display_set(cur, cur_ef); // DEL
+		if (cur_ef < best_ef)
+		{
+			free(best);
+			best_ef = cur_ef;
+			best = cur;
+		}
+		else
+			free(cur);
+		amount++;
+	}
+	ft_printf("BEST SET:\n"); // DEL
+	display_set(best, best_ef); // DEL
+	return (best);
+}
+
+/*
 	int	amount;
 	int	*cur;
 	int	*next;
@@ -114,20 +147,24 @@ int			*get_set(t_path *all_paths, int ants)
 	next = NULL;
 	cur_ef = INT_MAX;
 	next_ef = cur_ef - 1;
-	while (cur_ef > next_ef)// && amount <= all_paths->id + 1) // or '>=' ?
+	while (amount <= all_paths->id + 1 && amount <= ants)
 	{
-		free(cur);
-		cur = next;
-		cur_ef = next_ef;
-		next = pick_some(all_paths, amount);
-		if (!next)
+		if (!(next = pick_some(all_paths, amount)))
 		{
 			ft_memdel((void**)&cur);
 			break ;
 		}
 		next_ef = efficiency_of(next, amount, ants, all_paths);
+		if (cur_ef < next_ef) // or '<=' ?
+			break ;
+		free(cur);
+		cur = next;
+		cur_ef = next_ef;
 		amount++;
+		display_set(next, next_ef); // DEL
 	}
-	free(next);
+	if (amount < all_paths->id + 1)
+		free(next);
+	display_set(cur, cur_ef); // DEL
 	return (cur);
-}
+*/

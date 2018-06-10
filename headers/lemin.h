@@ -130,5 +130,6 @@ void			free_paths(t_path **paths);
 
 void			display_matrix(int **matrix);
 void			display_paths(t_path *paths, t_room *rooms);
+void			display_set(int *set, int efficiency);
 
 #endif
