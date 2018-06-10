@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lemin.h" // TODO: 2d array with ids, lengths and ants number (is it new struct?); intersection; array of pointers
+#include "lemin.h" // intersection; array of pointers
 
 static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 {
@@ -32,20 +32,20 @@ static int	efficiency_of(int *set_paths, int size, int ants, t_path *all_paths)
 	return (in_total);
 }
 
-static int	set_order(int *cur, int size, int max_p) // TODO: rename cur (arr)
+static int	set_order(int *arr, int size, int max_p)
 {
 	int i;
 	int	mid;
 
-	if (cur[0] > max_p - (size - 1))
+	if (arr[0] > max_p - (size - 1))
 		return (false);
 	i = 1;
-	while (i < size && cur[i] <= i)
+	while (i < size && arr[i] <= i)
 		i++;
 	if (i < size)
-		mid = ++cur[i - 1];
+		mid = ++arr[i - 1];
 	while (i < size && mid < max_p)
-		cur[i++] = ++mid;
+		arr[i++] = ++mid;
 	if (i != size)
 		return (false);
 	return (true);
@@ -117,7 +117,11 @@ int			*get_set(t_path *all_paths, int ants)
 	best = NULL;
 	while (amount <= ants && amount <= all_paths->id + 1 && cur_ef <= best_ef)
 	{
-		cur = pick_some(all_paths, amount); // error
+		if (!(cur = pick_some(all_paths, amount)))
+		{
+			free(best);
+			return (NULL);	
+		}
 		cur_ef = efficiency_of(cur, amount, ants, all_paths);
 		display_set(cur, cur_ef); // DEL
 		if (cur_ef < best_ef)
@@ -134,37 +138,3 @@ int			*get_set(t_path *all_paths, int ants)
 	display_set(best, best_ef); // DEL
 	return (best);
 }
-
-/*
-	int	amount;
-	int	*cur;
-	int	*next;
-	int	cur_ef;
-	int	next_ef;
-
-	amount = 1;
-	cur = NULL;
-	next = NULL;
-	cur_ef = INT_MAX;
-	next_ef = cur_ef - 1;
-	while (amount <= all_paths->id + 1 && amount <= ants)
-	{
-		if (!(next = pick_some(all_paths, amount)))
-		{
-			ft_memdel((void**)&cur);
-			break ;
-		}
-		next_ef = efficiency_of(next, amount, ants, all_paths);
-		if (cur_ef < next_ef) // or '<=' ?
-			break ;
-		free(cur);
-		cur = next;
-		cur_ef = next_ef;
-		amount++;
-		display_set(next, next_ef); // DEL
-	}
-	if (amount < all_paths->id + 1)
-		free(next);
-	display_set(cur, cur_ef); // DEL
-	return (cur);
-*/
