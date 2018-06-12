@@ -34,7 +34,7 @@ static int	efficiency_of(int *set, int size, int ants, t_path *paths)
 	return (in_total);
 }
 
-static int	set_order(int *arr, int size, int max_p)
+static int	set_order(int *arr, int size, int max_p) //TODO: fix it
 {
 	int i;
 	int	mid;
@@ -42,7 +42,7 @@ static int	set_order(int *arr, int size, int max_p)
 	if (arr[0] > max_p - (size - 1))
 		return (false);
 	i = 1;
-	while (i < size && arr[i] <= i)
+	while (i < size && arr[i] <= max_p - (size - i - 1))
 		i++;
 	if (i < size)
 		mid = ++arr[i - 1];
@@ -86,6 +86,7 @@ static int	*pick_some(t_path *paths, int amount, int rooms_num)
 	int	shortest_len;
 	int	max_p;
 	int	i;
+	int TEST_VARIABLE = 0; //DEL
 
 	cur = new_filled_arr(amount);
 	max_p = paths->id;
@@ -106,9 +107,11 @@ static int	*pick_some(t_path *paths, int amount, int rooms_num)
 				shortest_len = cur_len;
 			}
 			cur[i]++;
+			TEST_VARIABLE++;
 		}
 	}
 	free(cur);
+	ft_printf("found %d variants\n", TEST_VARIABLE);
 	return (shortest);
 }
 
@@ -121,6 +124,7 @@ int			*get_set(t_path *all_paths, int ants, int rooms_num)
 	int	cur_ef;
 
 	best_ef = INT_MAX;
+	cur_ef = best_ef - 1;	
 	amount = 1;
 	cur = NULL;
 	best = NULL;
