@@ -1,0 +1,17 @@
+1
+#comment 1
+#comment 2
+#comment 3
+room 0 0
+room1 1 1
+#start point
+##start
+start 2 2
+#end point
+##end
+end 3 3
+room1-room1
+start-room
+#comment 4
+end-room1
+room-room1

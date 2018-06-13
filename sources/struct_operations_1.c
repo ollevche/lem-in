@@ -50,7 +50,7 @@ int				add_room(t_room **rooms, char *line,
 	new_elem->name = ft_strndup(line, i);
 	if (!new_elem->name)
 		return (ERROR_CODE);
-	new_elem->x = ft_atoi(line + i);
+	new_elem->x = ft_atoi(line + i++);
 	while (line[i] && line[i] != ' ')
 		i++;
 	new_elem->y = ft_atoi(line + i);
@@ -58,6 +58,8 @@ int				add_room(t_room **rooms, char *line,
 	new_elem->command = *command;
 	*comments = NULL;
 	*command = NULL;
+	if (get_room_by_name(new_elem->next, new_elem->name))
+		return (ERROR_CODE);
 	return (SUCCESS_CODE);
 }
 

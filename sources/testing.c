@@ -17,9 +17,13 @@ void		display_matrix(int **matrix)
 	int i;
 	int j;
 
+	if (!matrix)
+		return ;
 	i = 0;
 	while (matrix[i])
 	{
+		if (!matrix[i])
+			return ;
 		j = 0;
 		while (matrix[i][j] != -1)
 		{
@@ -33,6 +37,8 @@ void		display_matrix(int **matrix)
 
 static void	print_path(int *arr, t_room *rooms)
 {
+	if (!arr || !rooms)
+		return ;
 	while (*arr != -1)
 	{
 		ft_printf("%s", get_room_by_id(rooms, *arr)->name);
@@ -44,6 +50,8 @@ static void	print_path(int *arr, t_room *rooms)
 
 void		display_paths(t_path *paths, t_room *rooms)
 {
+	if (!rooms)
+		return ;
 	while (paths)
 	{
 		ft_printf("path_%d\t(%d):\t", paths->id, paths->length);
@@ -57,6 +65,8 @@ void		display_set(int *set, int efficiency)
 {
 	int i;
 
+	if (!set)
+		return ;
 	i = 0;
 	ft_printf("some set (paths ids):\t");
 	while (set[i] != -1)

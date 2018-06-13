@@ -30,6 +30,17 @@ t_room	*get_room_by_command(t_room *rooms, char *command)
 	return (rooms);
 }
 
+t_room	*get_room_by_name(t_room *rooms, char *name)
+{
+	while (rooms)
+	{
+		if (!ft_strcmp(rooms->name, name))
+			break ;
+		rooms = rooms->next;
+	}
+	return (rooms);
+}
+
 int		add_strlist(t_strlist **head, char *str)
 {
 	t_strlist	*new;

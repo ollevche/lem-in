@@ -34,22 +34,19 @@ static int	efficiency_of(int *set, int size, int ants, t_path *paths)
 	return (in_total);
 }
 
-static int	set_order(int *arr, int size, int max_p) //TODO: fix it
+static int	set_order(int *arr, int size, int max_p)
 {
 	int i;
-	int	mid;
 
-	if (arr[0] > max_p - (size - 1))
+	i = size - 1;
+	while (i > -1 && arr[i] > max_p - (size - i - 1))
+		i--;
+	if (i < 0)
 		return (false);
-	i = 1;
-	while (i < size && arr[i] <= max_p - (size - i - 1))
-		i++;
-	if (i < size)
-		mid = ++arr[i - 1];
-	while (i < size && mid < max_p)
-		arr[i++] = ++mid;
-	if (i != size)
-		return (false);
+	if (i + 1 < size)
+		arr[i]++;
+	while (++i < size)
+		arr[i] = arr[i - 1] + 1;
 	return (true);
 }
 

@@ -71,6 +71,7 @@ int				read_graph(t_room **rooms, t_link **links);
 
 t_room			*get_room_by_id(t_room *rooms, int id);
 t_room			*get_room_by_command(t_room *rooms, char *command);
+t_room			*get_room_by_name(t_room *rooms, char *name);
 int				add_strlist(t_strlist **head, char *str);
 int				add_room(t_room **rooms, char *line,
 							t_strlist **comments, char **command);

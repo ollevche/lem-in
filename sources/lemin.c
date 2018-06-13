@@ -13,7 +13,8 @@
 #include "lemin.h"
 
 /*
-**	TODO: norme errors, start-end paths
+**	TODO: norme errors, start-end paths, display_output()
+**	NOT PASSED TESTS: strange_test, 
 */
 
 static void		total_free(t_room **rooms, t_link **links,
@@ -44,7 +45,8 @@ static void		read_input(t_room **rooms, t_link **links,
 	*links = NULL;
 	*ants_comments = NULL;
 	*ants = read_ants(ants_comments);
-	read_graph(rooms, links);
+	if (*ants > 0)
+		read_graph(rooms, links);
 }
 
 static int		*compose_output(t_room *rooms, t_link *links, int ants)
@@ -68,9 +70,10 @@ int				lemin(void)
 	t_link		*links;
 	int			*best_set;
 
+	best_set = NULL;
 	read_input(&rooms, &links, &ants_cmnts, &ants);
 	if (ants < 1 || !rooms || !links)
-		terminate(&rooms, &links, &ants_cmnts, NULL);
+		terminate(&rooms, &links, &ants_cmnts, &best_set);
 	display_input(ants_cmnts, ants, rooms, links);
 	best_set = compose_output(rooms, links, ants);
 	if (!best_set)
@@ -83,5 +86,5 @@ int				lemin(void)
 int main(void) // DEL
 {
 	lemin();
-	system("leaks lem-in");
+	// system("leaks lem-in");
 }
