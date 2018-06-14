@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-int		max_len(t_set *set) // TODO: test it
+int			max_len(t_set *set) // TODO: test it
 {
 	int max_len;
 	int	cur_len;
@@ -56,14 +56,14 @@ static int	set_order(t_path **set_paths, int size, int max_p)
 	int i;
 
 	i = size - 1;
-	while (i > -1 && set_paths[i]->id > max_p - (size - i - 1))
+	while (i > -1 && set_paths[i]->id >= max_p - (size - i - 1))
 		i--;
 	if (i < 0)
 		return (false);
 	if (i + 1 < size)
-		set_paths[i] = set_paths[i]->next;
+		set_paths[i] = set_paths[i]->prev;
 	while (++i < size)
-		set_paths[i] = set_paths[i - 1]->next;
+		set_paths[i] = set_paths[i - 1]->prev;
 	return (true);
 }
 
@@ -97,11 +97,11 @@ static int	intersect(t_path **set_paths, int rooms_num)
 t_path		**new_set_paths(int size, t_path *paths) // TODO: test it
 {
 	t_path	**new;
-	int 	i;
+	int		i;
 
 	new = (t_path**)malloc(sizeof(t_path*) * (size + 1));
 	if (!new)
-		return(NULL);
+		return (NULL);
 	i = 0;
 	while (i < size)
 	{
@@ -115,7 +115,7 @@ t_path		**new_set_paths(int size, t_path *paths) // TODO: test it
 t_path		**set_paths_copy(t_path **set_paths, int size) // TODO: test it
 {
 	t_path	**copy;
-	int 	i;
+	int		i;
 
 	copy = (t_path**)malloc(sizeof(t_path*) * (size + 1));
 	if (!copy)
@@ -153,11 +153,13 @@ static void	pick_set(t_set *set, t_path *paths, int rooms_num)
 	int		i;
 
 	cur = new_set_paths(set->size, paths);
+	if (!cur)
+		return ;
 	max_p = paths->id;
 	while (set_order(cur, set->size, max_p))
 	{
 		i = set->size - 1;
-		while (cur[i]->id <= max_p)
+		while (cur[i]->prev)
 		{
 			cur_len = len_of_set_paths(cur);
 			if (cur_len < set->length && !intersect(cur, rooms_num))
@@ -166,7 +168,7 @@ static void	pick_set(t_set *set, t_path *paths, int rooms_num)
 				set->paths = set_paths_copy(cur, cur_len);
 				set->length = cur_len;
 			}
-			cur[i] = cur[i]->prev; // TODO: double linked list
+			cur[i] = cur[i]->prev;
 		}
 	}
 	free(cur);
@@ -197,7 +199,7 @@ t_set		*new_set(int size) // TODO: test it
 	new->size = size;
 	new->paths = NULL;
 	new->length = INT_MAX;
-	new->efficiency= INT_MAX;
+	new->efficiency = INT_MAX;
 	return (new);
 }
 
@@ -208,7 +210,11 @@ t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 
 	if (!(cur = new_set(1)))
 		return (NULL);
-	best = NULL;
+	if (!(best = new_set(0)))
+	{
+		free_set(&cur);
+		return (NULL);
+	}
 	while (cur->size <= ants && cur->size <= all_paths->id + 1)
 	{
 		pick_set(cur, all_paths, rooms_num);

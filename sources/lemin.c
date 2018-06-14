@@ -14,9 +14,10 @@
 
 /*
 **	TODO: norme errors, start-end paths, display_output()
+**	check for error handling; total review
 */
 
-static t_set		*compose_output(t_room *rooms, t_link *links, int ants)
+static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 {
 	t_path	*paths;
 	t_set	*best_set;

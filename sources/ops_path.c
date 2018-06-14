@@ -28,7 +28,7 @@ int		add_path(t_path **paths, int *nodes)
 	new->length = i;
 	new->prev = NULL;
 	if (*paths)
-		(*paths)->prev = new; // TODO: test it
+		(*paths)->prev = new;
 	new->next = *paths;
 	*paths = new;
 	return (SUCCESS_CODE);

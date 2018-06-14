@@ -80,6 +80,8 @@ void	free_paths(t_path **paths)
 
 void	free_set(t_set **set)
 {
+	if (!*set)
+		return ;
 	free((*set)->paths);
 	free(*set);
 	*set = NULL;
