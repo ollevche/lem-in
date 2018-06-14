@@ -94,7 +94,8 @@ int				add_link(t_link **links, t_room *rooms, char *line,
 	while (line[i] && line[i] != '-')
 		i++;
 	room_iter = rooms;
-	while (ft_strncmp(line, room_iter->name, i))
+	while (ft_strlen(room_iter->name) != (size_t)i
+			|| ft_strncmp(line, room_iter->name, i))
 		room_iter = room_iter->next;
 	new_elem->from = room_iter->id;
 	room_iter = rooms;
