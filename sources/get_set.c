@@ -83,7 +83,6 @@ static int	*pick_some(t_path *paths, int amount, int rooms_num)
 	int	shortest_len;
 	int	max_p;
 	int	i;
-	int TEST_VARIABLE = 0; //DEL
 
 	cur = new_filled_arr(amount);
 	max_p = paths->id;
@@ -104,11 +103,9 @@ static int	*pick_some(t_path *paths, int amount, int rooms_num)
 				shortest_len = cur_len;
 			}
 			cur[i]++;
-			TEST_VARIABLE++;
 		}
 	}
 	free(cur);
-	ft_printf("found %d variants\n", TEST_VARIABLE);
 	return (shortest);
 }
 
@@ -130,7 +127,6 @@ int			*get_set(t_path *all_paths, int ants, int rooms_num)
 		if (!(cur = pick_some(all_paths, amount, rooms_num)))
 			break ;
 		cur_ef = efficiency_of(cur, amount, ants, all_paths);
-		display_set(cur, cur_ef); // DEL
 		if (cur_ef < best_ef)
 		{
 			free(best);
@@ -141,7 +137,5 @@ int			*get_set(t_path *all_paths, int ants, int rooms_num)
 			free(cur);
 		amount++;
 	}
-	ft_printf("----------\nBEST SET:\n----------\n"); // DEL
-	display_set(best, best_ef); // DEL
 	return (best);
 }
