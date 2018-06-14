@@ -58,17 +58,16 @@ typedef struct	s_path
 	struct s_path	*next;
 }				t_path;
 
-/*
-**	reading.c
-*/
+typedef struct	s_set
+{
+	t_path			**paths;
+	int				size;
+	int				length;
+	int				efficiency;
+}				t_set;
 
 int				read_ants(t_strlist **ants_cmnts);
 int				read_graph(t_room **rooms, t_link **links);
-
-/*
-**	struct_operations_N.c
-*/
-
 t_room			*get_room_by_id(t_room *rooms, int id);
 t_room			*get_room_by_command(t_room *rooms, char *command);
 t_room			*get_room_by_name(t_room *rooms, char *name);
@@ -79,55 +78,30 @@ int				add_link(t_link **links, t_room *rooms, char *line,
 							t_strlist **comments);
 int				add_path(t_path **paths, int *nodes);
 t_path			*get_path_by_id(t_path *paths, int id);
-int				*new_filled_arr(int size);
 int				max_len(int *paths_ids, t_path *paths);
 int				len_of_paths(int *paths_ids, t_path *paths);
-
-/*
-**	display.c
-*/
-
 void			display_input(t_strlist *ants_cmnts, int ants,
 								t_room *rooms, t_link *links);
-
-/*
-**	get_paths.c
-*/
-
 t_path			*get_paths(t_room *rooms, t_link *links);
-
-/*
-**	arrays.c
-*/
-
 int				*arr_n_copy(int *arr, int size);
 int				*to_arr(int elem);
 int				*arr_extend(int *arr, int elem);
 int				arr_get_last_elem(int *arr);
 int				arr_contains(int *nodes, int target);
-
-/*
-**	get_set.c
-*/
-
+int				*new_filled_arr(int size);
 int				*get_set(t_path *all_paths, int ants, int rooms_num);
-
-/*
-**	free_structs.c
-*/
-
 void			free_strlist(t_strlist **list);
 void			free_rooms(t_room **rooms);
 void			free_links(t_link **links);
 void			free_matrix(int ***matrix);
 void			free_paths(t_path **paths);
-
-/*
-**	testing.c
-*/
-
 void			display_matrix(int **matrix);
 void			display_paths(t_path *paths, t_room *rooms);
 void			display_set(int *set, int efficiency);
+void			terminate(t_room **rooms, t_link **links,
+							t_strlist **ants_cmnts, int **best_set);
+void    		total_free(t_room **rooms, t_link **links,
+							t_strlist **ants_cmnts, int **best_set);
+int 		    operation_failure(t_strlist *comments, char *command);
 
 #endif

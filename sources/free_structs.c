@@ -62,20 +62,6 @@ void	free_links(t_link **links)
 	*links = NULL;
 }
 
-void	free_matrix(int ***matrix)
-{
-	int	i;
-
-	i = 0;
-	while ((*matrix)[i])
-	{
-		free((*matrix)[i]);
-		i++;
-	}
-	free(*matrix);
-	*matrix = NULL;
-}
-
 void	free_paths(t_path **paths)
 {
 	t_path	*trash;

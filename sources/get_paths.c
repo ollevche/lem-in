@@ -52,7 +52,6 @@ static int	**compose_matrix(t_room *rooms, t_link *links)
 		matrix[links->to][links->from] = 1;
 		links = links->next;
 	}
-	display_matrix(matrix); // DEL
 	return (matrix);
 }
 
@@ -110,6 +109,5 @@ t_path		*get_paths(t_room *rooms, t_link *links)
 		search(matrix, nodes, end_room, &paths) == ERROR_CODE)
 		free_paths(&paths);
 	free_matrix(&matrix);
-	display_paths(paths, rooms); // DEL
 	return (paths);
 }

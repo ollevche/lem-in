@@ -12,6 +12,13 @@
 
 #include "lemin.h"
 
+/*
+**	This file contains all of the functions for reading input.
+**	is_room() and is_link() check line for syntax errors
+**	read_ants() and read_graph() read ants num, rooms and links descriptions,
+**	comments and commands for all of them (ants can't have commands)
+*/
+
 static int	to_pos_int(char *str)
 {
 	int	i;
@@ -98,6 +105,13 @@ static int	is_link(char *str, t_room *rooms)
 	return (true);
 }
 
+/*
+**	line of read_graph function which copies the line into the command:
+**	ret_code = (command = ft_strdup(line)) ? SUCCESS_CODE : ERROR_CODE;
+**	...
+**	it's modified because of The Norme :(
+*/
+
 int			read_graph(t_room **rooms, t_link **links)
 {
 	char		*line;
@@ -111,7 +125,7 @@ int			read_graph(t_room **rooms, t_link **links)
 	while (ret_code != ERROR_CODE && (line = safe_gnl(FILEDES)))
 	{
 		if (line[0] == '#' && line[1] == '#')
-			ret_code = (command = ft_strdup(line)) ? SUCCESS_CODE : ERROR_CODE; // DEL
+			command = ft_strdup(line);
 		else if (line[0] == '#')
 			ret_code = add_strlist(&comments, ft_strdup(line));
 		else if (is_room(line))
