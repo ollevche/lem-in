@@ -12,56 +12,75 @@
 
 #include "lemin.h"
 
-static int	efficiency_of(int *set, int size, int ants, t_path *paths)
+int		max_len(t_set *set) // TODO: test it
+{
+	int max_len;
+	int	cur_len;
+	int	i;
+
+	max_len = 0;
+	i = 0;
+	while (set->paths[i])
+	{
+		cur_len = set->paths[i]->length;
+		if (cur_len > max_len)
+			max_len = cur_len;
+		i++;
+	}
+	return (max_len);
+}
+
+static int	efficiency_of(t_set *set, int ants) // TODO: test it
 {
 	int	merge_value;
 	int	merge_sum;
 	int	in_total;
 	int i;
 
-	merge_value = max_len(set, paths) - 1;
+	merge_value = max_len(set) - 1;
 	if (merge_value == 1)
 		return (1);
 	merge_sum = 0;
 	i = 0;
-	while (i < size)
+	while (i < set->size)
 	{
-		merge_sum += merge_value - 
-		(get_path_by_id(paths, set[i])->length - 1) + 1;
+		merge_sum += merge_value - (set->paths[i]->length - 1) + 1;
 		i++;
 	}
-	in_total = merge_value + ft_ceildiv(ants - merge_sum, size);
+	in_total = merge_value + ft_ceildiv(ants - merge_sum, set->size);
 	return (in_total);
 }
 
-static int	set_order(int *arr, int size, int max_p)
+static int	set_order(t_path **set_paths, int size, int max_p)
 {
 	int i;
 
 	i = size - 1;
-	while (i > -1 && arr[i] > max_p - (size - i - 1))
+	while (i > -1 && set_paths[i]->id > max_p - (size - i - 1))
 		i--;
 	if (i < 0)
 		return (false);
 	if (i + 1 < size)
-		arr[i]++;
+		set_paths[i] = set_paths[i]->next;
 	while (++i < size)
-		arr[i] = arr[i - 1] + 1;
+		set_paths[i] = set_paths[i - 1]->next;
 	return (true);
 }
 
-static int	intersect(int *set, t_path *paths, int rooms_num)
+static int	intersect(t_path **set_paths, int rooms_num)
 {
 	int	rooms[rooms_num];
-	int	r;
 	int	*path_rooms;
+	int	r;
+	int p;
 
 	r = 0;
 	while (r < rooms_num)
 		rooms[r++] = 0;
-	while (*set != -1)
+	p = 0;
+	while (set_paths[p])
 	{
-		path_rooms = get_path_by_id(paths, *set)->nodes;
+		path_rooms = set_paths[p]->nodes;
 		while (*(path_rooms + 2) != -1)
 		{
 			path_rooms++;
@@ -70,72 +89,135 @@ static int	intersect(int *set, t_path *paths, int rooms_num)
 			else
 				rooms[*path_rooms] = 1;
 		}
-		set++;
+		p++;
 	}
 	return (false);
 }
 
-static int	*pick_some(t_path *paths, int amount, int rooms_num)
+t_path		**new_set_paths(int size, t_path *paths) // TODO: test it
 {
-	int	*cur;
-	int	*shortest;
-	int	cur_len;
-	int	shortest_len;
-	int	max_p;
-	int	i;
+	t_path	**new;
+	int 	i;
 
-	cur = new_filled_arr(amount);
-	max_p = paths->id;
-	shortest = NULL;
-	shortest_len = INT_MAX;
-	while (set_order(cur, amount, max_p))
+	new = (t_path**)malloc(sizeof(t_path*) * (size + 1));
+	if (!new)
+		return(NULL);
+	i = 0;
+	while (i < size)
 	{
-		i = amount - 1;
-		while (cur[i] <= max_p)
+		new[i] = get_path_by_id(paths, i);
+		i++;
+	}
+	new[i] = NULL;
+	return (new);
+}
+
+t_path		**set_paths_copy(t_path **set_paths, int size) // TODO: test it
+{
+	t_path	**copy;
+	int 	i;
+
+	copy = (t_path**)malloc(sizeof(t_path*) * (size + 1));
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (i < size)
+	{
+		copy[i] = set_paths[i];
+		i++;
+	}
+	copy[i] = NULL;
+	return (copy);
+}
+
+int			len_of_set_paths(t_path **set_paths) // TODO: test it
+{
+	int	i;
+	int	total_len;
+
+	i = 0;
+	total_len = 0;
+	while (set_paths[i])
+	{
+		total_len += set_paths[i]->length;
+		i++;
+	}
+	return (total_len);
+}
+
+static void	pick_set(t_set *set, t_path *paths, int rooms_num)
+{
+	t_path	**cur;
+	int		cur_len;
+	int		max_p;
+	int		i;
+
+	cur = new_set_paths(set->size, paths);
+	max_p = paths->id;
+	while (set_order(cur, set->size, max_p))
+	{
+		i = set->size - 1;
+		while (cur[i]->id <= max_p)
 		{
-			cur_len = len_of_paths(cur, paths);
-			if (cur_len < shortest_len && !intersect(cur, paths, rooms_num))
+			cur_len = len_of_set_paths(cur);
+			if (cur_len < set->length && !intersect(cur, rooms_num))
 			{
-				free(shortest);
-				shortest = arr_n_copy(cur, amount);
-				if (!shortest)
-					break ;
-				shortest_len = cur_len;
+				free(set->paths);
+				set->paths = set_paths_copy(cur, cur_len);
+				set->length = cur_len;
 			}
-			cur[i]++;
+			cur[i] = cur[i]->prev; // TODO: double linked list
 		}
 	}
 	free(cur);
-	return (shortest);
 }
 
-int			*get_set(t_path *all_paths, int ants, int rooms_num)
+static void	save_best_set(t_set *cur, t_set *best, int ants)
 {
-	int amount;
-	int *best;
-	int *cur;
-	int	best_ef;
-	int	cur_ef;
-
-	best_ef = INT_MAX;
-	cur_ef = best_ef - 1;	
-	amount = 1;
-	cur = NULL;
-	best = NULL;
-	while (amount <= ants && amount <= all_paths->id + 1 && cur_ef <= best_ef)
+	cur->efficiency = efficiency_of(cur, ants);
+	if (!best || cur->efficiency < best->efficiency)
 	{
-		if (!(cur = pick_some(all_paths, amount, rooms_num)))
+		free(best->paths);
+		best->size = cur->size;
+		best->paths = cur->paths;
+		best->length = cur->length;
+		best->efficiency = cur->efficiency;
+	}
+	else
+		free(cur->paths);
+}
+
+t_set		*new_set(int size) // TODO: test it
+{
+	t_set *new;
+
+	new = (t_set*)malloc(sizeof(t_set));
+	if (!new)
+		return (NULL);
+	new->size = size;
+	new->paths = NULL;
+	new->length = INT_MAX;
+	new->efficiency= INT_MAX;
+	return (new);
+}
+
+t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
+{
+	t_set	*best;
+	t_set	*cur;
+
+	if (!(cur = new_set(1)))
+		return (NULL);
+	best = NULL;
+	while (cur->size <= ants && cur->size <= all_paths->id + 1)
+	{
+		pick_set(cur, all_paths, rooms_num);
+		if (!cur->paths)
 			break ;
-		cur_ef = efficiency_of(cur, amount, ants, all_paths);
-		if (cur_ef < best_ef)
-		{
-			free(best);
-			best_ef = cur_ef;
-			best = cur;
-		}
-		else
-			free(cur);
-		amount++;
+		save_best_set(cur, best, ants);
+		if (cur->efficiency > best->efficiency) // TODO: test it
+			break ;
+		cur->size++;
 	}
 	return (best);
 }

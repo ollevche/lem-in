@@ -13,7 +13,7 @@
 #include "lemin.h"
 
 void	terminate(t_room **rooms, t_link **links,
-						t_strlist **ants_cmnts, int **best_set)
+						t_strlist **ants_cmnts, t_set **best_set)
 {
 	if (errno)
 		perror("Error");

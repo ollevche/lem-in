@@ -16,10 +16,10 @@
 **	TODO: norme errors, start-end paths, display_output()
 */
 
-static int		*compose_output(t_room *rooms, t_link *links, int ants)
+static t_set		*compose_output(t_room *rooms, t_link *links, int ants)
 {
 	t_path	*paths;
-	int		*best_set;
+	t_set	*best_set;
 
 	paths = get_paths(rooms, links);
 	if (!paths)
@@ -35,7 +35,7 @@ int				lemin(void)
 	t_strlist	*ants_cmnts;
 	t_room		*rooms;
 	t_link		*links;
-	int			*best_set;
+	t_set		*best_set;
 
 	best_set = NULL;
 	rooms = NULL;

@@ -77,3 +77,10 @@ void	free_paths(t_path **paths)
 	}
 	*paths = NULL;
 }
+
+void	free_set(t_set **set)
+{
+	free((*set)->paths);
+	free(*set);
+	*set = NULL;
+}

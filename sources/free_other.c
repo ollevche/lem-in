@@ -27,11 +27,10 @@ void	free_matrix(int ***matrix)
 }
 
 void	total_free(t_room **rooms, t_link **links,
-						t_strlist **ants_cmnts, int **best_set)
+						t_strlist **ants_cmnts, t_set **set)
 {
 	free_rooms(rooms);
 	free_links(links);
 	free_strlist(ants_cmnts);
-	free(*best_set);
-	*best_set = NULL;
+	free_set(set);
 }

@@ -55,6 +55,7 @@ typedef struct	s_path
 	int				id;
 	int				*nodes;
 	int				length;
+	struct s_path	*prev;
 	struct s_path	*next;
 }				t_path;
 
@@ -65,6 +66,8 @@ typedef struct	s_set
 	int				length;
 	int				efficiency;
 }				t_set;
+
+// TODO: files - functions
 
 int				read_ants(t_strlist **ants_cmnts);
 int				read_graph(t_room **rooms, t_link **links);
@@ -78,8 +81,6 @@ int				add_link(t_link **links, t_room *rooms, char *line,
 							t_strlist **comments);
 int				add_path(t_path **paths, int *nodes);
 t_path			*get_path_by_id(t_path *paths, int id);
-int				max_len(int *paths_ids, t_path *paths);
-int				len_of_paths(int *paths_ids, t_path *paths);
 void			display_input(t_strlist *ants_cmnts, int ants,
 								t_room *rooms, t_link *links);
 t_path			*get_paths(t_room *rooms, t_link *links);
@@ -89,19 +90,20 @@ int				*arr_extend(int *arr, int elem);
 int				arr_get_last_elem(int *arr);
 int				arr_contains(int *nodes, int target);
 int				*new_filled_arr(int size);
-int				*get_set(t_path *all_paths, int ants, int rooms_num);
+t_set			*get_set(t_path *all_paths, int ants, int rooms_num);
 void			free_strlist(t_strlist **list);
 void			free_rooms(t_room **rooms);
 void			free_links(t_link **links);
 void			free_matrix(int ***matrix);
 void			free_paths(t_path **paths);
+void			free_set(t_set **set);
 void			display_matrix(int **matrix);
 void			display_paths(t_path *paths, t_room *rooms);
 void			display_set(int *set, int efficiency);
 void			terminate(t_room **rooms, t_link **links,
-							t_strlist **ants_cmnts, int **best_set);
+							t_strlist **ants_cmnts, t_set **set);
 void    		total_free(t_room **rooms, t_link **links,
-							t_strlist **ants_cmnts, int **best_set);
+							t_strlist **ants_cmnts, t_set **set);
 int 		    operation_failure(t_strlist *comments, char *command);
 
 #endif
