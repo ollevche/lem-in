@@ -97,13 +97,13 @@ void			free_links(t_link **links);
 void			free_matrix(int ***matrix);
 void			free_paths(t_path **paths);
 void			free_set(t_set **set);
-void			display_matrix(int **matrix);
-void			display_paths(t_path *paths, t_room *rooms);
-void			display_set(int *set, int efficiency);
 void			terminate(t_room **rooms, t_link **links,
 							t_strlist **ants_cmnts, t_set **set);
 void    		total_free(t_room **rooms, t_link **links,
 							t_strlist **ants_cmnts, t_set **set);
 int 		    operation_failure(t_strlist *comments, char *command);
+
+void			display_set(t_set *set);
+void			display_paths(t_path *paths);
 
 #endif

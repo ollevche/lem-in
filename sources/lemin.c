@@ -20,14 +20,16 @@
 static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 {
 	t_path	*paths;
-	t_set	*best_set;
+	t_set	*set;
 
 	paths = get_paths(rooms, links);
 	if (!paths)
 		return (NULL);
-	best_set = get_set(paths, ants, rooms->id + 1);
+	display_paths(paths);
+	set = get_set(paths, ants, rooms->id + 1);
+	display_set(set);
 	free_paths(&paths);
-	return (best_set);
+	return (set);
 }
 
 int				lemin(void)

@@ -145,17 +145,19 @@ int			len_of_set_paths(t_path **set_paths) // TODO: test it
 	return (total_len);
 }
 
-static void	pick_set(t_set *set, t_path *paths, int rooms_num)
+static int	pick_set(t_set *set, t_path *paths, int rooms_num)
 {
 	t_path	**cur;
 	int		cur_len;
 	int		max_p;
 	int		i;
+	int		is_found;
 
 	cur = new_set_paths(set->size, paths);
 	if (!cur)
-		return ;
+		return (-1);
 	max_p = paths->id;
+	is_found = 0;
 	while (set_order(cur, set->size, max_p))
 	{
 		i = set->size - 1;
@@ -167,17 +169,19 @@ static void	pick_set(t_set *set, t_path *paths, int rooms_num)
 				free(set->paths);
 				set->paths = set_paths_copy(cur, cur_len);
 				set->length = cur_len;
+				is_found = 1;
 			}
 			cur[i] = cur[i]->prev;
 		}
 	}
 	free(cur);
+	return (is_found);
 }
 
 static void	save_best_set(t_set *cur, t_set *best, int ants)
 {
 	cur->efficiency = efficiency_of(cur, ants);
-	if (!best || cur->efficiency < best->efficiency)
+	if (cur->efficiency < best->efficiency)
 	{
 		free(best->paths);
 		best->size = cur->size;
@@ -217,8 +221,7 @@ t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 	}
 	while (cur->size <= ants && cur->size <= all_paths->id + 1)
 	{
-		pick_set(cur, all_paths, rooms_num);
-		if (!cur->paths)
+		if (pick_set(cur, all_paths, rooms_num) < 1)
 			break ;
 		save_best_set(cur, best, ants);
 		if (cur->efficiency > best->efficiency) // TODO: test it
