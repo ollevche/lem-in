@@ -13,8 +13,8 @@
 #include "lemin.h"
 
 /*
-**	TODO: norme errors, start-end paths, display_output()
-**	check for error handling; total review, debug.c
+**	TODO: norme errors; start-end paths; display_output();
+**	check for error handling, total review; delete unused functions
 */
 
 int g_log = 0;
@@ -27,9 +27,9 @@ static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 	paths = get_paths(rooms, links);
 	if (!paths)
 		return (NULL);
-	display_paths("all of paths:\n", paths, rooms); // DEL
+	display_paths("all of paths:\n", paths, rooms);
 	set = get_set(paths, ants, rooms->id + 1);
-	display_set("best:\n", set); // DEL
+	display_set("best:\n", set);
 	free_paths(&paths);
 	return (set);
 }

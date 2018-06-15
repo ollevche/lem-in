@@ -41,7 +41,7 @@ static void	save_best_set(t_set *cur, t_set *best, int ants)
 		free(best->paths);
 		best->size = cur->size;
 		best->paths = cur->paths;
-		display_set("", cur); // DEL
+		display_set("", cur);
 		best->length = cur->length;
 		best->efficiency = cur->efficiency;
 	}
