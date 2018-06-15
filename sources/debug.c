@@ -12,20 +12,22 @@
 
 #include "lemin.h"
 
-void	display_paths(t_path *paths)
+void	display_paths(t_path *paths, t_room *rooms)
 {
 	int i;
 
-	if (!paths)
+	if (!paths || !rooms)
 		return ;
 	while (paths)
 	{
-		ft_printf("path\t[id = %d][length = %d]:", paths->id, paths->length);
+		ft_printf("path_%d\t[length = %d]\t", paths->id, paths->length);
 		i = 0;
 		while (i < paths->length)
 		{
-			ft_printf("\t%d", paths->nodes[i]);
+			ft_printf("%s", get_room_by_id(rooms, paths->nodes[i])->name);
 			i++;
+			if (i < paths->length)
+				ft_printf("-");
 		}
 		ft_printf("\n");
 		paths = paths->next;
@@ -38,12 +40,15 @@ void	display_set(t_set *set)
 
 	if (!set)
 		return ;
-	ft_printf("set\t[size = %d][length = %d]:", set->size, set->length);
+	ft_printf("set\t[size = %d\tlength = %d\tefficiency = %d]:\t",
+				set->size, set->length, set->efficiency);
 	i = 0;
 	while (i < set->size)
 	{
-		ft_printf("\t%d", set->paths[i]->id);
+		ft_printf("%d", set->paths[i]->id);
 		i++;
+		if (i < set->size)
+			ft_printf("+");
 	}
 	ft_printf("\n");
 }

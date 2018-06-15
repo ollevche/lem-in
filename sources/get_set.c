@@ -186,6 +186,8 @@ static void	save_best_set(t_set *cur, t_set *best, int ants)
 		free(best->paths);
 		best->size = cur->size;
 		best->paths = cur->paths;
+		display_set(cur); // DEL
+		cur->paths = NULL;
 		best->length = cur->length;
 		best->efficiency = cur->efficiency;
 	}
@@ -207,6 +209,12 @@ t_set		*new_set(int size) // TODO: test it
 	return (new);
 }
 
+void		set_reset(t_set *set)
+{
+	set->efficiency = INT_MAX;
+	set->length = INT_MAX;
+}
+
 t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 {
 	t_set	*best;
@@ -221,11 +229,12 @@ t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 	}
 	while (cur->size <= ants && cur->size <= all_paths->id + 1)
 	{
+		set_reset(cur);
 		if (pick_set(cur, all_paths, rooms_num) < 1)
 			break ;
 		save_best_set(cur, best, ants);
-		if (cur->efficiency > best->efficiency) // TODO: test it
-			break ;
+		// if (cur->efficiency > best->efficiency) // TODO: test it
+		// 	break ;
 		cur->size++;
 	}
 	return (best);

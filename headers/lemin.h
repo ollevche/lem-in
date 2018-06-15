@@ -104,6 +104,6 @@ void    		total_free(t_room **rooms, t_link **links,
 int 		    operation_failure(t_strlist *comments, char *command);
 
 void			display_set(t_set *set);
-void			display_paths(t_path *paths);
+void			display_paths(t_path *paths, t_room *rooms);
 
 #endif

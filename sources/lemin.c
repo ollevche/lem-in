@@ -25,9 +25,9 @@ static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 	paths = get_paths(rooms, links);
 	if (!paths)
 		return (NULL);
-	display_paths(paths);
+	display_paths(paths, rooms); // DEL
 	set = get_set(paths, ants, rooms->id + 1);
-	display_set(set);
+	display_set(set); // DEL
 	free_paths(&paths);
 	return (set);
 }
@@ -61,5 +61,5 @@ int				lemin(void)
 int				main(void) // DEL
 {
 	lemin();
-	// system("leaks lem-in");
+	system("leaks lem-in");
 }
