@@ -42,12 +42,12 @@ static void	save_best_set(t_set *cur, t_set *best, int ants)
 		best->size = cur->size;
 		best->paths = cur->paths;
 		display_set("", cur); // DEL
-		cur->paths = NULL;
 		best->length = cur->length;
 		best->efficiency = cur->efficiency;
 	}
 	else
 		free(cur->paths);
+	cur->paths = NULL;
 }
 
 t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
@@ -73,5 +73,7 @@ t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 			break ;
 		cur->size++;
 	}
+	free(cur->paths);
+	free(cur);
 	return (best);
 }
