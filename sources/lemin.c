@@ -13,8 +13,9 @@
 #include "lemin.h"
 
 /*
-**	TODO: norme errors; start-end paths; display_output();
-**	check for error handling, total review; delete unused functions
+**	TODO: norme errors; delete unused functions; start-end paths;
+**	set_params(); -quick;
+**	check for error handling, total review; display_output();
 */
 
 int g_log = 0;
