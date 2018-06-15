@@ -14,8 +14,10 @@
 
 /*
 **	TODO: norme errors, start-end paths, display_output()
-**	check for error handling; total review
+**	check for error handling; total review, debug.c
 */
+
+int g_log = 0;
 
 static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 {
@@ -25,9 +27,9 @@ static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 	paths = get_paths(rooms, links);
 	if (!paths)
 		return (NULL);
-	display_paths(paths, rooms); // DEL
+	display_paths("all of paths:\n", paths, rooms); // DEL
 	set = get_set(paths, ants, rooms->id + 1);
-	display_set(set); // DEL
+	display_set("best:\n", set); // DEL
 	free_paths(&paths);
 	return (set);
 }
@@ -58,8 +60,14 @@ int				lemin(void)
 	return (0);
 }
 
-int				main(void) // DEL
+/*
+**	system("leaks lem-in");
+*/
+
+int				main(int argc, char **args)
 {
+	if (argc > 1 && !ft_strcmp(args[1], "-log"))
+		g_log = 1;
 	lemin();
 	system("leaks lem-in");
 }

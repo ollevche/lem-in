@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   logging.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ollevche <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,12 +12,15 @@
 
 #include "lemin.h"
 
-void	display_paths(t_path *paths, t_room *rooms)
+void	display_paths(char *title, t_path *paths, t_room *rooms)
 {
 	int i;
 
-	if (!paths || !rooms)
+	if (!paths || !rooms || !title || !g_log)
 		return ;
+	ft_printf("%s", title);
+	while (paths->next)
+		paths = paths->next;
 	while (paths)
 	{
 		ft_printf("path_%d\t[length = %d]\t", paths->id, paths->length);
@@ -30,17 +33,18 @@ void	display_paths(t_path *paths, t_room *rooms)
 				ft_printf("-");
 		}
 		ft_printf("\n");
-		paths = paths->next;
+		paths = paths->prev;
 	}
 }
 
-void	display_set(t_set *set)
+void	display_set(char *title, t_set *set)
 {
 	int i;
 
-	if (!set)
+	if (!set || !title || !g_log)
 		return ;
-	ft_printf("set\t[size = %d\tlength = %d\tefficiency = %d]:\t",
+	ft_printf("%s", title);
+	ft_printf("set\t[size = %d,\tlength = %d,\tefficiency = %d]\t",
 				set->size, set->length, set->efficiency);
 	i = 0;
 	while (i < set->size)

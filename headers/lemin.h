@@ -18,92 +18,126 @@
 # define FILEDES STDIN_FILENO
 
 # include "libftprintf.h"
+# include "lemin_structs.h"
 # include <stdbool.h>
 # include <limits.h>
 # include <errno.h>
 
-typedef struct	s_strlist
-{
-	char				*str;
-	struct s_strlist	*prev;
-	struct s_strlist	*next;
-}				t_strlist;
+extern int g_log;
 
-typedef struct	s_room
-{
-	int				id;
-	char			*name;
-	int				x;
-	int				y;
-	t_strlist		*comments;
-	char			*command;
-	struct s_room	*prev;
-	struct s_room	*next;
-}				t_room;
-
-typedef struct	s_link
-{
-	int				from;
-	int				to;
-	t_strlist		*comments;
-	struct s_link	*prev;
-	struct s_link	*next;
-}				t_link;
-
-typedef struct	s_path
-{
-	int				id;
-	int				*nodes;
-	int				length;
-	struct s_path	*prev;
-	struct s_path	*next;
-}				t_path;
-
-typedef struct	s_set
-{
-	t_path			**paths;
-	int				size;
-	int				length;
-	int				efficiency;
-}				t_set;
-
-// TODO: files - functions
+/*
+**	reading.c
+*/
 
 int				read_ants(t_strlist **ants_cmnts);
 int				read_graph(t_room **rooms, t_link **links);
-t_room			*get_room_by_id(t_room *rooms, int id);
-t_room			*get_room_by_command(t_room *rooms, char *command);
-t_room			*get_room_by_name(t_room *rooms, char *name);
-int				add_strlist(t_strlist **head, char *str);
-int				add_room(t_room **rooms, char *line,
-							t_strlist **comments, char **command);
-int				add_link(t_link **links, t_room *rooms, char *line,
-							t_strlist **comments);
-int				add_path(t_path **paths, int *nodes);
-t_path			*get_path_by_id(t_path *paths, int id);
+
+/*
+**	display.c
+*/
+
 void			display_input(t_strlist *ants_cmnts, int ants,
 								t_room *rooms, t_link *links);
+
+/*
+**	get_paths.c
+*/
+
 t_path			*get_paths(t_room *rooms, t_link *links);
+
+/*
+**	get_set.c
+*/
+
+t_set			*get_set(t_path *all_paths, int ants, int rooms_num);
+
+/*
+**	pick_set.c
+*/
+
+int				pick_set(t_set *set, t_path *paths, int rooms_num);
+
+/*
+**	arrays.c
+*/
+
 int				*arr_n_copy(int *arr, int size);
 int				*to_arr(int elem);
 int				*arr_extend(int *arr, int elem);
 int				arr_get_last_elem(int *arr);
-int				arr_contains(int *nodes, int target);
 int				*new_filled_arr(int size);
-t_set			*get_set(t_path *all_paths, int ants, int rooms_num);
+
+/*
+**	ops_room.c
+*/
+
+t_room			*get_room_by_id(t_room *rooms, int id);
+t_room			*get_room_by_command(t_room *rooms, char *command);
+t_room			*get_room_by_name(t_room *rooms, char *name);
+int				add_room(t_room **rooms, char *line,
+							t_strlist **comments, char **command);
+
+/*
+**	ops_link.c
+*/
+
+int				add_link(t_link **links, t_room *rooms, char *line,
+							t_strlist **comments);
+
+/*
+**	ops_path.c
+*/
+
+int				add_path(t_path **paths, int *nodes);
+t_path			*get_path_by_id(t_path *paths, int id);
+
+/*
+**	ops_set.c
+*/
+
+int				max_len(t_set *set);
+t_path			**new_set_paths(int size, t_path *paths);
+t_path			**set_paths_copy(t_path **set_paths, int size);
+int				len_of_set_paths(t_path **set_paths);
+t_set			*new_set(int size);
+
+/*
+**	ops_other.c
+*/
+
+int				add_strlist(t_strlist **head, char *str);
+
+/*
+**	util.c
+*/
+
+void			terminate(t_room **rooms, t_link **links,
+							t_strlist **ants_cmnts, t_set **set);
+int				operation_failure(t_strlist *comments, char *command);
+
+/*
+**	free_structs.c
+*/
+
 void			free_strlist(t_strlist **list);
 void			free_rooms(t_room **rooms);
 void			free_links(t_link **links);
-void			free_matrix(int ***matrix);
 void			free_paths(t_path **paths);
 void			free_set(t_set **set);
-void			terminate(t_room **rooms, t_link **links,
-							t_strlist **ants_cmnts, t_set **set);
-void    		total_free(t_room **rooms, t_link **links,
-							t_strlist **ants_cmnts, t_set **set);
-int 		    operation_failure(t_strlist *comments, char *command);
 
-void			display_set(t_set *set);
-void			display_paths(t_path *paths, t_room *rooms);
+/*
+**	free_other.c
+*/
+
+void			free_matrix(int ***matrix);
+void			total_free(t_room **rooms, t_link **links,
+							t_strlist **ants_cmnts, t_set **set);
+
+/*
+**	debug.c
+*/
+
+void			display_set(char *title, t_set *set);
+void			display_paths(char *title, t_path *paths, t_room *rooms);
 
 #endif

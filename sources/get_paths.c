@@ -55,6 +55,13 @@ static int	**compose_matrix(t_room *rooms, t_link *links)
 	return (matrix);
 }
 
+static int	arr_contains(int *nodes, int target)
+{
+	while (*nodes != -1 && *nodes != target)
+		nodes++;
+	return (*nodes == target);
+}
+
 static int	search(int **matrix, int *nodes, int end, t_path **paths)
 {
 	int	cur_node;

@@ -79,13 +79,6 @@ int	*arr_extend(int *arr, int elem)
 	return (copy);
 }
 
-int	arr_contains(int *nodes, int target)
-{
-	while (*nodes != -1 && *nodes != target)
-		nodes++;
-	return (*nodes == target);
-}
-
 int	*new_filled_arr(int size)
 {
 	int	*arr;
