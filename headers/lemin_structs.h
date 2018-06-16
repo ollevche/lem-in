@@ -58,6 +58,7 @@ typedef struct	s_set
 	int				size;
 	int				length;
 	int				efficiency;
+	t_path			*shortest_path_ever;
 }				t_set;
 
 #endif

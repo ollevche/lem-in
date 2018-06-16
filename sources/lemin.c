@@ -70,5 +70,5 @@ int				main(int argc, char **args)
 	if (argc > 1 && !ft_strcmp(args[1], "-log"))
 		g_log = 1;
 	lemin();
-	system("leaks lem-in"); // DEL
+	// system("leaks lem-in"); // DEL
 }

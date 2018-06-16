@@ -35,6 +35,8 @@ static int	efficiency_of(t_set *set, int ants)
 
 static void	save_best_set(t_set *cur, t_set *best, int ants)
 {
+	if (cur->size == 1)
+		cur->shortest_path_ever = cur->paths[0];
 	cur->efficiency = efficiency_of(cur, ants);
 	if (cur->efficiency < best->efficiency)
 	{
@@ -44,6 +46,7 @@ static void	save_best_set(t_set *cur, t_set *best, int ants)
 		display_set("", cur);
 		best->length = cur->length;
 		best->efficiency = cur->efficiency;
+		best->shortest_path_ever = cur->shortest_path_ever;
 	}
 	else
 		free(cur->paths);
