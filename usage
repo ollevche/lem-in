@@ -12,5 +12,5 @@ Usage:
         *invalid line*
 
 Options:
-    -log [--full]       displays log
-    -smart              uses "smart" traverse
+    -log [--t]			displays log, '--t' adds traversing log 
+    -complete			uses complete traverse instead of "smart"

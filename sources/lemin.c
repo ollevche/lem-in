@@ -19,7 +19,7 @@
 */
 
 int g_log = 0;
-int g_smart = 0;
+int g_smart = 1;
 
 static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 {
@@ -72,10 +72,10 @@ static void		set_params(int argc, char **args)
 		if (!g_log && !ft_strcmp(args[i], "-log"))
 			g_log = 1;
 		else if (!ft_strcmp(args[i - 1], "-log")
-				&& !ft_strcmp(args[i], "--full"))
+				&& !ft_strcmp(args[i], "--t"))
 			g_log = 2;
-		else if (!ft_strcmp(args[i], "-smart"))
-			g_smart = 1;
+		else if (!ft_strcmp(args[i], "-complete"))
+			g_smart = 0;
 		else
 			display_usage(USAGE_FILE);
 		i++;
@@ -90,5 +90,5 @@ int				main(int argc, char **args)
 {
 	set_params(argc, args);
 	lemin();
-	system("leaks lem-in"); // DEL
+	// system("leaks lem-in"); // DEL
 }

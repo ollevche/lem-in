@@ -20,7 +20,7 @@ void	terminate(t_room **rooms, t_link **links,
 	else
 		ft_printf("ERROR\n");
 	total_free(rooms, links, ants_cmnts, best_set);
-	system("leaks lem-in"); // DEL
+	// system("leaks lem-in"); // DEL
 	exit(EXIT_FAILURE);
 }
 
