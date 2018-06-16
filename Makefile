@@ -23,7 +23,7 @@ OBJDIR	=	./objects/
 LIBDIR	=	./libft/
 
 SRC		=	lemin.c reading.c display.c get_paths.c get_set.c pick_set.c \
-			arrays.c ops_link.c ops_room.c ops_path.c ops_set.c ops_other.c \
+			arrays.c ops_room.c ops_path.c ops_set.c ops_other.c \
 			free_structs.c free_other.c util.c logging.c
 
 OBJ		=	$(addprefix $(OBJDIR), $(SRC:.c=.o))

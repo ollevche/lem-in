@@ -12,6 +12,24 @@
 
 #include "lemin.h"
 
+void		display_usage(char *filename)
+{
+	char	*line;
+	int		fd;
+
+	fd = open(filename, O_RDONLY);
+	if (!fd)
+		terminate(NULL, NULL, NULL, NULL);
+	while ((line = safe_gnl(fd)))
+	{
+		ft_printf("%s\n", line);
+		free(line);
+	}
+	close(fd);
+	system("leaks lem-in"); // DEL
+	exit(EXIT_SUCCESS);
+}
+
 static void	print_comments(t_strlist *comments)
 {
 	if (!comments)

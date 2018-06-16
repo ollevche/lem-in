@@ -16,14 +16,22 @@
 # define ERROR_CODE -1
 # define SUCCESS_CODE 1
 # define FILEDES STDIN_FILENO
+# define USAGE_FILE "usage"
 
 # include "libftprintf.h"
 # include "lemin_structs.h"
 # include <stdbool.h>
 # include <limits.h>
 # include <errno.h>
+# include <fcntl.h>
+
+/*
+**	g_log: 0 (OFF), 1 (ON, without traversing), 2 (ON)
+**	g_smart: 0 (full traverse), 1 ("smart" traverse)
+*/
 
 extern int g_log;
+extern int g_smart;
 
 /*
 **	reading.c
@@ -38,6 +46,7 @@ int				read_graph(t_room **rooms, t_link **links);
 
 void			display_input(t_strlist *ants_cmnts, int ants,
 								t_room *rooms, t_link *links);
+void			display_usage(char *filename);
 
 /*
 **	get_paths.c
@@ -50,12 +59,16 @@ t_path			*get_paths(t_room *rooms, t_link *links);
 */
 
 t_set			*get_set(t_path *all_paths, int ants, int rooms_num);
+int				intersect(t_path **set_paths, int rooms_num);
 
 /*
 **	pick_set.c
 */
 
 int				pick_set(t_set *set, t_path *paths, int rooms_num);
+int				place_in_order(t_path **set_paths, t_set *set, int max_p,
+							int is_optimizable);
+int				optimize_order(t_path **set_paths, t_set *set, int max_p);
 
 /*
 **	arrays.c
@@ -76,13 +89,6 @@ t_room			*get_room_by_command(t_room *rooms, char *command);
 t_room			*get_room_by_name(t_room *rooms, char *name);
 int				add_room(t_room **rooms, char *line,
 							t_strlist **comments, char **command);
-
-/*
-**	ops_link.c
-*/
-
-int				add_link(t_link **links, t_room *rooms, char *line,
-							t_strlist **comments);
 
 /*
 **	ops_path.c
@@ -106,6 +112,8 @@ t_set			*new_set(int size);
 */
 
 int				add_strlist(t_strlist **head, char *str);
+int				add_link(t_link **links, t_room *rooms, char *line,
+							t_strlist **comments);
 
 /*
 **	util.c
@@ -134,10 +142,12 @@ void			total_free(t_room **rooms, t_link **links,
 							t_strlist **ants_cmnts, t_set **set);
 
 /*
-**	debug.c
+**	logging.c
 */
 
 void			display_set(char *title, t_set *set);
 void			display_paths(char *title, t_path *paths, t_room *rooms);
+void			display_invalid_traversing(t_path **s_paths, int size, int id);
+void			display_traversing(t_path **set_paths, int size);
 
 #endif

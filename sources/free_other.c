@@ -16,6 +16,8 @@ void	free_matrix(int ***matrix)
 {
 	int	i;
 
+	if (!matrix)
+		return ;
 	i = 0;
 	while ((*matrix)[i])
 	{

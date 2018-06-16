@@ -12,6 +12,41 @@
 
 #include "lemin.h"
 
+void	display_traversing(t_path **set_paths, int size)
+{
+	int i;
+
+	if (!set_paths || g_log < 2)
+		return ;
+	i = 0;
+	ft_printf("[size = %d]\t", size);
+	while (i < size)
+	{
+		ft_printf("%d ", set_paths[i]->id);
+		i++;
+	}
+	ft_printf("\n");
+}
+
+void	display_invalid_traversing(t_path **set_paths, int size, int id)
+{
+	int i;
+
+	if (!set_paths || g_log < 2)
+		return ;
+	i = 0;
+	ft_printf("X[size = %d]\t", size);
+	while (i < size)
+	{
+		if (i != id)
+			ft_printf("%d ", set_paths[i]->id);
+		else
+			ft_printf("%dX ", set_paths[i]->id);
+		i++;
+	}
+	ft_printf("\n");
+}
+
 void	display_paths(char *title, t_path *paths, t_room *rooms)
 {
 	int i;

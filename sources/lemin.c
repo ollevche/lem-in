@@ -14,11 +14,12 @@
 
 /*
 **	TODO: norme errors; delete unused functions; start-end paths;
-**	set_params(); -quick;
+**	-quick; -maxset NUM;
 **	check for error handling, total review; display_output();
 */
 
 int g_log = 0;
+int g_smart = 0;
 
 static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 {
@@ -35,7 +36,7 @@ static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 	return (set);
 }
 
-int				lemin(void)
+static int		lemin(void)
 {
 	int			ants;
 	t_strlist	*ants_cmnts;
@@ -61,14 +62,33 @@ int				lemin(void)
 	return (0);
 }
 
+static void		set_params(int argc, char **args)
+{
+	int i;
+
+	i = 1;
+	while (i < argc)
+	{
+		if (!g_log && !ft_strcmp(args[i], "-log"))
+			g_log = 1;
+		else if (!ft_strcmp(args[i - 1], "-log")
+				&& !ft_strcmp(args[i], "--full"))
+			g_log = 2;
+		else if (!ft_strcmp(args[i], "-smart"))
+			g_smart = 1;
+		else
+			display_usage(USAGE_FILE);
+		i++;
+	}
+}
+
 /*
 **	system("leaks lem-in");
 */
 
 int				main(int argc, char **args)
 {
-	if (argc > 1 && !ft_strcmp(args[1], "-log"))
-		g_log = 1;
+	set_params(argc, args);
 	lemin();
 	system("leaks lem-in"); // DEL
 }

@@ -1,0 +1,16 @@
+Usage:
+    ./lem-in [< filename]
+        #comment
+        number of ants
+        ##start
+        room_name X Y
+        ##end
+        room_name1 X1 Y1
+        ...
+        room_name-room_name1
+        ...
+        *invalid line*
+
+Options:
+    -log [--full]       displays log
+    -smart              uses "smart" traverse

@@ -12,6 +12,33 @@
 
 #include "lemin.h"
 
+int			intersect(t_path **set_paths, int rooms_num)
+{
+	int	rooms[rooms_num];
+	int	*path_rooms;
+	int	r;
+	int p;
+
+	r = 0;
+	while (r < rooms_num)
+		rooms[r++] = 0;
+	p = 0;
+	while (set_paths[p])
+	{
+		path_rooms = set_paths[p]->nodes;
+		while (*(path_rooms + 2) != -1)
+		{
+			path_rooms++;
+			if (rooms[*path_rooms])
+				return (true);
+			else
+				rooms[*path_rooms] = 1;
+		}
+		p++;
+	}
+	return (false);
+}
+
 static int	efficiency_of(t_set *set, int ants)
 {
 	int	merge_value;
@@ -38,12 +65,12 @@ static void	save_best_set(t_set *cur, t_set *best, int ants)
 	if (cur->size == 1)
 		cur->shortest_path_ever = cur->paths[0];
 	cur->efficiency = efficiency_of(cur, ants);
+	display_set("", cur);
 	if (cur->efficiency < best->efficiency)
 	{
 		free(best->paths);
 		best->size = cur->size;
 		best->paths = cur->paths;
-		display_set("", cur);
 		best->length = cur->length;
 		best->efficiency = cur->efficiency;
 		best->shortest_path_ever = cur->shortest_path_ever;
@@ -72,7 +99,7 @@ t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 		if (pick_set(cur, all_paths, rooms_num) < 1)
 			break ;
 		save_best_set(cur, best, ants);
-		if (cur->efficiency > best->efficiency) // TODO: test it
+		if (cur->efficiency > best->efficiency)
 			break ;
 		cur->size++;
 	}
