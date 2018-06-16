@@ -53,8 +53,6 @@ static int	optimize_order(t_path **set_paths, t_set *set, int max_p)
 	int minlen;
 	int	partlen;
 
-	if (!set->shortest_path_ever)
-		return (0);
 	i = 0;
 	size = set->size;
 	minlen = set->shortest_path_ever->length;
@@ -67,15 +65,12 @@ static int	optimize_order(t_path **set_paths, t_set *set, int max_p)
 			display_invalid_traversing(set_paths, size, i, partlen, minlen, set->length); // DEL
 			partlen -= set_paths[i]->length;
 			if (increment_after(i, set_paths, size) < 1)
-			{
-				ft_printf("place in order after failed increment\n"); // DEL
 				return (place_in_order(set_paths, set, max_p, true));
-			}
 		}
 		else
 			i++;
 	}
-	return (0);
+	return (true);
 }
 
 static int	place_in_order(t_path **set_paths, t_set *set, int max_p,
@@ -93,7 +88,7 @@ static int	place_in_order(t_path **set_paths, t_set *set, int max_p,
 	if (i + 1 < size)
 		increment_after(i, set_paths, size);
 	if (is_optimizable)
-		optimize_order(set_paths, set, max_p);
+		return (optimize_order(set_paths, set, max_p));
 	return (true);
 }
 
