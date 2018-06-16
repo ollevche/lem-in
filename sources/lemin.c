@@ -13,9 +13,10 @@
 #include "lemin.h"
 
 /*
-**	TODO: norme errors; delete unused functions; start-end paths;
-**	-quick; -maxset NUM;
-**	check for error handling, total review; display_output();
+**	TODO: norme errors; delete unused functions; make header up to date;
+**	-quick; -maxset NUM; start-end paths;
+**	total review: check for error handling; true/false/ERROR_CODE/etc
+**	display_output();
 */
 
 int g_log = 0;

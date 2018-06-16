@@ -71,3 +71,32 @@ int				add_link(t_link **links, t_room *rooms, char *line,
 	new_elem->to = room_iter->id;
 	return (SUCCESS_CODE);
 }
+
+int				add_path(t_path **paths, int *nodes)
+{
+	t_path	*new;
+	int		i;
+
+	new = (t_path*)malloc(sizeof(t_path));
+	if (!new)
+		return (ERROR_CODE);
+	new->id = *paths ? (*paths)->id + 1 : 0;
+	new->nodes = nodes;
+	i = 0;
+	while (nodes[i] != -1)
+		i++;
+	new->length = i;
+	new->prev = NULL;
+	if (*paths)
+		(*paths)->prev = new;
+	new->next = *paths;
+	*paths = new;
+	return (SUCCESS_CODE);
+}
+
+t_path			*get_path_by_id(t_path *paths, int id)
+{
+	while (paths && paths->id != id)
+		paths = paths->next;
+	return (paths);
+}

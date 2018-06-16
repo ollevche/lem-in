@@ -91,13 +91,6 @@ int				add_room(t_room **rooms, char *line,
 							t_strlist **comments, char **command);
 
 /*
-**	ops_path.c
-*/
-
-int				add_path(t_path **paths, int *nodes);
-t_path			*get_path_by_id(t_path *paths, int id);
-
-/*
 **	ops_set.c
 */
 
@@ -114,6 +107,8 @@ t_set			*new_set(int size);
 int				add_strlist(t_strlist **head, char *str);
 int				add_link(t_link **links, t_room *rooms, char *line,
 							t_strlist **comments);
+int				add_path(t_path **paths, int *nodes);
+t_path			*get_path_by_id(t_path *paths, int id);
 
 /*
 **	util.c
