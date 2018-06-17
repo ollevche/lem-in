@@ -41,12 +41,11 @@ int				read_ants(t_strlist **ants_cmnts);
 int				read_graph(t_room **rooms, t_link **links);
 
 /*
-**	display.c
+**	display_io.c
 */
 
 void			display_input(t_strlist *ants_cmnts, int ants,
 								t_room *rooms, t_link *links);
-void			display_usage(char *filename);
 int				display_output(t_set *set, t_room *rooms, int ants);
 
 /*
@@ -141,12 +140,13 @@ void			free_rg(char *line, char *command, t_strlist **comments);
 void			free_tdarr(int ***tdarr);
 
 /*
-**	logging.c
+**	display_other.c
 */
 
 void			display_set(char *title, t_set *set);
 void			display_paths(char *title, t_path *paths, t_room *rooms);
 void			display_invalid_traversing(t_path **s_paths, int size, int id);
 void			display_traversing(t_path **set_paths, int size);
+void			display_usage(char *filename);
 
 #endif
