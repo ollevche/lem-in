@@ -32,6 +32,7 @@
 
 extern int g_log;
 extern int g_smart;
+extern int g_maxset;
 
 /*
 **	reading.c

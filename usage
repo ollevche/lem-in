@@ -1,16 +1,17 @@
 Usage:
-    ./lem-in [< filename]
-        #comment
-        number of ants
-        ##start
-        room_name X Y
-        ##end
-        room_name1 X1 Y1
-        ...
-        room_name-room_name1
-        ...
-        *invalid line*
+	./lem-in [< filename]
+		#comment
+		number of ants
+		##start
+		room_name X Y
+		##end
+		room_name1 X1 Y1
+		...
+		room_name-room_name1
+		...
+		*invalid line*
 
 Options:
-    -log [--t]			displays log, '--t' adds traversing log 
-    -complete			uses complete traverse instead of "smart"
+	-log [--t]			displays log, '--t' adds traversing log 
+	-complete			uses complete traverse instead of "smart"
+	-maxset NUM			uses a NUM (1 - INT_MAX) as max amount of paths in a set

@@ -21,6 +21,7 @@
 
 int g_log = 0;
 int g_smart = 1;
+int	g_maxset = INT_MAX;
 
 static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 {
@@ -56,8 +57,8 @@ static int		lemin(void)
 		read_graph(&rooms, &links);
 	if (ants < 1 || !rooms || !links)
 		terminate(&rooms, &links, &ants_cmnts, &set);
-	if (!g_log)
-		display_input(ants_cmnts, ants, rooms, links);
+	// if (!g_log)
+		display_input(ants_cmnts, ants, rooms, links); // move it after compose_output() >> restructure lemin()
 	set = compose_output(rooms, links, ants);
 	if (!set)
 		terminate(&rooms, &links, &ants_cmnts, &set);
@@ -79,7 +80,11 @@ static void		set_params(int argc, char **args)
 			g_log = 2;
 		else if (!ft_strcmp(args[i], "-complete"))
 			g_smart = 0;
+		else if (!ft_strcmp(args[i], "-maxset"))
+			g_maxset = (++i < argc) ? ft_atoi(args[i]) : 0;
 		else
+			display_usage(USAGE_FILE);
+		if (!g_maxset)
 			display_usage(USAGE_FILE);
 		i++;
 	}

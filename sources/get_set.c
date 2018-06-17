@@ -108,7 +108,8 @@ t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 		free_set(&cur);
 		return (NULL);
 	}
-	while (cur->size <= ants && cur->size <= all_paths->id + 1)
+	while (cur->size <= ants && cur->size <= all_paths->id + 1 &&
+			cur->size <= g_maxset)
 	{
 		cur->efficiency = INT_MAX;
 		cur->length = INT_MAX;
