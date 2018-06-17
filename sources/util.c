@@ -12,6 +12,33 @@
 
 #include "lemin.h"
 
+int		**new_ants_map(t_set *set)
+{
+	int **a_map;
+	int	p;
+	int n;
+
+	a_map = (int**)malloc(sizeof(int*) * (set->size + 1));
+	if (!a_map)
+		return (NULL);
+	a_map[set->size] = NULL;
+	p = -1;
+	while (++p < set->size)
+	{
+		a_map[p] = (int*)malloc(sizeof(int) * (set->paths[p]->length + 1));
+		if (!a_map)
+		{
+			free_tdarr(&a_map);
+			return (NULL);
+		}
+		a_map[p][set->paths[p]->length] = -1;
+		n = -1;
+		while (++n < set->paths[p]->length)
+			a_map[p][n] = 0;
+	}
+	return (a_map);
+}
+
 void	terminate(t_room **rooms, t_link **links,
 						t_strlist **ants_cmnts, t_set **best_set)
 {

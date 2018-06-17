@@ -47,6 +47,7 @@ int				read_graph(t_room **rooms, t_link **links);
 void			display_input(t_strlist *ants_cmnts, int ants,
 								t_room *rooms, t_link *links);
 void			display_usage(char *filename);
+int				display_output(t_set *set, t_room *rooms, int ants);
 
 /*
 **	get_paths.c
@@ -117,6 +118,7 @@ t_path			*get_path_by_id(t_path *paths, int id);
 void			terminate(t_room **rooms, t_link **links,
 							t_strlist **ants_cmnts, t_set **set);
 int				operation_failure(t_strlist *comments, char *command);
+int				**new_ants_map(t_set *set);
 
 /*
 **	free_structs.c
@@ -136,6 +138,7 @@ void			free_matrix(int ***matrix);
 void			total_free(t_room **rooms, t_link **links,
 							t_strlist **ants_cmnts, t_set **set);
 void			free_rg(char *line, char *command, t_strlist **comments);
+void			free_tdarr(int ***tdarr);
 
 /*
 **	logging.c

@@ -33,6 +33,8 @@ static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
 	display_paths("all of paths:\n", paths, rooms);
 	set = get_set(paths, ants, rooms->id + 1);
 	display_set("best:\n", set);
+	if (display_output(set, rooms, ants) == ERROR_CODE)
+		free_set(&set);
 	free_paths(&paths);
 	return (set);
 }
@@ -54,12 +56,11 @@ static int		lemin(void)
 		read_graph(&rooms, &links);
 	if (ants < 1 || !rooms || !links)
 		terminate(&rooms, &links, &ants_cmnts, &set);
+	if (!g_log)
+		display_input(ants_cmnts, ants, rooms, links);
 	set = compose_output(rooms, links, ants);
 	if (!set)
 		terminate(&rooms, &links, &ants_cmnts, &set);
-	if (!g_log)
-		display_input(ants_cmnts, ants, rooms, links);
-	// display_output();
 	total_free(&rooms, &links, &ants_cmnts, &set);
 	return (0);
 }

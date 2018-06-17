@@ -43,3 +43,19 @@ void	free_rg(char *line, char *command, t_strlist **comments)
 	free(command);
 	free_strlist(comments);
 }
+
+void	free_tdarr(int ***tdarr)
+{
+	int i;
+
+	if (!tdarr)
+		return ;
+	i = 0;
+	while ((*tdarr)[i])
+	{
+		free((*tdarr)[i]);
+		i++;
+	}
+	free(*tdarr);
+	*tdarr = NULL;
+}

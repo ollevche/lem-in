@@ -47,7 +47,7 @@ static int	efficiency_of(t_set *set, int ants)
 	int i;
 
 	merge_value = max_len(set) - 1;
-	if (merge_value == 1)
+	if (merge_value == 1 && (set->ants[0] = ants))
 		return (1);
 	merge_sum = 0;
 	i = 0;
