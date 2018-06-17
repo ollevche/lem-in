@@ -71,4 +71,5 @@ void		display_input(t_strlist *ants_cmnts, int ants,
 			get_room_by_id(rooms, links->to)->name);
 		links = links->prev;
 	}
+	ft_printf("\n");
 }

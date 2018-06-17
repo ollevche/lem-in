@@ -90,7 +90,7 @@ int			pick_set(t_set *set, t_path *paths, int rooms_num)
 	if (!(cur = new_set_paths(set->size, paths)))
 		return (ERROR_CODE);
 	is_found = 0;
-	if (!paths->id && set->size == 1)
+	if (paths->id == set->size - 1)
 		is_found = save_best(set, cur, set->size);
 	while (place_in_order(cur, set, paths->id, is_found) &&
 			is_found != ERROR_CODE)

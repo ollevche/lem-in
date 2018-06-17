@@ -91,6 +91,7 @@ void	free_set(t_set **set)
 	if (!set || !*set)
 		return ;
 	free((*set)->paths);
+	free((*set)->ants);
 	free(*set);
 	*set = NULL;
 }

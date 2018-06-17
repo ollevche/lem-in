@@ -55,6 +55,7 @@ typedef struct	s_path
 typedef struct	s_set
 {
 	t_path			**paths;
+	int				*ants;
 	int				size;
 	int				length;
 	int				efficiency;

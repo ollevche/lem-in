@@ -90,6 +90,7 @@ t_set	*new_set(int size)
 		return (NULL);
 	new->size = size;
 	new->paths = NULL;
+	new->ants = NULL;
 	new->length = INT_MAX;
 	new->efficiency = INT_MAX;
 	new->shortest_path_ever = NULL;
