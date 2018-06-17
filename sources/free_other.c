@@ -36,3 +36,10 @@ void	total_free(t_room **rooms, t_link **links,
 	free_strlist(ants_cmnts);
 	free_set(set);
 }
+
+void	free_rg(char *line, char *command, t_strlist **comments)
+{
+	free(line);
+	free(command);
+	free_strlist(comments);
+}

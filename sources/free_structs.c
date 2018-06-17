@@ -17,6 +17,8 @@ void	free_strlist(t_strlist **list)
 	t_strlist	*trash;
 	t_strlist	*iter;
 
+	if (!list)
+		return ;
 	iter = *list;
 	while (iter)
 	{
@@ -33,6 +35,8 @@ void	free_rooms(t_room **rooms)
 	t_room	*trash;
 	t_room	*iter;
 
+	if (!rooms)
+		return ;
 	iter = *rooms;
 	while (iter)
 	{
@@ -51,6 +55,8 @@ void	free_links(t_link **links)
 	t_link	*trash;
 	t_link	*iter;
 
+	if (!links)
+		return ;
 	iter = *links;
 	while (iter)
 	{
@@ -67,6 +73,8 @@ void	free_paths(t_path **paths)
 	t_path	*trash;
 	t_path	*iter;
 
+	if (!paths)
+		return ;
 	iter = *paths;
 	while (iter)
 	{
@@ -80,7 +88,7 @@ void	free_paths(t_path **paths)
 
 void	free_set(t_set **set)
 {
-	if (!*set)
+	if (!set || !*set)
 		return ;
 	free((*set)->paths);
 	free(*set);

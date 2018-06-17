@@ -15,14 +15,14 @@
 static int	increment_after(int i, t_path **set_paths, int size)
 {
 	if (!set_paths[i]->prev)
-		return (-1);
+		return (ERROR_CODE);
 	set_paths[i] = set_paths[i]->prev;
 	while (++i < size)
 		if (set_paths[i - 1]->prev)
 			set_paths[i] = set_paths[i - 1]->prev;
 		else
-			return (0);
-	return (1);
+			return (false);
+	return (true);
 }
 
 int			optimize_order(t_path **set_paths, t_set *set, int max_p)
@@ -78,7 +78,7 @@ static int	save_best(t_set *set, t_path **set_paths, int set_len)
 	if (!set->paths)
 		return (ERROR_CODE);
 	set->length = set_len;
-	return (1);
+	return (SUCCESS_CODE);
 }
 
 int			pick_set(t_set *set, t_path *paths, int rooms_num)
@@ -88,8 +88,10 @@ int			pick_set(t_set *set, t_path *paths, int rooms_num)
 	int		is_found;
 
 	if (!(cur = new_set_paths(set->size, paths)))
-		return (-1);
+		return (ERROR_CODE);
 	is_found = 0;
+	if (!paths->id && set->size == 1)
+		is_found = save_best(set, cur, set->size);
 	while (place_in_order(cur, set, paths->id, is_found) &&
 			is_found != ERROR_CODE)
 	{
@@ -105,5 +107,5 @@ int			pick_set(t_set *set, t_path *paths, int rooms_num)
 		}
 	}
 	free(cur);
-	return (is_found); // error
+	return (is_found);
 }

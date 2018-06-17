@@ -13,10 +13,10 @@
 #include "lemin.h"
 
 /*
-**	TODO: norme errors; delete unused functions; make header up to date;
-**	-quick; -maxset NUM; start-end paths;
-**	total review: check for error handling; true/false/ERROR_CODE/etc
-**	display_output();
+**	TODO: norme errors;
+**	'-quick' combines sets without traversing;
+**	'-maxset NUM' - sets max number of paths in a set;
+**	display_output(); start-end paths;
 */
 
 int g_log = 0;
@@ -43,9 +43,9 @@ static int		lemin(void)
 	t_strlist	*ants_cmnts;
 	t_room		*rooms;
 	t_link		*links;
-	t_set		*best_set;
+	t_set		*set;
 
-	best_set = NULL;
+	set = NULL;
 	rooms = NULL;
 	links = NULL;
 	ants_cmnts = NULL;
@@ -53,13 +53,14 @@ static int		lemin(void)
 	if (ants > 0)
 		read_graph(&rooms, &links);
 	if (ants < 1 || !rooms || !links)
-		terminate(&rooms, &links, &ants_cmnts, &best_set);
-	display_input(ants_cmnts, ants, rooms, links);
-	best_set = compose_output(rooms, links, ants);
-	if (!best_set)
-		terminate(&rooms, &links, &ants_cmnts, &best_set);
+		terminate(&rooms, &links, &ants_cmnts, &set);
+	set = compose_output(rooms, links, ants);
+	if (!set)
+		terminate(&rooms, &links, &ants_cmnts, &set);
+	if (!g_log)
+		display_input(ants_cmnts, ants, rooms, links);
 	// display_output();
-	total_free(&rooms, &links, &ants_cmnts, &best_set);
+	total_free(&rooms, &links, &ants_cmnts, &set);
 	return (0);
 }
 
@@ -83,13 +84,9 @@ static void		set_params(int argc, char **args)
 	}
 }
 
-/*
-**	system("leaks lem-in");
-*/
-
 int				main(int argc, char **args)
 {
 	set_params(argc, args);
 	lemin();
-	// system("leaks lem-in"); // DEL
+	system("leaks lem-in"); // DEL
 }

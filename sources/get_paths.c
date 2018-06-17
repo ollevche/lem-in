@@ -55,13 +55,6 @@ static int	**compose_matrix(t_room *rooms, t_link *links)
 	return (matrix);
 }
 
-static int	arr_contains(int *nodes, int target)
-{
-	while (*nodes != -1 && *nodes != target)
-		nodes++;
-	return (*nodes == target);
-}
-
 static int	search(int **matrix, int *nodes, int end, t_path **paths)
 {
 	int	cur_node;
@@ -80,7 +73,7 @@ static int	search(int **matrix, int *nodes, int end, t_path **paths)
 		{
 			nodes_copy = arr_extend(nodes, i);
 			if (!nodes_copy)
-				ret_code = ERROR_CODE;
+				break ;
 			ret_code = search(matrix, nodes_copy, end, paths);
 			if (ret_code == ERROR_CODE)
 				break ;
@@ -91,6 +84,11 @@ static int	search(int **matrix, int *nodes, int end, t_path **paths)
 	return (ret_code);
 }
 
+/*
+**	it's too hard to make beautiful function normed
+**	a lot of weird assignations here
+*/
+
 t_path		*get_paths(t_room *rooms, t_link *links)
 {
 	t_path	*paths;
@@ -99,22 +97,23 @@ t_path		*get_paths(t_room *rooms, t_link *links)
 	int		end_room;
 	t_room	*tmp_room;
 
-	matrix = compose_matrix(rooms, links);
-	if (!matrix)
+	if (!(matrix = compose_matrix(rooms, links)))
 		return (NULL);
-	if ((tmp_room = get_room_by_command(rooms, "##start")))
-		if (!(nodes = to_arr(tmp_room->id)))
-		{
-			free_matrix(&matrix);
-			return (NULL);
-		}
+	if (!(tmp_room = get_room_by_command(rooms, "##start"))
+		|| !(nodes = to_arr(tmp_room->id)))
+	{
+		free_matrix(&matrix);
+		return (NULL);
+	}
 	end_room = -1;
 	if ((tmp_room = get_room_by_command(rooms, "##end")))
 		end_room = tmp_room->id;
-	paths = NULL;
-	if (end_room == -1 || nodes[0] == -1 ||
+	if ((paths = NULL) || end_room == -1 || nodes[0] == -1 ||
 		search(matrix, nodes, end_room, &paths) == ERROR_CODE)
+	{
+		free(nodes);
 		free_paths(&paths);
+	}
 	free_matrix(&matrix);
 	return (paths);
 }

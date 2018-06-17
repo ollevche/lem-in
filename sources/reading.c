@@ -12,13 +12,6 @@
 
 #include "lemin.h"
 
-/*
-**	This file contains all of the functions for reading input.
-**	is_room() and is_link() check line for syntax errors
-**	read_ants() and read_graph() read ants num, rooms and links descriptions,
-**	comments and commands for all of them (ants can't have commands)
-*/
-
 static int	to_pos_int(char *str)
 {
 	int	i;
@@ -48,8 +41,15 @@ int			read_ants(t_strlist **ants_cmnts)
 
 	ants = 0;
 	while ((line = safe_gnl(FILEDES)) && line[0] == '#')
+	{
 		if (add_strlist(ants_cmnts, line) == ERROR_CODE)
 			ants = -1;
+		if (line[1] == '#')
+		{
+			line = safe_gnl(FILEDES);
+			break ;
+		}
+	}
 	if (!ants)
 		ants = to_pos_int(line);
 	free(line);
@@ -117,26 +117,26 @@ int			read_graph(t_room **rooms, t_link **links)
 	char		*line;
 	t_strlist	*comments;
 	char		*command;
-	int			ret_code;
+	int			ret_c;
 
 	comments = NULL;
 	command = NULL;
-	ret_code = 0;
-	while (ret_code != ERROR_CODE && (line = safe_gnl(FILEDES)))
+	ret_c = 0;
+	while (ret_c != ERROR_CODE && (line = safe_gnl(FILEDES)))
 	{
-		if (line[0] == '#' && line[1] == '#')
+		if (is_room(line))
+			ret_c = add_room(rooms, line, &comments, &command);
+		else if (command)
+			ret_c = ERROR_CODE;
+		else if (line[0] == '#' && line[1] == '#')
 			command = ft_strdup(line);
 		else if (line[0] == '#')
-			ret_code = add_strlist(&comments, ft_strdup(line));
-		else if (is_room(line))
-			ret_code = add_room(rooms, line, &comments, &command);
-		else if (command)
-			ret_code = ERROR_CODE;
+			ret_c = add_strlist(&comments, ft_strdup(line));
 		else if (is_link(line, *rooms))
-			ret_code = add_link(links, *rooms, line, &comments);
+			ret_c = add_link(links, *rooms, line, &comments);
 		else
-			ret_code = ERROR_CODE;
-		free(line);
+			ret_c = ERROR_CODE;
+		free_rg(line, ret_c == -1 ? command : 0, ret_c == -1 ? &comments : 0);
 	}
-	return (ret_code);
+	return (ret_c);
 }

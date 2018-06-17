@@ -51,7 +51,7 @@ void	display_paths(char *title, t_path *paths, t_room *rooms)
 {
 	int i;
 
-	if (!paths || !rooms || !title || !g_log)
+	if (!paths || !rooms || !title || g_log < 1)
 		return ;
 	ft_printf("%s", title);
 	while (paths->next)
@@ -76,7 +76,7 @@ void	display_set(char *title, t_set *set)
 {
 	int i;
 
-	if (!set || !title || !g_log)
+	if (!set || !title || g_log < 1)
 		return ;
 	ft_printf("%s", title);
 	ft_printf("set\t[size = %d,\tlength = %d,\tefficiency = %d]\t",

@@ -26,7 +26,7 @@ void		display_usage(char *filename)
 		free(line);
 	}
 	close(fd);
-	// system("leaks lem-in"); // DEL
+	system("leaks lem-in"); // DEL
 	exit(EXIT_SUCCESS);
 }
 

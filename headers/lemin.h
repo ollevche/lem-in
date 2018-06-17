@@ -74,11 +74,10 @@ int				optimize_order(t_path **set_paths, t_set *set, int max_p);
 **	arrays.c
 */
 
-int				*arr_n_copy(int *arr, int size);
 int				*to_arr(int elem);
 int				*arr_extend(int *arr, int elem);
 int				arr_get_last_elem(int *arr);
-int				*new_filled_arr(int size);
+int				arr_contains(int *nodes, int target);
 
 /*
 **	ops_room.c
@@ -135,6 +134,7 @@ void			free_set(t_set **set);
 void			free_matrix(int ***matrix);
 void			total_free(t_room **rooms, t_link **links,
 							t_strlist **ants_cmnts, t_set **set);
+void			free_rg(char *line, char *command, t_strlist **comments);
 
 /*
 **	logging.c
