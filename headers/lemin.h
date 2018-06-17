@@ -78,6 +78,7 @@ int				*to_arr(int elem);
 int				*arr_extend(int *arr, int elem);
 int				arr_get_last_elem(int *arr);
 int				arr_contains(int *nodes, int target);
+int				*new_arr(int size);
 
 /*
 **	ops_room.c

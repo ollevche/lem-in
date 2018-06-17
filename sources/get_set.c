@@ -53,17 +53,29 @@ static int	efficiency_of(t_set *set, int ants)
 	i = 0;
 	while (i < set->size)
 	{
-		merge_sum += merge_value - (set->paths[i]->length - 1) + 1;
-		i++;
+		set->ants[i] = merge_value - (set->paths[i]->length - 1) + 1;
+		merge_sum += set->ants[i++];
 	}
-	in_total = merge_value + ft_ceildiv(ants - merge_sum, set->size);
+	ants = ants - merge_sum + 1;
+	in_total = merge_value + ft_ceildiv(ants - 1, set->size);
+	i = 0;
+	while (i < set->size && --ants > 0)
+	{
+		set->ants[i]++;
+		if (++i == set->size)
+			i = 0;
+	}
 	return (in_total);
 }
 
-static void	save_best_set(t_set *cur, t_set *best, int ants)
+static int	save_best_set(t_set *cur, t_set *best, int ants)
 {
 	if (cur->size == 1)
 		cur->shortest_path_ever = cur->paths[0];
+	free(cur->ants);
+	cur->ants = new_arr(cur->size);
+	if (!cur->ants)
+		return (ERROR_CODE);
 	cur->efficiency = efficiency_of(cur, ants);
 	display_set("a ", cur);
 	if (cur->efficiency < best->efficiency)
@@ -73,11 +85,15 @@ static void	save_best_set(t_set *cur, t_set *best, int ants)
 		best->paths = cur->paths;
 		best->length = cur->length;
 		best->efficiency = cur->efficiency;
+		free(best->ants);
+		best->ants = cur->ants;
+		cur->ants = NULL;
 		best->shortest_path_ever = cur->shortest_path_ever;
 	}
 	else
 		free(cur->paths);
 	cur->paths = NULL;
+	return (SUCCESS_CODE);
 }
 
 t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
@@ -96,14 +112,13 @@ t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 	{
 		cur->efficiency = INT_MAX;
 		cur->length = INT_MAX;
-		if (pick_set(cur, all_paths, rooms_num) < 1)
+		if (pick_set(cur, all_paths, rooms_num) < 1 ||
+			save_best_set(cur, best, ants) < 1)
 			break ;
-		save_best_set(cur, best, ants);
 		if (cur->efficiency > best->efficiency)
 			break ;
 		cur->size++;
 	}
-	free(cur->paths);
-	free(cur);
+	free_set(&cur);
 	return (best);
 }

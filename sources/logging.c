@@ -84,10 +84,10 @@ void	display_set(char *title, t_set *set)
 	i = 0;
 	while (i < set->size)
 	{
-		ft_printf("%d", set->paths[i]->id);
+		ft_printf("%d (%d)", set->paths[i]->id, set->ants[i]);
 		i++;
 		if (i < set->size)
-			ft_printf("+");
+			ft_printf(" + ");
 	}
 	ft_printf("\n");
 }

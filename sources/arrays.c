@@ -69,3 +69,21 @@ int	arr_contains(int *nodes, int target)
 		nodes++;
 	return (*nodes == target);
 }
+
+int	*new_arr(int size)
+{
+	int *arr;
+	int i;
+
+	arr = (int*)malloc(sizeof(int) * (size + 1));
+	if (!arr)
+		return (NULL);
+	arr[size] = -1;
+	i = 0;
+	while (i < size)
+	{
+		arr[i] = 0;
+		i++;
+	}
+	return (arr);
+}
