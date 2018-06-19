@@ -12,14 +12,14 @@
 
 #include "lemin.h"
 
-void		display_usage(char *filename)
+void	display_usage(char *filename)
 {
 	char	*line;
 	int		fd;
 
 	fd = open(filename, O_RDONLY);
 	if (!fd)
-		terminate(NULL, NULL, NULL, NULL);
+		terminate(NULL, NULL, NULL);
 	while ((line = safe_gnl(fd)))
 	{
 		ft_printf("%s\n", line);
@@ -97,7 +97,7 @@ void	display_set(char *title, t_set *set)
 	if (!set || !title || g_log < 1)
 		return ;
 	ft_printf("%s", title);
-	ft_printf("set\t[size = %d,\tlength = %d,\tefficiency = %d]\t",
+	ft_printf("set\nsize = %d\nlength = %d\nefficiency = %d\npaths:\t",
 				set->size, set->length, set->efficiency);
 	i = 0;
 	while (i < set->size)
@@ -107,5 +107,5 @@ void	display_set(char *title, t_set *set)
 		if (i < set->size)
 			ft_printf(" + ");
 	}
-	ft_printf("\n");
+	ft_printf("\n---\n");
 }

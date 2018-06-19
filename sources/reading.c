@@ -136,7 +136,7 @@ int			read_graph(t_room **rooms, t_link **links)
 			ret_c = add_link(links, *rooms, line, &comments);
 		else
 			ret_c = ERROR_CODE;
-		free_rg(line, ret_c == -1 ? command : 0, ret_c == -1 ? &comments : 0);
+		free_rg(&line, ret_c == -1 ? &command : 0, ret_c == -1 ? &comments : 0);
 	}
 	return (ret_c);
 }

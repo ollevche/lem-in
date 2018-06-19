@@ -115,8 +115,7 @@ t_path			*get_path_by_id(t_path *paths, int id);
 **	util.c
 */
 
-void			terminate(t_room **rooms, t_link **links,
-							t_strlist **ants_cmnts, t_set **set);
+void			terminate(t_room **rooms, t_link **links, t_path **paths);
 int				operation_failure(t_strlist *comments, char *command);
 int				**new_ants_map(t_set *set);
 
@@ -135,9 +134,8 @@ void			free_set(t_set **set);
 */
 
 void			free_matrix(int ***matrix);
-void			total_free(t_room **rooms, t_link **links,
-							t_strlist **ants_cmnts, t_set **set);
-void			free_rg(char *line, char *command, t_strlist **comments);
+void			total_free(t_room **rooms, t_link **links, t_path **paths);
+void			free_rg(char **line, char **command, t_strlist **comments);
 void			free_tdarr(int ***tdarr);
 
 /*

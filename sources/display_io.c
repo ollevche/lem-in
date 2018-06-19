@@ -55,37 +55,30 @@ void		display_input(t_strlist *ants_cmnts, int ants,
 	}
 }
 
-static int	make_moves(int **ants_map, t_set *set, t_room *rooms, int ants)
+static int	make_moves(int *ants_map_r, t_path *path, t_room *rooms, int ants)
 {
-	int			p;
 	int			n;
-	static int	ant_id;
+	static int	ant_id = 1;
 	int			moves;
 
-	p = 0;
 	moves = 0;
-	while (p < set->size)
+	n = path->length - 2;
+	while (n > -1)
 	{
-		n = set->paths[p]->length - 2;
-		while (n > -1)
+		if ((ants_map_r[n] || n == 0) && !ants_map_r[n + 1])
 		{
-			if (ants_map[p][n] && !ants_map[p][n + 1])
+			if (n != 0 || ant_id <= ants)
 			{
-				if ((n + 1) != (set->paths[p]->length - 1))
-					ants_map[p][n + 1] = ants_map[p][n];
-				ft_printf("L%d-%s ", ants_map[p][n], get_room_by_id(rooms, set->paths[p]->nodes[n + 1])->name);
-				ants_map[p][n] = 0;
-				moves++;
+				ants_map_r[n + 1] = (n == 0) ? ant_id++ : ants_map_r[n];
+				moves += ft_printf("L%d-%s ", ants_map_r[n + 1],
+							get_room_by_id(rooms, path->nodes[n + 1])->name);
+				if (n + 1 == path->length - 1)
+					ants_map_r[n + 1] = 0;
+				ants_map_r[n] = 0;
+				n = n ? n : n + 1;
 			}
-			if (n == 0 && ants_map[p][n] == 0 && ant_id <= ants)
-			{
-				ants_map[p][n] = ant_id;
-				ant_id++;
-			}
-			else
-				n--;
 		}
-		p++;
+		n--;
 	}
 	return (moves);
 }
@@ -93,13 +86,25 @@ static int	make_moves(int **ants_map, t_set *set, t_room *rooms, int ants)
 int			display_output(t_set *set, t_room *rooms, int ants)
 {
 	int	**ants_map;
+	int	p;
+	int moves;
 
 	ft_printf("\n");
 	ants_map = new_ants_map(set);
 	if (!ants_map)
 		return (ERROR_CODE);
-	while (make_moves(ants_map, set, rooms, ants))
+	moves = 1;
+	while (moves)
+	{
+		p = 0;
+		moves = 0;
+		while (p < set->size)
+		{
+			moves = make_moves(ants_map[p], set->paths[p], rooms, ants);
+			p++;
+		}
 		ft_printf("\n");
+	}
 	free_tdarr(&ants_map);
 	return (SUCCESS_CODE);
 }

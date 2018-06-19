@@ -15,55 +15,64 @@
 /*
 **	TODO: norme errors;
 **	'-quick' combines sets without traversing;
-**	'-maxset NUM' - sets max number of paths in a set;
-**	display_output(); start-end paths;
 */
 
 int g_log = 0;
 int g_smart = 1;
 int	g_maxset = INT_MAX;
 
-static t_set	*compose_output(t_room *rooms, t_link *links, int ants)
+static int		input_stage(int *ants, t_room **rooms,
+								t_link **links, t_path **paths)
 {
-	t_path	*paths;
-	t_set	*set;
+	t_strlist	*ants_comments;
 
-	paths = get_paths(rooms, links);
+	ants_comments = NULL;
+	*rooms = NULL;
+	*links = NULL;
+	*paths = NULL;
+	*ants = read_ants(&ants_comments);
+	if (*ants < 0)
+	{
+		free_strlist(&ants_comments);		
+		return (ERROR_CODE);
+	}
+	if (read_graph(rooms, links) == ERROR_CODE)
+		return (ERROR_CODE);
+	*paths = get_paths(*rooms, *links);
 	if (!paths)
-		return (NULL);
-	display_paths("all of paths:\n", paths, rooms);
-	set = get_set(paths, ants, rooms->id + 1);
-	display_set("best:\n", set);
-	if (display_output(set, rooms, ants) == ERROR_CODE)
-		free_set(&set);
-	free_paths(&paths);
-	return (set);
+		return (ERROR_CODE);
+	display_input(ants_comments, *ants, *rooms, *links);
+	free_strlist(&ants_comments);
+	return (SUCCESS_CODE);
 }
 
-static int		lemin(void)
+static int		output_stage(t_path *paths, t_room *rooms, int ants)
 {
-	int			ants;
-	t_strlist	*ants_cmnts;
-	t_room		*rooms;
-	t_link		*links;
-	t_set		*set;
+	t_set	*set;
+	int		ret_code;
 
-	set = NULL;
-	rooms = NULL;
-	links = NULL;
-	ants_cmnts = NULL;
-	ants = read_ants(&ants_cmnts);
-	if (ants > 0)
-		read_graph(&rooms, &links);
-	if (ants < 1 || !rooms || !links)
-		terminate(&rooms, &links, &ants_cmnts, &set);
-	// if (!g_log)
-		display_input(ants_cmnts, ants, rooms, links); // move it after compose_output() >> restructure lemin()
-	set = compose_output(rooms, links, ants);
+	display_paths("all of paths:\n", paths, rooms);
+	set = get_set(paths, ants, rooms->id + 1);
 	if (!set)
-		terminate(&rooms, &links, &ants_cmnts, &set);
-	total_free(&rooms, &links, &ants_cmnts, &set);
-	return (0);
+		return (ERROR_CODE);
+	display_set("best ", set);
+	ret_code = display_output(set, rooms, ants);
+	free_set(&set);
+	return (ret_code);
+}
+
+static void		lemin(void)
+{
+	int		ants;
+	t_room	*rooms;
+	t_link	*links;
+	t_path	*paths;
+
+	if (input_stage(&ants, &rooms, &links, &paths) == ERROR_CODE)
+		terminate(&rooms, &links, &paths);
+	if (output_stage(paths, rooms, ants) == ERROR_CODE)
+		terminate(&rooms, &links, &paths);
+	total_free(&rooms, &links, &paths);
 }
 
 static void		set_params(int argc, char **args)

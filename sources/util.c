@@ -39,14 +39,13 @@ int		**new_ants_map(t_set *set)
 	return (a_map);
 }
 
-void	terminate(t_room **rooms, t_link **links,
-						t_strlist **ants_cmnts, t_set **best_set)
+void	terminate(t_room **rooms, t_link **links, t_path **paths)
 {
 	if (errno)
 		perror("Error");
 	else
 		ft_printf("ERROR\n");
-	total_free(rooms, links, ants_cmnts, best_set);
+	total_free(rooms, links, paths);
 	system("leaks lem-in"); // DEL
 	exit(EXIT_FAILURE);
 }

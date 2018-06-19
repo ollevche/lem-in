@@ -28,19 +28,19 @@ void	free_matrix(int ***matrix)
 	*matrix = NULL;
 }
 
-void	total_free(t_room **rooms, t_link **links,
-						t_strlist **ants_cmnts, t_set **set)
+void	total_free(t_room **rooms, t_link **links, t_path **paths)
 {
 	free_rooms(rooms);
 	free_links(links);
-	free_strlist(ants_cmnts);
-	free_set(set);
+	free_paths(paths);
 }
 
-void	free_rg(char *line, char *command, t_strlist **comments)
+void	free_rg(char **line, char **command, t_strlist **comments)
 {
-	free(line);
-	free(command);
+	free(*line);
+	*line = NULL;
+	free(*command);
+	*command = NULL;
 	free_strlist(comments);
 }
 
