@@ -37,10 +37,16 @@ static int		input_stage(int *ants, t_room **rooms,
 		return (ERROR_CODE);
 	}
 	if (read_graph(rooms, links) == ERROR_CODE)
+	{
+		free_strlist(&ants_comments);		
 		return (ERROR_CODE);
+	}
 	*paths = get_paths(*rooms, *links);
-	if (!paths)
+	if (!*paths)
+	{
+		free_strlist(&ants_comments);		
 		return (ERROR_CODE);
+	}
 	display_input(ants_comments, *ants, *rooms, *links);
 	free_strlist(&ants_comments);
 	return (SUCCESS_CODE);

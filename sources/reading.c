@@ -121,8 +121,8 @@ int			read_graph(t_room **rooms, t_link **links)
 
 	comments = NULL;
 	command = NULL;
-	ret_c = 0;
-	while (ret_c != ERROR_CODE && (line = safe_gnl(FILEDES)))
+	ret_c = SUCCESS_CODE;
+	while (ret_c == SUCCESS_CODE && (line = safe_gnl(FILEDES)))
 	{
 		if (is_room(line))
 			ret_c = add_room(rooms, line, &comments, &command);
@@ -135,8 +135,8 @@ int			read_graph(t_room **rooms, t_link **links)
 		else if (is_link(line, *rooms))
 			ret_c = add_link(links, *rooms, line, &comments);
 		else
-			ret_c = ERROR_CODE;
-		free_rg(&line, ret_c == -1 ? &command : 0, ret_c == -1 ? &comments : 0);
+			ret_c = -2;
+		free_rg(&line, ret_c != 1 ? &command : 0, ret_c != 1 ? &comments : 0);
 	}
-	return (ret_c);
+	return (ret_c == ERROR_CODE ? ERROR_CODE : SUCCESS_CODE);
 }

@@ -37,10 +37,16 @@ void	total_free(t_room **rooms, t_link **links, t_path **paths)
 
 void	free_rg(char **line, char **command, t_strlist **comments)
 {
-	free(*line);
-	*line = NULL;
-	free(*command);
-	*command = NULL;
+	if (line)
+	{
+		free(*line);
+		*line = NULL;
+	}
+	if (command)
+	{
+		free(*command);
+		*command = NULL;
+	}
 	free_strlist(comments);
 }
 
