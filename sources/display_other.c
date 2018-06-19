@@ -76,7 +76,7 @@ void	display_paths(char *title, t_path *paths, t_room *rooms)
 		paths = paths->next;
 	while (paths)
 	{
-		ft_printf("path_%d\t[length = %d]\t", paths->id, paths->length);
+		ft_printf("path_%.3d\t[length = %d]\t", paths->id, paths->length);
 		i = 0;
 		while (i < paths->length)
 		{
