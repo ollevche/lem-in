@@ -51,6 +51,8 @@ int				add_room(t_room **rooms, char *line,
 	new_elem->command = *command;
 	*comments = NULL;
 	*command = NULL;
+	if (get_room_by_command(new_elem->next, new_elem->command))
+		return (ERROR_CODE);
 	if (get_room_by_name(new_elem->next, new_elem->name))
 		return (ERROR_CODE);
 	return (SUCCESS_CODE);
