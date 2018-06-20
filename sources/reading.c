@@ -42,7 +42,7 @@ int			read_ants(t_strlist **ants_cmnts)
 	ants = 0;
 	while ((line = safe_gnl(FILEDES)) && line[0] == '#')
 	{
-		if (add_strlist(ants_cmnts, line) == ERROR_CODE)
+		if (addslst(ants_cmnts, line) == ERROR_CODE)
 			ants = -1;
 		if (line[1] == '#')
 		{
@@ -115,28 +115,28 @@ static int	is_link(char *str, t_room *rooms)
 int			read_graph(t_room **rooms, t_link **links)
 {
 	char		*line;
-	t_strlist	*comments;
-	char		*command;
+	t_strlist	*cmnts;
+	char		*cmnd;
 	int			ret_c;
 
-	comments = NULL;
-	command = NULL;
+	cmnts = NULL;
+	cmnd = NULL;
 	ret_c = SUCCESS_CODE;
 	while (ret_c == SUCCESS_CODE && (line = safe_gnl(FILEDES)))
 	{
 		if (is_room(line))
-			ret_c = add_room(rooms, line, &comments, &command);
-		else if (command)
+			ret_c = add_room(rooms, line, &cmnts, &cmnd);
+		else if (is_link(line, *rooms) && addslst(&cmnts, cmnd) && !(cmnd = 0))
+			ret_c = add_link(links, *rooms, line, &cmnts);
+		else if (cmnd)
 			ret_c = ERROR_CODE;
 		else if (line[0] == '#' && line[1] == '#')
-			command = ft_strdup(line);
+			cmnd = ft_strdup(line);
 		else if (line[0] == '#')
-			ret_c = add_strlist(&comments, ft_strdup(line));
-		else if (is_link(line, *rooms))
-			ret_c = add_link(links, *rooms, line, &comments);
+			ret_c = addslst(&cmnts, ft_strdup(line));
 		else
 			ret_c = -2;
-		free_rg(&line, ret_c != 1 ? &command : 0, ret_c != 1 ? &comments : 0);
+		free_rg(&line, ret_c != 1 ? &cmnd : 0, ret_c != 1 ? &cmnts : 0);
 	}
 	return (ret_c == ERROR_CODE ? ERROR_CODE : SUCCESS_CODE);
 }

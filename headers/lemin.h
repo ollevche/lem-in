@@ -105,7 +105,7 @@ t_set			*new_set(int size);
 **	ops_other.c
 */
 
-int				add_strlist(t_strlist **head, char *str);
+int				addslst(t_strlist **head, char *str);
 int				add_link(t_link **links, t_room *rooms, char *line,
 							t_strlist **comments);
 int				add_path(t_path **paths, int *nodes);

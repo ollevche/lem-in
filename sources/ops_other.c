@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-int				add_strlist(t_strlist **head, char *str)
+int				addslst(t_strlist **head, char *str)
 {
 	t_strlist	*new;
 
