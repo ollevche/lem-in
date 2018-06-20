@@ -1,11 +1,40 @@
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
+##ants command
 29
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
 21 29 23
 17 29 19
 16 22 21
 14 22 20
+##room command
 12 19 21
 10 19 20
 7 14 25
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
 5 14 17
 2 9 21
 ##end
@@ -13,21 +42,58 @@
 27 29 29
 26 29 25
 25 29 21
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
 24 29 17
 23 29 13
 22 24 31
 20 24 23
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
 19 24 19
 18 24 11
 15 19 33
 13 19 25
 11 19 9
 9 19 17
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
+##room command
 8 14 29
 6 14 13
 4 14 21
 3 9 25
 1 9 17
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
 ##start
 0 4 21
 21-28
@@ -35,7 +101,18 @@
 17-28
 17-14
 16-12
+##link command
 14-10
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
+##link command
 12-7
 10-5
 7-0
@@ -47,6 +124,16 @@
 28-25
 28-24
 28-23
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
+##link command
 27-22
 26-22
 26-20
@@ -60,6 +147,15 @@
 19-9
 18-11
 15-8
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
 13-8
 13-4
 11-6
@@ -71,3 +167,13 @@
 4-1
 3-0
 1-0
+#comment 1
+#comment 2
+#comment 3
+#comment 4
+#comment 5
+#comment 6
+#comment 7
+#comment 8
+#comment 9
+noval
