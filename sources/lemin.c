@@ -13,7 +13,7 @@
 #include "lemin.h"
 
 /*
-**	TODO: norme errors;
+**	TODO (maybe):
 **	'-quick' combines sets without traversing;
 */
 
