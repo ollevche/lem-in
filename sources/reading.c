@@ -64,6 +64,8 @@ static int	is_room(char *str)
 {
 	int		i;
 
+	if (!str)
+		return (false);
 	i = 0;
 	if (ft_strchr("#L", str[0]))
 		return (false);
@@ -79,7 +81,7 @@ static int	is_room(char *str)
 		return (false);
 	while (str[i] && ft_isdigit(str[i]))
 		i++;
-	if (str[i])
+	if (str[i] || (!str[i] && str[i - 1] == ' '))
 		return (false);
 	return (true);
 }
@@ -89,11 +91,14 @@ static int	is_link(char *str, t_room *rooms)
 	int		i;
 	t_room	*iterator;
 
+	if (!str)
+		return (false);
 	i = 0;
 	while (str[i] && str[i] != '-')
 		i++;
 	iterator = rooms;
-	while (iterator && ft_strncmp(str, iterator->name, i))
+	while (iterator && (ft_strlen(iterator->name) != (size_t)i
+						|| ft_strncmp(str, iterator->name, i)))
 		iterator = iterator->next;
 	if (!iterator)
 		return (false);
@@ -122,17 +127,17 @@ int			read_graph(t_room **rooms, t_link **links)
 	cmnts = NULL;
 	cmnd = NULL;
 	ret_c = SUCCESS_CODE;
-	while (ret_c == SUCCESS_CODE && (line = safe_gnl(FILEDES)))
+	while (ret_c == SUCCESS_CODE)
 	{
-		if (is_room(line))
+		if (is_room((line = safe_gnl(FILEDES))))
 			ret_c = add_room(rooms, line, &cmnts, &cmnd);
 		else if (is_link(line, *rooms) && addslst(&cmnts, cmnd) && !(cmnd = 0))
 			ret_c = add_link(links, *rooms, line, &cmnts);
 		else if (cmnd)
 			ret_c = ERROR_CODE;
-		else if (line[0] == '#' && line[1] == '#')
+		else if (line && line[0] == '#' && line[1] == '#')
 			cmnd = ft_strdup(line);
-		else if (line[0] == '#')
+		else if (line && line[0] == '#')
 			ret_c = addslst(&cmnts, ft_strdup(line));
 		else
 			ret_c = -2;

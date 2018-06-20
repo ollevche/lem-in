@@ -97,7 +97,7 @@ t_path		*get_paths(t_room *rooms, t_link *links)
 	int		end_room;
 	t_room	*tmp_room;
 
-	if (!(matrix = compose_matrix(rooms, links)))
+	if (!rooms || !links || !(matrix = compose_matrix(rooms, links)))
 		return (NULL);
 	if (!(tmp_room = get_room_by_command(rooms, "##start"))
 		|| !(nodes = to_arr(tmp_room->id)))

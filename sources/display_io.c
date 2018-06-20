@@ -44,7 +44,7 @@ void		display_input(t_strlist *ants_cmnts, int ants,
 			iterator->name, iterator->x, iterator->y);
 		iterator = iterator->prev;
 	}
-	while (links->next)
+	while (links && links->next)
 		links = links->next;
 	while (links)
 	{

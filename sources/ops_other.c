@@ -53,7 +53,7 @@ int				add_link(t_link **links, t_room *rooms, char *line,
 	int		i;
 
 	new_elem = new_link(links);
-	if (!new_elem)
+	if (!new_elem || !rooms)
 		return (operation_failure(*comments, NULL));
 	new_elem->comments = *comments;
 	*comments = NULL;
