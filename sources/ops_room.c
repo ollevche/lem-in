@@ -12,7 +12,7 @@
 
 #include "lemin.h"
 
-static t_room	*new_room(t_room **rooms)
+static t_room	*new_room(t_room **rooms, t_strlist **comments, char **command)
 {
 	t_room	*new;
 
@@ -25,6 +25,8 @@ static t_room	*new_room(t_room **rooms)
 	if (*rooms)
 		(*rooms)->prev = new;
 	*rooms = new;
+	new->comments = *comments;
+	new->command = *command;
 	return (new);
 }
 
@@ -34,9 +36,11 @@ int				add_room(t_room **rooms, char *line,
 	t_room	*new_elem;
 	int		i;
 
-	new_elem = new_room(rooms);
+	new_elem = new_room(rooms, comments, command);
 	if (!new_elem)
 		return (operation_failure(*comments, *command));
+	*comments = NULL;
+	*command = NULL;
 	i = 0;
 	while (line[i] && line[i] != ' ')
 		i++;
@@ -47,11 +51,9 @@ int				add_room(t_room **rooms, char *line,
 	while (line[i] && line[i] != ' ')
 		i++;
 	new_elem->y = ft_atoi(line + i);
-	new_elem->comments = *comments;
-	new_elem->command = *command;
-	*comments = NULL;
-	*command = NULL;
-	if (get_room_by_command(new_elem->next, new_elem->command))
+	if ((!ft_strcmp(new_elem->command, "##start") ||
+		!ft_strcmp(new_elem->command, "end")) &&
+		get_room_by_command(new_elem->next, new_elem->command))
 		return (ERROR_CODE);
 	if (get_room_by_name(new_elem->next, new_elem->name))
 		return (ERROR_CODE);
@@ -67,6 +69,8 @@ t_room			*get_room_by_id(t_room *rooms, int id)
 
 t_room			*get_room_by_command(t_room *rooms, char *command)
 {
+	if (!command)
+		return (NULL);
 	while (rooms)
 	{
 		if (rooms->command && !ft_strcmp(rooms->command, command))
