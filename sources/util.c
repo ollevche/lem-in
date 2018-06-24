@@ -12,6 +12,19 @@
 
 #include "lemin.h"
 
+int		increment_after(int i, t_path **set_paths, int size)
+{
+	if (!set_paths[i]->prev)
+		return (ERROR_CODE);
+	set_paths[i] = set_paths[i]->prev;
+	while (++i < size)
+		if (set_paths[i - 1]->prev)
+			set_paths[i] = set_paths[i - 1]->prev;
+		else
+			return (false);
+	return (true);
+}
+
 int		**new_ants_map(t_set *set)
 {
 	int **a_map;

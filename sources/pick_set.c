@@ -12,19 +12,6 @@
 
 #include "lemin.h"
 
-static int	increment_after(int i, t_path **set_paths, int size)
-{
-	if (!set_paths[i]->prev)
-		return (ERROR_CODE);
-	set_paths[i] = set_paths[i]->prev;
-	while (++i < size)
-		if (set_paths[i - 1]->prev)
-			set_paths[i] = set_paths[i - 1]->prev;
-		else
-			return (false);
-	return (true);
-}
-
 int			optimize_order(t_path **set_paths, t_set *set, int max_p)
 {
 	int	i;
@@ -81,35 +68,25 @@ static int	save_best(t_set *set, t_path **set_paths, int set_len)
 	return (SUCCESS_CODE);
 }
 
-static int	distinct(t_path **set_paths, t_set *set, int max_p, int rooms_num)
+static int	distinct(t_path **set_paths, t_set *set, int max_p, int isfound)
 {
-	// int	id;
-
-	// id = intersect(set_paths, rooms_num);
-	// if (!id)
-	// 	return (true);
-	// if (increment_after(id, set_paths, set->size) < 1)
-	// 	if (!place_in_order(set_paths, set, max_p, false))
-	// 		return (false);
-	// return (distinct(set_paths, set, max_p, rooms_num));
 	int	id;
 	int	is_dis;
 
 	is_dis = false;
 	while (!is_dis)
 	{
-		id = intersect(set_paths, rooms_num);
+		id = intersect(set_paths, set->total_rooms);
 		if (!id)
 			is_dis = true;
-		else
-			if (increment_after(id, set_paths, set->size) < 1 &&
-				!place_in_order(set_paths, set, max_p, false))
-				break ;
+		else if (increment_after(id, set_paths, set->size) < 1 &&
+				!place_in_order(set_paths, set, max_p, isfound))
+			break ;
 	}
 	return (is_dis);
 }
 
-int			pick_set(t_set *set, t_path *paths, int rooms_num)
+int			pick_set(t_set *set, t_path *paths)
 {
 	t_path	**cur;
 	int		cur_len;
@@ -121,12 +98,12 @@ int			pick_set(t_set *set, t_path *paths, int rooms_num)
 	if (paths->id == set->size - 1)
 		isfound = save_best(set, cur, set->size);
 	while (place_in_order(cur, set, paths->id, isfound) &&
-			distinct(cur, set, paths->id, rooms_num) && isfound != ERROR_CODE)
+			distinct(cur, set, paths->id, isfound) && isfound != ERROR_CODE)
 	{
 		while (true)
 		{
 			cur_len = len_of_set_paths(cur);
-			if (cur_len < set->length && !intersect(cur, rooms_num))
+			if (cur_len < set->length)// && !intersect(cur, set->total_rooms))
 				isfound = save_best(set, cur, cur_len);
 			display_traversing(cur, set->size);
 			if (!cur[set->size - 1]->prev || isfound == ERROR_CODE)

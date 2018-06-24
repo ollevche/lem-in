@@ -81,7 +81,7 @@ int		len_of_set_paths(t_path **set_paths)
 	return (total_len);
 }
 
-t_set	*new_set(int size)
+t_set	*new_set(int size, int rooms)
 {
 	t_set *new;
 
@@ -94,5 +94,6 @@ t_set	*new_set(int size)
 	new->length = INT_MAX;
 	new->efficiency = INT_MAX;
 	new->shortest_path_ever = NULL;
+	new->total_rooms = rooms;
 	return (new);
 }

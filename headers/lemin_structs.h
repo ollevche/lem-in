@@ -60,6 +60,7 @@ typedef struct	s_set
 	int				length;
 	int				efficiency;
 	t_path			*shortest_path_ever;
+	int				total_rooms;
 }				t_set;
 
 #endif

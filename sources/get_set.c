@@ -101,9 +101,9 @@ t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 	t_set	*best;
 	t_set	*cur;
 
-	if (!(cur = new_set(1)))
+	if (!(cur = new_set(1, rooms_num)))
 		return (NULL);
-	if (!(best = new_set(0)))
+	if (!(best = new_set(0, rooms_num)))
 	{
 		free_set(&cur);
 		return (NULL);
@@ -113,7 +113,7 @@ t_set		*get_set(t_path *all_paths, int ants, int rooms_num)
 	{
 		cur->efficiency = INT_MAX;
 		cur->length = INT_MAX;
-		if (pick_set(cur, all_paths, rooms_num) < 1 ||
+		if (pick_set(cur, all_paths) < 1 ||
 			save_best_set(cur, best, ants) < 1)
 			break ;
 		if (cur->efficiency > best->efficiency)

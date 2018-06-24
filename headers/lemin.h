@@ -66,7 +66,7 @@ int				intersect(t_path **set_paths, int rooms_num);
 **	pick_set.c
 */
 
-int				pick_set(t_set *set, t_path *paths, int rooms_num);
+int				pick_set(t_set *set, t_path *paths);
 int				place_in_order(t_path **set_paths, t_set *set, int max_p,
 							int is_optimizable);
 int				optimize_order(t_path **set_paths, t_set *set, int max_p);
@@ -99,7 +99,7 @@ int				max_len(t_set *set);
 t_path			**new_set_paths(int size, t_path *paths);
 t_path			**set_paths_copy(t_path **set_paths, int size);
 int				len_of_set_paths(t_path **set_paths);
-t_set			*new_set(int size);
+t_set			*new_set(int size, int rooms);
 
 /*
 **	ops_other.c
@@ -118,6 +118,7 @@ t_path			*get_path_by_id(t_path *paths, int id);
 void			terminate(t_room **rooms, t_link **links, t_path **paths);
 int				operation_failure(t_strlist *comments, char *command);
 int				**new_ants_map(t_set *set);
+int				increment_after(int i, t_path **set_paths, int size);
 
 /*
 **	free_structs.c
