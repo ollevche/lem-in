@@ -30,13 +30,13 @@ int			intersect(t_path **set_paths, int rooms_num)
 		{
 			path_rooms++;
 			if (rooms[*path_rooms])
-				return (true);
+				return (p);
 			else
 				rooms[*path_rooms] = 1;
 		}
 		p++;
 	}
-	return (false);
+	return (0);
 }
 
 static int	efficiency_of(t_set *set, int ants)

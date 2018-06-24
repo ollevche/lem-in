@@ -81,31 +81,59 @@ static int	save_best(t_set *set, t_path **set_paths, int set_len)
 	return (SUCCESS_CODE);
 }
 
+static int	distinct(t_path **set_paths, t_set *set, int max_p, int rooms_num)
+{
+	// int	id;
+
+	// id = intersect(set_paths, rooms_num);
+	// if (!id)
+	// 	return (true);
+	// if (increment_after(id, set_paths, set->size) < 1)
+	// 	if (!place_in_order(set_paths, set, max_p, false))
+	// 		return (false);
+	// return (distinct(set_paths, set, max_p, rooms_num));
+	int	id;
+	int	is_dis;
+
+	is_dis = false;
+	while (!is_dis)
+	{
+		id = intersect(set_paths, rooms_num);
+		if (!id)
+			is_dis = true;
+		else
+			if (increment_after(id, set_paths, set->size) < 1 &&
+				!place_in_order(set_paths, set, max_p, false))
+				break ;
+	}
+	return (is_dis);
+}
+
 int			pick_set(t_set *set, t_path *paths, int rooms_num)
 {
 	t_path	**cur;
 	int		cur_len;
-	int		is_found;
+	int		isfound;
 
 	if (!(cur = new_set_paths(set->size, paths)))
 		return (ERROR_CODE);
-	is_found = 0;
+	isfound = 0;
 	if (paths->id == set->size - 1)
-		is_found = save_best(set, cur, set->size);
-	while (place_in_order(cur, set, paths->id, is_found) &&
-			is_found != ERROR_CODE)
+		isfound = save_best(set, cur, set->size);
+	while (place_in_order(cur, set, paths->id, isfound) &&
+			distinct(cur, set, paths->id, rooms_num) && isfound != ERROR_CODE)
 	{
 		while (true)
 		{
 			cur_len = len_of_set_paths(cur);
 			if (cur_len < set->length && !intersect(cur, rooms_num))
-				is_found = save_best(set, cur, cur_len);
+				isfound = save_best(set, cur, cur_len);
 			display_traversing(cur, set->size);
-			if (!cur[set->size - 1]->prev || is_found == ERROR_CODE)
+			if (!cur[set->size - 1]->prev || isfound == ERROR_CODE)
 				break ;
 			cur[set->size - 1] = cur[set->size - 1]->prev;
 		}
 	}
 	free(cur);
-	return (is_found);
+	return (isfound);
 }
