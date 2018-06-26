@@ -25,6 +25,7 @@ static int		input_stage(int *ants, t_room **rooms,
 								t_link **links, t_path **paths)
 {
 	t_strlist	*ants_comments;
+	t_strlist	*rand_comments;
 
 	ants_comments = NULL;
 	*rooms = NULL;
@@ -32,14 +33,17 @@ static int		input_stage(int *ants, t_room **rooms,
 	*paths = NULL;
 	*ants = read_ants(&ants_comments);
 	if (*ants < 0 ||
-		read_graph(rooms, links) == ERROR_CODE ||
+		read_graph(rooms, links, &rand_comments) == ERROR_CODE ||
 		!(*paths = get_paths(*rooms, *links)))
 	{
 		free_strlist(&ants_comments);
 		return (ERROR_CODE);
 	}
-	display_input(ants_comments, *ants, *rooms, *links);
+	print_comments(ants_comments);
+	display_input(*ants, *rooms, *links);
+	print_comments(rand_comments);
 	free_strlist(&ants_comments);
+	free_strlist(&rand_comments);
 	return (SUCCESS_CODE);
 }
 

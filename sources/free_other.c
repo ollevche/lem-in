@@ -35,7 +35,7 @@ void	total_free(t_room **rooms, t_link **links, t_path **paths)
 	free_paths(paths);
 }
 
-void	free_rg(char **line, char **command, t_strlist **comments)
+void	free_rg(char **line, char **command)
 {
 	if (line)
 	{
@@ -47,7 +47,6 @@ void	free_rg(char **line, char **command, t_strlist **comments)
 		free(*command);
 		*command = NULL;
 	}
-	free_strlist(comments);
 }
 
 void	free_tdarr(int ***tdarr)

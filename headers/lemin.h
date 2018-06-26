@@ -39,15 +39,15 @@ extern int g_maxset;
 */
 
 int				read_ants(t_strlist **ants_cmnts);
-int				read_graph(t_room **rooms, t_link **links);
+int				read_graph(t_room **rooms, t_link **links, t_strlist **cmnts);
 
 /*
 **	display_io.c
 */
 
-void			display_input(t_strlist *ants_cmnts, int ants,
-								t_room *rooms, t_link *links);
+void			display_input(int ants, t_room *rooms, t_link *links);
 int				display_output(t_set *set, t_room *rooms, int ants);
+void			print_comments(t_strlist *comments);
 
 /*
 **	get_paths.c
@@ -136,7 +136,7 @@ void			free_set(t_set **set);
 
 void			free_matrix(int ***matrix);
 void			total_free(t_room **rooms, t_link **links, t_path **paths);
-void			free_rg(char **line, char **command, t_strlist **comments);
+void			free_rg(char **line, char **command);
 void			free_tdarr(int ***tdarr);
 
 /*

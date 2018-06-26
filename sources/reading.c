@@ -111,37 +111,38 @@ static int	is_link(char *str, t_room *rooms)
 }
 
 /*
+**	'-2' signals about receiving an invalid input line
+**
 **	line of read_graph function which copies the line into the command:
 **	ret_code = (command = ft_strdup(line)) ? SUCCESS_CODE : ERROR_CODE;
 **	...
 **	it's modified because of The Norme :(
 */
 
-int			read_graph(t_room **rooms, t_link **links)
+int			read_graph(t_room **rooms, t_link **links, t_strlist **cmnts)
 {
 	char		*line;
-	t_strlist	*cmnts;
 	char		*cmnd;
 	int			ret_c;
 
-	cmnts = NULL;
+	*cmnts = NULL;
 	cmnd = NULL;
 	ret_c = SUCCESS_CODE;
 	while (ret_c == SUCCESS_CODE)
 	{
 		if (is_room((line = safe_gnl(FILEDES))))
-			ret_c = add_room(rooms, line, &cmnts, &cmnd);
-		else if (is_link(line, *rooms) && addslst(&cmnts, cmnd) && !(cmnd = 0))
-			ret_c = add_link(links, *rooms, line, &cmnts);
+			ret_c = add_room(rooms, line, cmnts, &cmnd);
+		else if (is_link(line, *rooms) && addslst(cmnts, cmnd) && !(cmnd = 0))
+			ret_c = add_link(links, *rooms, line, cmnts);
 		else if (cmnd)
-			ret_c = ERROR_CODE;
+			ret_c = -2;
 		else if (line && line[0] == '#' && line[1] == '#')
 			cmnd = ft_strdup(line);
 		else if (line && line[0] == '#')
-			ret_c = addslst(&cmnts, ft_strdup(line));
+			ret_c = addslst(cmnts, ft_strdup(line));
 		else
 			ret_c = -2;
-		free_rg(&line, ret_c != 1 ? &cmnd : 0, ret_c != 1 ? &cmnts : 0);
+		free_rg(&line, ret_c != 1 ? &cmnd : 0);
 	}
 	return (ret_c == ERROR_CODE ? ERROR_CODE : SUCCESS_CODE);
 }

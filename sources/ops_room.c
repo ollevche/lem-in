@@ -52,7 +52,7 @@ int				add_room(t_room **rooms, char *line,
 		i++;
 	new_elem->y = ft_atoi(line + i);
 	if ((!ft_strcmp(new_elem->command, "##start") ||
-		!ft_strcmp(new_elem->command, "end")) &&
+		!ft_strcmp(new_elem->command, "##end")) &&
 		get_room_by_command(new_elem->next, new_elem->command))
 		return (ERROR_CODE);
 	if (get_room_by_name(new_elem->next, new_elem->name))
