@@ -12,11 +12,6 @@
 
 #include "lemin.h"
 
-/*
-**	TODO (maybe):
-**	'-quick' combines sets without traversing;
-*/
-
 int g_log = 0;
 int g_smart = 1;
 int	g_maxset = INT_MAX;

@@ -14,4 +14,4 @@ Usage:
 Options:
 	-log [--t]			displays log, '--t' adds traversing log 
 	-complete			uses complete traverse instead of "smart"
-	-maxset NUM			uses a NUM (1 - INT_MAX) as max amount of paths in a set
+	-maxset NUM			uses a NUM (1 ... INT_MAX) as max amount of paths in a set

@@ -73,6 +73,8 @@ static int	distinct(t_path **set_paths, t_set *set, int max_p, int isfound)
 	int	id;
 	int	is_dis;
 
+	if (!g_smart)
+		return (true);
 	is_dis = false;
 	while (!is_dis)
 	{

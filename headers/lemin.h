@@ -27,7 +27,7 @@
 
 /*
 **	g_log: 0 (OFF), 1 (ON, without traversing), 2 (ON)
-**	g_smart: 0 (complete traverse), 1 ("smart" traverse)
+**	g_smart: 0 (complete traverse), 1 ("smart": optimize_order + distinct)
 */
 
 extern int g_log;
