@@ -98,7 +98,7 @@ int			display_output(t_set *set, t_room *rooms, int ants)
 		moves = 0;
 		while (p < set->size)
 		{
-			moves = make_moves(ants_map[p], set->paths[p], rooms, ants);
+			moves += make_moves(ants_map[p], set->paths[p], rooms, ants);
 			p++;
 		}
 		ft_printf("\n");

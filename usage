@@ -1,5 +1,5 @@
 Usage:
-	./lem-in [< filename]
+	./lem-in [-log --t -complete -maxset NUM]
 		#comment
 		number of ants
 		##start
