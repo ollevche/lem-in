@@ -17,7 +17,7 @@ int			intersect(t_path **set_paths, int rooms_num)
 	int	rooms[rooms_num];
 	int	*path_rooms;
 	int	r;
-	int p;
+	int	p;
 
 	r = 0;
 	while (r < rooms_num)
@@ -44,7 +44,7 @@ static int	efficiency_of(t_set *set, int ants)
 	int	merge_value;
 	int	merge_sum;
 	int	in_total;
-	int i;
+	int	i;
 
 	merge_value = max_len(set) - 1;
 	if (merge_value == 1 && (set->ants[0] = ants))
